@@ -28,6 +28,18 @@ public class MxstarBaseListener implements MxstarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterGlobalDeclaration(MxstarParser.GlobalDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGlobalDeclaration(MxstarParser.GlobalDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFunctionDeclaration(MxstarParser.FunctionDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -280,13 +292,13 @@ public class MxstarBaseListener implements MxstarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVarDecStatement(MxstarParser.VarDecStatementContext ctx) { }
+	@Override public void enterVarDeclStatement(MxstarParser.VarDeclStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVarDecStatement(MxstarParser.VarDecStatementContext ctx) { }
+	@Override public void exitVarDeclStatement(MxstarParser.VarDeclStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

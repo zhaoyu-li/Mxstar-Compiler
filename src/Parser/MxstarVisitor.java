@@ -17,6 +17,12 @@ public interface MxstarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgram(MxstarParser.ProgramContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MxstarParser#globalDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGlobalDeclaration(MxstarParser.GlobalDeclarationContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MxstarParser#functionDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -150,12 +156,12 @@ public interface MxstarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExprStatement(MxstarParser.ExprStatementContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code varDecStatement}
+	 * Visit a parse tree produced by the {@code varDeclStatement}
 	 * labeled alternative in {@link MxstarParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVarDecStatement(MxstarParser.VarDecStatementContext ctx);
+	T visitVarDeclStatement(MxstarParser.VarDeclStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code blockStatement}
 	 * labeled alternative in {@link MxstarParser#statement}.

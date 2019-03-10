@@ -1,10 +1,16 @@
 grammar Mxstar;
 
 program
-    : (functionDeclaration | classDeclaration | variableDeclaration)* EOF
+    : globalDeclaration* EOF
     ;
 
 //Declaration
+globalDeclaration
+    : functionDeclaration
+    | classDeclaration
+    | variableDeclaration
+    ;
+
 functionDeclaration
     : type IDENTIFIER '(' parameterList? ')' block
     ;
@@ -74,7 +80,7 @@ statement
     | CONTINUE ';'                                       #continueStatement
     | RETURN expression? ';'                             #returnStatement
     | expression ';'                                     #exprStatement
-    | variableDeclaration                                #varDecStatement
+    | variableDeclaration                                #varDeclStatement
     | block                                              #blockStatement
     | ';'                                                #blankStatement
     ;

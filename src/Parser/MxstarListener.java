@@ -18,6 +18,16 @@ public interface MxstarListener extends ParseTreeListener {
 	 */
 	void exitProgram(MxstarParser.ProgramContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MxstarParser#globalDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterGlobalDeclaration(MxstarParser.GlobalDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarParser#globalDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitGlobalDeclaration(MxstarParser.GlobalDeclarationContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MxstarParser#functionDeclaration}.
 	 * @param ctx the parse tree
 	 */
@@ -242,17 +252,17 @@ public interface MxstarListener extends ParseTreeListener {
 	 */
 	void exitExprStatement(MxstarParser.ExprStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code varDecStatement}
+	 * Enter a parse tree produced by the {@code varDeclStatement}
 	 * labeled alternative in {@link MxstarParser#statement}.
 	 * @param ctx the parse tree
 	 */
-	void enterVarDecStatement(MxstarParser.VarDecStatementContext ctx);
+	void enterVarDeclStatement(MxstarParser.VarDeclStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code varDecStatement}
+	 * Exit a parse tree produced by the {@code varDeclStatement}
 	 * labeled alternative in {@link MxstarParser#statement}.
 	 * @param ctx the parse tree
 	 */
-	void exitVarDecStatement(MxstarParser.VarDecStatementContext ctx);
+	void exitVarDeclStatement(MxstarParser.VarDeclStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code blockStatement}
 	 * labeled alternative in {@link MxstarParser#statement}.

@@ -10,7 +10,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../课程学习/编译原理/antlr-runtime-4.7.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/antlr-runtime-4.7.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
