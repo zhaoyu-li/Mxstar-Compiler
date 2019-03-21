@@ -1,8 +1,6 @@
 package AST;
 
-import Symbol.FunctionSymbol;
-import Type.FunctionType;
-import Type.Type;
+import Scope.FunctionEntity;
 
 import java.util.List;
 
@@ -10,7 +8,8 @@ public class FunctionDeclaration extends Declaration {
     private TypeNode returnType;
     private List<VariableDeclaration> parameters;
     private List<Statement> body;
-    private FunctionSymbol symbol;
+
+    private FunctionEntity functionEntity;
 
     public FunctionDeclaration() {
         returnType = null;

@@ -1,12 +1,12 @@
 package AST;
 
-
-import Symbol.VariableSymbol;
+import Scope.VariableEntity;
 
 public class VariableDeclaration extends Declaration {
     private TypeNode type;
     private Expression init;
-    private VariableSymbol symbol;
+
+    private VariableEntity variableEntity;
 
     public VariableDeclaration() {
         type = null;

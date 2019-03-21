@@ -1,12 +1,16 @@
-package Symbol;
+package Scope;
 
 import AST.Location;
 
-public abstract class Symbol {
+public abstract class Entity {
     protected String name;
     protected Location location;
 
-    public Symbol() {}
+    public Entity() {}
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;

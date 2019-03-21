@@ -1,13 +1,10 @@
 package AST;
 
-import Symbol.FunctionSymbol;
-
 import java.util.List;
 
 public class FuncCallExpression extends Expression {
     private Identifier name;
     private List<Expression> arguments;
-    private FunctionSymbol symbol;
 
     public FuncCallExpression() {
         name = null;

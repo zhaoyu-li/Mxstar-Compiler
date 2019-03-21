@@ -1,6 +1,6 @@
 package AST;
 
-import Symbol.ClassSymbol;
+import Scope.ClassEntity;
 
 import java.util.List;
 
@@ -8,7 +8,8 @@ public class ClassDeclaration extends Declaration {
     private FunctionDeclaration constructor;
     private List<VariableDeclaration> fields;
     private List<FunctionDeclaration> methods;
-    private ClassSymbol symbol;
+
+    private ClassEntity classEntity;
 
     public ClassDeclaration() {
         constructor = null;
