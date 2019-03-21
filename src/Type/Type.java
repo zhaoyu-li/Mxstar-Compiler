@@ -34,4 +34,12 @@ public class Type {
                 break;
         }
     }
+
+    public void setType(types type) {
+        this.type = type;
+    }
+
+    public types getType() {
+        return type;
+    }
 }

@@ -4,9 +4,10 @@ import AST.Location;
 
 public abstract class Entity {
     protected String name;
-    protected Location location;
 
-    public Entity() {}
+    public Entity() {
+        name = null;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -14,9 +15,5 @@ public abstract class Entity {
 
     public String getName() {
         return name;
-    }
-
-    public Location getLocation() {
-        return location;
     }
 }

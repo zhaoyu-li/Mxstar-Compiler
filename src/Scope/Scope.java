@@ -11,14 +11,14 @@ public class Scope {
     private Scope parent;
     private List<Scope> children;
 
-    Scope() {
+    public Scope() {
         this.variables = new LinkedHashMap<String, VariableEntity>();
         this.functions = new LinkedHashMap<String, FunctionEntity>();
         this.parent = null;
         this.children = new LinkedList<Scope>();
     }
 
-    Scope(Scope parent) {
+    public Scope(Scope parent) {
         this.variables = new LinkedHashMap<String, VariableEntity>();
         this.functions = new LinkedHashMap<String, FunctionEntity>();
         this.parent = parent;

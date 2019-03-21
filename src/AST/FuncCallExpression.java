@@ -1,10 +1,14 @@
 package AST;
 
+import Scope.FunctionEntity;
+
 import java.util.List;
 
 public class FuncCallExpression extends Expression {
     private Identifier name;
     private List<Expression> arguments;
+
+    private FunctionEntity functionEntity;
 
     public FuncCallExpression() {
         name = null;

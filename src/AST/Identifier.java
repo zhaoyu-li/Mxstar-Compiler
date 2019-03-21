@@ -1,7 +1,10 @@
 package AST;
 
+import Scope.VariableEntity;
+
 public class Identifier extends Expression {
     private String name;
+    private VariableEntity variableEntity;
 
     public Identifier() {
         name = null;
