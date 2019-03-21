@@ -1,11 +1,17 @@
 package AST;
 
 
+import Symbol.VariableSymbol;
+
 public class VariableDeclaration extends Declaration {
     private TypeNode type;
     private Expression init;
+    private VariableSymbol symbol;
 
-    public VariableDeclaration() {}
+    public VariableDeclaration() {
+        type = null;
+        init = null;
+    }
 
     public VariableDeclaration(TypeNode type, String name, Expression init, Location location) {
         this.type = type;
@@ -18,8 +24,16 @@ public class VariableDeclaration extends Declaration {
         return type;
     }
 
+    public void setType(TypeNode type) {
+        this.type = type;
+    }
+
     public Expression getInit() {
         return init;
+    }
+
+    public void setInit(Expression init) {
+        this.init = init;
     }
 
     @Override

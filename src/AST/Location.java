@@ -4,8 +4,13 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 
 public class Location {
-    private final int line;
-    private final int column;
+    private int line;
+    private int column;
+
+    public Location() {
+        line = 0;
+        column = 0;
+    }
 
     public Location(int line, int column) {
         this.line = line;
@@ -21,16 +26,30 @@ public class Location {
         this(ctx.start);
     }
 
-    public int getLine() {
+    public void setLocation(int line, int column) {
+        this.line = line;
+        this.column = column;
+    }
+
+    public void setLocation(Token token) {
+        this.line = token.getLine();
+        this.column = token.getCharPositionInLine();
+    }
+
+    public void setLocation(ParserRuleContext ctx) {
+        setLocation(ctx.start);
+    }
+
+    public final int getLine() {
         return line;
     }
 
-    public int getColumn() {
+    public final int getColumn() {
         return column;
     }
 
     @Override
     public String toString() {
-        return "line " + line + ":" + column;
+        return "line " + line + ": " + column;
     }
 }

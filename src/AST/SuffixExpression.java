@@ -1,10 +1,20 @@
 package AST;
 
-public class ExprStatement extends Statement {
+public class SuffixExpression extends Expression {
+    private String op;
     private Expression expr;
 
-    public ExprStatement() {
+    public SuffixExpression() {
+        op = null;
         expr = null;
+    }
+
+    public void setOp(String op) {
+        this.op = op;
+    }
+
+    public String getOp() {
+        return op;
     }
 
     public void setExpr(Expression expr) {

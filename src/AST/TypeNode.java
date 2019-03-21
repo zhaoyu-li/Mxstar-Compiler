@@ -3,7 +3,11 @@ package AST;
 import Type.Type;
 
 public class TypeNode extends Node{
-    private Type type;
+    protected Type type;
+
+    public TypeNode() {
+        type = new Type();
+    }
 
     public TypeNode(Type type, Location location) {
         this.type = type;

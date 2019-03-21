@@ -1,11 +1,22 @@
 package AST;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class BlockStatement extends Statement {
-    public List<Statement> statements;
+    private List<Statement> statements;
 
-    BlockStatement() {}
+    public BlockStatement() {
+        statements = null;
+    }
+
+    public void setStatements(List<Statement> statements) {
+        this.statements = statements;
+    }
+
+    public List<Statement> getStatements() {
+        return statements;
+    }
 
     @Override
     public void accept(ASTVistor vistor) {

@@ -158,6 +158,16 @@ public interface MxstarListener extends ParseTreeListener {
 	 */
 	void exitClassType(MxstarParser.ClassTypeContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MxstarParser#empty}.
+	 * @param ctx the parse tree
+	 */
+	void enterEmpty(MxstarParser.EmptyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarParser#empty}.
+	 * @param ctx the parse tree
+	 */
+	void exitEmpty(MxstarParser.EmptyContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MxstarParser#statementList}.
 	 * @param ctx the parse tree
 	 */
@@ -275,18 +285,6 @@ public interface MxstarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBlockStatement(MxstarParser.BlockStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code blankStatement}
-	 * labeled alternative in {@link MxstarParser#statement}.
-	 * @param ctx the parse tree
-	 */
-	void enterBlankStatement(MxstarParser.BlankStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code blankStatement}
-	 * labeled alternative in {@link MxstarParser#statement}.
-	 * @param ctx the parse tree
-	 */
-	void exitBlankStatement(MxstarParser.BlankStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MxstarParser#expressionList}.
 	 * @param ctx the parse tree

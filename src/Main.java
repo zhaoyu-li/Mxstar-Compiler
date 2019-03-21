@@ -1,3 +1,6 @@
+import AST.Program;
+import FrontEnd.ASTBuilder;
+import FrontEnd.ASTPrinter;
 import FrontEnd.PaserErrorListener;
 import Parser.MxstarLexer;
 import Parser.MxstarParser;
@@ -18,19 +21,18 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        parseOption(args);
+        String inputFile = "test.cpp";
+        InputStream inputStream = new FileInputStream(inputFile);
 
-        //InputStream is = new FileInputStream();
-        //PrintStream os = new PrintStream();
-
-
+        try{
+            compile(inputStream);
+        } catch (Error error) {
+            System.err.println(error.getMessage());
+            System.exit(1);
+        }
     }
 
-    public static void parseOption(String []args) {
-
-    }
-
-    public static void compile(InputStream sourceCode, PrintStream asmCode) throws Exception{
+    private static void compile(InputStream sourceCode) throws Exception {
         ANTLRInputStream input = new ANTLRInputStream(sourceCode);
         MxstarLexer lexer = new MxstarLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -38,11 +40,11 @@ public class Main {
         parser.removeErrorListeners();
         parser.addErrorListener(new PaserErrorListener());
         ParseTree tree = parser.program();
-
-        ParseTreeWalker walker = new ParseTreeWalker();
-
-
+        ASTBuilder astBuilder = new ASTBuilder();
+        astBuilder.visit(tree);
+        Program program = astBuilder.getProgram();
+        ASTPrinter astPrinter = new ASTPrinter();
+        astPrinter.visit(program);
+        astPrinter.print();
     }
-
-
 }

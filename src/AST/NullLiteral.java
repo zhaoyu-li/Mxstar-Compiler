@@ -1,8 +1,6 @@
 package AST;
 
-public class ContinueStatement extends Statement {
-    public ContinueStatement() {}
-
+public class NullLiteral extends Expression {
     @Override
     public void accept(ASTVistor vistor) {
         vistor.visit(this);

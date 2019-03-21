@@ -26,6 +26,17 @@ public class Program extends Node {
         variables.addAll(declaration);
     }
 
+    public List<FunctionDeclaration> getFunctions() {
+        return functions;
+    }
+
+    public List<ClassDeclaration> getClasses() {
+        return classes;
+    }
+
+    public List<VariableDeclaration> getVariables() {
+        return variables;
+    }
 
     @Override
     public void accept(ASTVistor vistor) {

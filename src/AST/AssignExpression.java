@@ -4,14 +4,21 @@ public class AssignExpression extends Expression {
     private Expression lhs;
     private Expression rhs;
 
-    public AssignExpression(Expression lhs, Expression rhs, Location location) {
+    public AssignExpression() {
+        lhs = null;
+        rhs = null;
+    }
+
+    public void setLhs(Expression lhs) {
         this.lhs = lhs;
-        this.rhs = rhs;
-        this.location = location;
     }
 
     public Expression getLhs() {
         return lhs;
+    }
+
+    public void setRhs(Expression rhs) {
+        this.rhs = rhs;
     }
 
     public Expression getRhs() {

@@ -52,7 +52,7 @@ block
     ;
 
 type
-    : (primitiveType | classType) ('['']')*
+    : (primitiveType | classType) ('['empty']')*
     ;
 
 primitiveType
@@ -66,6 +66,9 @@ classType
     : token=IDENTIFIER
     ;
 
+empty
+    :;
+
 statementList
     : statement*
     ;
@@ -75,14 +78,13 @@ statement
     | WHILE '(' expression ')' statement                 #whileStatement
     | FOR '(' forInit=expression? ';'
               forCondition=expression? ';'
-              forUpdate=expression? ')'                  #forStatement
+              forUpdate=expression? ')' statement        #forStatement
     | BREAK ';'                                          #breakStatement
     | CONTINUE ';'                                       #continueStatement
     | RETURN expression? ';'                             #returnStatement
     | expression ';'                                     #exprStatement
     | variableDeclaration                                #varDeclStatement
     | block                                              #blockStatement
-    | ';'                                                #blankStatement
     ;
 
 expressionList
@@ -98,28 +100,29 @@ expression
     | token=STRING_LITERAL                               #primaryExpression
     | token=IDENTIFIER                                   #primaryExpression
     | expression op='.' IDENTIFIER                       #memberExpression
-    | expression '[' expression ']'                      #arrayExpression
-    | expression '(' expressionList? ')'                 #funcCallExpression
+    | arr=expression '[' idx=expression ']'              #arrayExpression
+    | IDENTIFIER '(' expressionList? ')'                 #funcCallExpression
     | NEW creator                                        #newExpression
     | expression op=('++' | '--')                        #suffixExpression
     | op=('++' | '--') expression                        #prefixExpression
     | op=('+' | '-') expression                          #prefixExpression
     | op=('~' | '!') expression                          #prefixExpression
-    | expression op=('*' | '/' | '%') expression         #binaryExpression
-    | expression op=('+' | '-') expression               #binaryExpression
-    | expression op=('<<' | '>>') expression             #binaryExpression
-    | expression op=('<' | '>' | '>=' | '<=') expression #binaryExpression
-    | expression op=('==' | '!=') expression             #binaryExpression
-    | expression op='&' expression                       #binaryExpression
-    | expression op='^' expression                       #binaryExpression
-    | expression op='|' expression                       #binaryExpression
-    | expression op='&&' expression                      #binaryExpression
-    | expression op='||' expression                      #binaryExpression
-    | <assoc=right> expression op='=' expression         #assignExpression
+    | lhs=expression op=('*' | '/' | '%') rhs=expression #binaryExpression
+    | lhs=expression op=('+' | '-') rhs=expression       #binaryExpression
+    | lhs=expression op=('<<' | '>>') rhs=expression     #binaryExpression
+    | lhs=expression op=('<' | '>') rhs=expression       #binaryExpression
+    | lhs=expression op=('<=' | '>=') rhs=expression     #binaryExpression
+    | lhs=expression op=('==' | '!=') rhs=expression     #binaryExpression
+    | lhs=expression op='&' rhs=expression               #binaryExpression
+    | lhs=expression op='^' rhs=expression               #binaryExpression
+    | lhs=expression op='|' rhs=expression               #binaryExpression
+    | lhs=expression op='&&' rhs=expression              #binaryExpression
+    | lhs=expression op='||' rhs=expression              #binaryExpression
+    | <assoc=right> lhs=expression op='=' rhs=expression #assignExpression
     ;
 
 creator
-    : (primitiveType | classType) ('[' expression ']')*('['']')*
+    : (primitiveType | classType) ('[' expression ']')*('['empty']')*
     ;
 
 // Reserved Words

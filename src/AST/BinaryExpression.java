@@ -5,10 +5,35 @@ public class BinaryExpression extends Expression {
     private Expression lhs;
     private Expression rhs;
 
-    public BinaryExpression(Expression lhs, Expression rhs, Location location) {
+    public BinaryExpression() {
+        op = null;
+        lhs = null;
+        rhs = null;
+    }
+
+    public void setOp(String op) {
+        this.op = op;
+    }
+
+    public String getOp() {
+        return op;
+    }
+
+    public void setLhs(Expression lhs) {
         this.lhs = lhs;
+    }
+
+    public Expression getLhs() {
+        return lhs;
+    }
+
+
+    public void setRhs(Expression rhs) {
         this.rhs = rhs;
-        this.location = location;
+    }
+
+    public Expression getRhs() {
+        return rhs;
     }
 
     @Override

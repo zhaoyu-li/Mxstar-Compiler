@@ -1,7 +1,8 @@
 package AST;
 
-public class ContinueStatement extends Statement {
-    public ContinueStatement() {}
+public class ThisExpression extends Expression {
+
+    public ThisExpression() {}
 
     @Override
     public void accept(ASTVistor vistor) {

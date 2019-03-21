@@ -1,7 +1,7 @@
 package AST;
 
 public class BreakStatement extends Statement {
-    BreakStatement() {}
+    public BreakStatement() {}
 
     @Override
     public void accept(ASTVistor vistor) {

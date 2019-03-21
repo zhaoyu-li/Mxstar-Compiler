@@ -101,6 +101,12 @@ public interface MxstarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitClassType(MxstarParser.ClassTypeContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MxstarParser#empty}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEmpty(MxstarParser.EmptyContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MxstarParser#statementList}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -169,13 +175,6 @@ public interface MxstarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBlockStatement(MxstarParser.BlockStatementContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code blankStatement}
-	 * labeled alternative in {@link MxstarParser#statement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBlankStatement(MxstarParser.BlankStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxstarParser#expressionList}.
 	 * @param ctx the parse tree

@@ -5,7 +5,9 @@ import Type.Type;
 public abstract class Expression extends Node {
     protected Type type;
 
-    public Expression() {}
+    public Expression() {
+        type = null;
+    }
 
     public void setType(Type type) {
         this.type = type;
