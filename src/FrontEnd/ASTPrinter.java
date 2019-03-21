@@ -53,7 +53,7 @@ public class ASTPrinter implements ASTVistor {
 
     @Override
     public void visit(Declaration node) {
-        System.out.println("Declaration");
+
     }
 
     @Override

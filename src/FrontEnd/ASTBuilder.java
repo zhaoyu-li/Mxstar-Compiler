@@ -303,17 +303,7 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
 
     @Override
     public FuncCallExpression visitFuncCallExpression(FuncCallExpressionContext ctx) {
-        FuncCallExpression funcCallExpression = new FuncCallExpression();
-        funcCallExpression.setName(ctx.IDENTIFIER().getSymbol().getText());
-        List<Expression> arguments = new LinkedList<>();
-        if(ctx.expressionList().expression() != null) {
-            for(ExpressionContext c : ctx.expressionList().expression()) {
-                arguments.add((Expression) c.accept(this));
-            }
-        }
-        funcCallExpression.setArguments(arguments);
-        funcCallExpression.setLocation(ctx);
-        return funcCallExpression;
+        return visitFuncCall(ctx.funcCall());
     }
 
     @Override
@@ -388,5 +378,20 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
         }
         newExpression.setLocation(ctx);
         return newExpression;
+    }
+
+    @Override
+    public FuncCallExpression visitFuncCall(FuncCallContext ctx) {
+        FuncCallExpression funcCallExpression = new FuncCallExpression();
+        funcCallExpression.setName(ctx.IDENTIFIER().getSymbol().getText());
+        List<Expression> arguments = new LinkedList<>();
+        if(ctx.expressionList().expression() != null) {
+            for(ExpressionContext c : ctx.expressionList().expression()) {
+                arguments.add((Expression) c.accept(this));
+            }
+        }
+        funcCallExpression.setArguments(arguments);
+        funcCallExpression.setLocation(ctx);
+        return funcCallExpression;
     }
 }

@@ -13,9 +13,25 @@ public class Type {
     }
 
     public Type(String name) {
-        if(name.equals("void")) type = types.VOID;
-        else if(name.equals("int")) type = types.INT;
-        else if(name.equals("bool")) type = types.BOOL;
-        else if(name.equals("string")) type = types.STRING;
+        switch (name) {
+            case "void":
+                type = types.VOID;
+                break;
+            case "int":
+                type = types.INT;
+                break;
+            case "bool":
+                type = types.BOOL;
+                break;
+            case "string":
+                type = types.STRING;
+                break;
+            case "class":
+                type = types.CLASS;
+                break;
+            default:
+                type = types.NULL;
+                break;
+        }
     }
 }

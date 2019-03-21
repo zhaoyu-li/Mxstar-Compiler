@@ -413,4 +413,14 @@ public interface MxstarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCreator(MxstarParser.CreatorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MxstarParser#funcCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterFuncCall(MxstarParser.FuncCallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarParser#funcCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitFuncCall(MxstarParser.FuncCallContext ctx);
 }

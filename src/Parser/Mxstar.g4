@@ -99,9 +99,9 @@ expression
     | token=INT_LITERAL                                  #primaryExpression
     | token=STRING_LITERAL                               #primaryExpression
     | token=IDENTIFIER                                   #primaryExpression
-    | expression op='.' IDENTIFIER                       #memberExpression
+    | expression op='.' (IDENTIFIER | funcCall)          #memberExpression
     | arr=expression '[' idx=expression ']'              #arrayExpression
-    | IDENTIFIER '(' expressionList? ')'                 #funcCallExpression
+    | funcCall                                           #funcCallExpression
     | NEW creator                                        #newExpression
     | expression op=('++' | '--')                        #suffixExpression
     | op=('++' | '--') expression                        #prefixExpression
@@ -110,8 +110,7 @@ expression
     | lhs=expression op=('*' | '/' | '%') rhs=expression #binaryExpression
     | lhs=expression op=('+' | '-') rhs=expression       #binaryExpression
     | lhs=expression op=('<<' | '>>') rhs=expression     #binaryExpression
-    | lhs=expression op=('<' | '>') rhs=expression       #binaryExpression
-    | lhs=expression op=('<=' | '>=') rhs=expression     #binaryExpression
+    | lhs=expression op=('<' | '>' | '<=' | '>=') rhs=expression       #binaryExpression
     | lhs=expression op=('==' | '!=') rhs=expression     #binaryExpression
     | lhs=expression op='&' rhs=expression               #binaryExpression
     | lhs=expression op='^' rhs=expression               #binaryExpression
@@ -122,7 +121,11 @@ expression
     ;
 
 creator
-    : (primitiveType | classType) ('[' expression ']')*('['empty']')*
+    : (primitiveType | classType) (('[' expression ']')*('['empty']')*| ('(' ')'))
+    ;
+
+funcCall
+    : IDENTIFIER '(' expressionList? ')'
     ;
 
 // Reserved Words
