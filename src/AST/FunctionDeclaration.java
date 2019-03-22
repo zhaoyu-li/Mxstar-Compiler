@@ -8,13 +8,20 @@ public class FunctionDeclaration extends Declaration {
     private TypeNode returnType;
     private List<VariableDeclaration> parameters;
     private List<Statement> body;
-
     private FunctionEntity functionEntity;
 
     public FunctionDeclaration() {
         returnType = null;
         parameters = null;
         body = null;
+    }
+
+    public void setFunctionEntity(FunctionEntity functionEntity) {
+        this.functionEntity = functionEntity;
+    }
+
+    public FunctionEntity getFunctionEntity() {
+        return functionEntity;
     }
 
     public void setReturnType(TypeNode returnType) {

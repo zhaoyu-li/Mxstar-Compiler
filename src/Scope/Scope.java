@@ -37,6 +37,19 @@ public class Scope {
         return variables.get(name);
     }
 
+    public VariableEntity getRecursiveVariable(String name) {
+        VariableEntity variableEntity = variables.get(name);
+        if(variableEntity != null) {
+            return variableEntity;
+        } else {
+            if(parent != null) {
+                return parent.getRecursiveVariable(name);
+            } else {
+                return null;
+            }
+        }
+    }
+
     public void putFunction(String name, FunctionEntity function) {
         functions.put(name, function);
     }
@@ -44,5 +57,7 @@ public class Scope {
     public FunctionEntity getFunction(String name) {
         return functions.get(name);
     }
+
+
 
 }
