@@ -52,7 +52,11 @@ block
     ;
 
 type
-    : (primitiveType | classType) ('['empty']')*
+    : baseType ('['empty']')*
+    ;
+
+baseType
+    : (primitiveType | classType)
     ;
 
 primitiveType
@@ -121,7 +125,7 @@ expression
     ;
 
 creator
-    : (primitiveType | classType) (('[' expression ']')*('['empty']')*| ('(' ')'))
+    : baseType (('[' expression ']')*('['empty']')*| ('(' ')'))
     ;
 
 funcCall

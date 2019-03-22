@@ -5,9 +5,19 @@ import Type.Type;
 public class VariableEntity extends Entity {
     private Type type;
 
-    public VariableEntity(Type type, String name) {
+    public VariableEntity() {}
+
+    public void setType(Type type) {
         this.type = type;
-        this.name = name;
     }
+
+    public Type getType() {
+        return type;
+    }
+
+    //    public VariableEntity(Type type, String name) {
+//        this.type = type;
+//        this.name = name;
+//    }
 
 }

@@ -8,13 +8,13 @@ public class ClassDeclaration extends Declaration {
     private FunctionDeclaration constructor;
     private List<VariableDeclaration> fields;
     private List<FunctionDeclaration> methods;
-
     private ClassEntity classEntity;
 
     public ClassDeclaration() {
         constructor = null;
         fields = null;
         methods = null;
+        classEntity = null;
     }
 
     public void setConstructor(FunctionDeclaration constructor) {
@@ -39,6 +39,14 @@ public class ClassDeclaration extends Declaration {
 
     public List<FunctionDeclaration> getMethods() {
         return methods;
+    }
+
+    public void setClassEntity(ClassEntity classEntity) {
+        this.classEntity = classEntity;
+    }
+
+    public ClassEntity getClassEntity() {
+        return classEntity;
     }
 
     @Override

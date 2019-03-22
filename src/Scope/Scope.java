@@ -25,6 +25,10 @@ public class Scope {
         this.children = new LinkedList<Scope>();
     }
 
+    public Scope getParent() {
+        return parent;
+    }
+
     public void putVariable(String name, VariableEntity variable) {
         variables.put(name, variable);
     }

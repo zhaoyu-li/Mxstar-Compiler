@@ -89,6 +89,12 @@ public interface MxstarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitType(MxstarParser.TypeContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MxstarParser#baseType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBaseType(MxstarParser.BaseTypeContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MxstarParser#primitiveType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

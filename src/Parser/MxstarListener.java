@@ -138,6 +138,16 @@ public interface MxstarListener extends ParseTreeListener {
 	 */
 	void exitType(MxstarParser.TypeContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MxstarParser#baseType}.
+	 * @param ctx the parse tree
+	 */
+	void enterBaseType(MxstarParser.BaseTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MxstarParser#baseType}.
+	 * @param ctx the parse tree
+	 */
+	void exitBaseType(MxstarParser.BaseTypeContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MxstarParser#primitiveType}.
 	 * @param ctx the parse tree
 	 */

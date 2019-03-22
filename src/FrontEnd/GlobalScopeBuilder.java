@@ -3,16 +3,32 @@ package FrontEnd;
 import Scope.*;
 import Type.*;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
-public class GlobalScopeChecker {
+public class GlobalScopeBuilder {
+    private Map<String, ClassEntity> classes;
     private Scope scope;
     private ClassEntity stringEntity;
 
-    public GlobalScopeChecker() {
+    public GlobalScopeBuilder() {
         scope = new Scope();
         stringEntity = new ClassEntity();
+        classes = new HashMap<String, ClassEntity>();
+        putGlobalBuildinFunction();
+        putStringBuildinFunction();
+        classes.put("string", stringEntity);
+    }
+
+    public Scope getScope() {
+        return scope;
+    }
+
+    public void putClassEntity(String name, ClassEntity classEntity) {
+        classes.put(name, classEntity);
+    }
+
+    public ClassEntity getClassEntity(String name) {
+        return classes.get(name);
     }
 
     private FunctionEntity globalPrintFunction() {

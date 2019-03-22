@@ -1,9 +1,7 @@
 package FrontEnd;
 
 import AST.*;
-import Parser.MxstarParser;
 import Parser.MxstarBaseVisitor;
-import FrontEnd.PaserErrorListener;
 import Type.Type;
 import Utility.SemanticError;
 
@@ -56,7 +54,6 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
         classDeclaration.setName(ctx.IDENTIFIER().getSymbol().getText());
         List<VariableDeclaration> fields = new LinkedList<>();
         List<FunctionDeclaration> methods = new LinkedList<>();
-        classDeclaration.setLocation(ctx);
         if(!ctx.constructorDeclaration().isEmpty()){
             classDeclaration.setConstructor(visitConstructorDeclaration(ctx.constructorDeclaration(0)));
             for(int i = 1; i < ctx.constructorDeclaration().size(); i++) {
@@ -69,7 +66,20 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
         for(FunctionDeclarationContext c : ctx.functionDeclaration()) {
             methods.add(visitFunctionDeclaration(c));
         }
+        classDeclaration.setFields(fields);
+        classDeclaration.setMethods(methods);
+        classDeclaration.setLocation(ctx);
         return classDeclaration;
+    }
+
+    @Override
+    public List<VariableDeclaration> visitVariableDeclaration(VariableDeclarationContext ctx) {
+        List<VariableDeclaration> declarations = visitVariableDeclarators(ctx.variableDeclarators());
+        TypeNode typeNode = visitType(ctx.type());
+        for(VariableDeclaration declaration : declarations) {
+            declaration.setType(typeNode);
+        }
+        return declarations;
     }
 
     @Override
@@ -78,7 +88,77 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
         constructor.setName(ctx.IDENTIFIER().getSymbol().getText());
         constructor.setParameters(visitParameterList(ctx.parameterList()));
         constructor.setBody(visitStatementList(ctx.block().statementList()));
+        constructor.setLocation(ctx);
         return constructor;
+    }
+
+    @Override
+    public List<VariableDeclaration> visitFieldDeclaration(FieldDeclarationContext ctx) {
+        List<VariableDeclaration> fields = visitVariableDeclarators(ctx.variableDeclarators());
+        TypeNode typeNode = visitType(ctx.type());
+        for(VariableDeclaration declaration : fields) {
+            declaration.setType(typeNode);
+        }
+        return fields;
+    }
+
+    @Override
+    public List<VariableDeclaration> visitVariableDeclarators(VariableDeclaratorsContext ctx) {
+        List<VariableDeclaration> declarations = new LinkedList<>();
+        for(VariableDeclaratorContext c : ctx.variableDeclarator()) {
+            declarations.add(visitVariableDeclarator(c));
+        }
+        return declarations;
+    }
+
+    @Override
+    public VariableDeclaration visitVariableDeclarator(VariableDeclaratorContext ctx) {
+        VariableDeclaration declaration = new VariableDeclaration();
+        declaration.setName(ctx.IDENTIFIER().getSymbol().getText());
+        if(ctx.expression() != null) {
+            declaration.setInit((Expression) ctx.expression().accept(this));
+        }
+        declaration.setLocation(ctx);
+        return declaration;
+    }
+
+    @Override
+    public List<VariableDeclaration> visitParameterList(ParameterListContext ctx) {
+        List<VariableDeclaration> parameterList = new LinkedList<>();
+        if(ctx != null) {
+            for(ParameterContext c : ctx.parameter()) {
+                parameterList.add((VariableDeclaration) c.accept(this));
+            }
+        }
+        return parameterList;
+    }
+
+    @Override
+    public TypeNode visitType(TypeContext ctx) {
+        if(ctx.empty().isEmpty()) {
+            return visitBaseType(ctx.baseType());
+        } else {
+            return new ArrayTypeNode(visitBaseType(ctx.baseType()), ctx.empty().size());
+        }
+    }
+
+    @Override
+    public TypeNode visitBaseType(BaseTypeContext ctx) {
+        if(ctx.primitiveType() != null) {
+            return visitPrimitiveType(ctx.primitiveType());
+        } else {
+            return visitClassType(ctx.classType());
+        }
+    }
+
+    @Override
+    public TypeNode visitPrimitiveType(PrimitiveTypeContext ctx) {
+        return new TypeNode(new Type(ctx.token.getText()), new Location(ctx));
+    }
+
+    @Override
+    public TypeNode visitClassType(ClassTypeContext ctx) {
+        return new TypeNode(new Type(ctx.token.getText()), new Location(ctx));
     }
 
     @Override
@@ -101,87 +181,10 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
         for(VariableDeclaration declaration : declarations) {
             VarDeclStatement varDeclStatement = new VarDeclStatement();
             varDeclStatement.setDeclaration(declaration);
+            varDeclStatement.setLocation(ctx);
             statements.add(varDeclStatement);
         }
         return statements;
-    }
-
-    @Override
-    public List<VariableDeclaration> visitFieldDeclaration(FieldDeclarationContext ctx) {
-        List<VariableDeclaration> fields = visitVariableDeclarators(ctx.variableDeclarators());
-        TypeNode typeNode = visitType(ctx.type());
-        for(VariableDeclaration declaration : fields) {
-            declaration.setType(typeNode);
-        }
-        return fields;
-    }
-
-    @Override
-    public List<VariableDeclaration> visitVariableDeclarators(VariableDeclaratorsContext ctx) {
-        List<VariableDeclaration> declarations = new LinkedList<>();
-        for(VariableDeclaratorContext c : ctx.variableDeclarator()) {
-            declarations.add(visitVariableDeclarator(c));
-        }
-        return  declarations;
-    }
-
-    @Override
-    public List<VariableDeclaration> visitVariableDeclaration(VariableDeclarationContext ctx) {
-        List<VariableDeclaration> declarations = visitVariableDeclarators(ctx.variableDeclarators());
-        TypeNode typeNode = visitType(ctx.type());
-        for(VariableDeclaration declaration : declarations) {
-            declaration.setType(typeNode);
-        }
-        return declarations;
-    }
-
-    @Override
-    public VariableDeclaration visitVariableDeclarator(VariableDeclaratorContext ctx) {
-        VariableDeclaration declaration = new VariableDeclaration();
-        declaration.setName(ctx.IDENTIFIER().getSymbol().getText());
-        declaration.setLocation(ctx);
-        if(ctx.expression() != null) {
-            declaration.setInit((Expression) ctx.expression().accept(this));
-        }
-        return declaration;
-    }
-
-    @Override
-    public List<VariableDeclaration> visitParameterList(ParameterListContext ctx) {
-        List<VariableDeclaration> parameterList = new LinkedList<>();
-        if(ctx != null) {
-            for(ParameterContext c : ctx.parameter()) {
-                parameterList.add((VariableDeclaration) c.accept(this));
-            }
-        }
-        return parameterList;
-    }
-
-    @Override
-    public TypeNode visitType(TypeContext ctx) {
-        if(ctx.empty().isEmpty()) {
-            if(ctx.primitiveType() != null) {
-                return visitPrimitiveType(ctx.primitiveType());
-            } else {
-                return visitClassType(ctx.classType());
-            }
-        } else {
-            if(ctx.primitiveType() != null) {
-                return new ArrayTypeNode(visitPrimitiveType(ctx.primitiveType()), ctx.empty().size());
-            } else {
-                return new ArrayTypeNode(visitClassType(ctx.classType()), ctx.empty().size());
-            }
-        }
-    }
-
-    @Override
-    public TypeNode visitPrimitiveType(PrimitiveTypeContext ctx) {
-        return new TypeNode(new Type(ctx.token.getText()), new Location(ctx));
-    }
-
-    @Override
-    public TypeNode visitClassType(ClassTypeContext ctx) {
-        return new TypeNode(new Type(ctx.token.getText()), new Location(ctx));
     }
 
     @Override
@@ -360,17 +363,14 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
     @Override
     public NewExpression visitCreator(CreatorContext ctx) {
         NewExpression newExpression = new NewExpression();
-        if(ctx.primitiveType() != null) {
-            newExpression.setTypeNode(visitPrimitiveType(ctx.primitiveType()));
-        } else {
-            newExpression.setTypeNode(visitClassType(ctx.classType()));
-        }
+        newExpression.setTypeNode(visitBaseType(ctx.baseType()));
         List<Expression> dimensions = new LinkedList<>();
         if(ctx.expression() != null) {
             for(ExpressionContext c : ctx.expression()) {
                 dimensions.add((Expression) c.accept(this));
             }
         }
+        newExpression.setDimensions(dimensions);
         if(ctx.empty() != null) {
             newExpression.setNumDimension(ctx.empty().size());
         } else {

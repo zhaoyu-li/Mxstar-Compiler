@@ -1,13 +1,82 @@
 package FrontEnd;
 
 import AST.*;
+import Scope.*;
+import Type.Type;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class ScopeBuilder implements ASTVistor {
-    public ScopeBuilder() {}
+    private GlobalScopeBuilder globalScope;
+    private Scope currentScope;
+
+    public ScopeBuilder() {
+        globalScope = new GlobalScopeBuilder();
+        currentScope = globalScope.getScope();
+    }
+
+    private void enterScope(Scope scope) {
+        currentScope = scope;
+    }
+
+    private void exitScope() {
+        currentScope = currentScope.getParent();
+    }
+
+    private Type getType(TypeNode typeNode) {
+        return typeNode.getType();
+    }
+
+    private VariableEntity getVariableEntity (VariableDeclaration variableDeclaration) {
+        VariableEntity variableEntity = new VariableEntity();
+        variableEntity.setType(getType(variableDeclaration.getType()));
+        return variableEntity;
+    }
+
+    private void addClass(ClassDeclaration classDeclaration) {
+        ClassEntity classEntity = new ClassEntity();
+        classEntity.setName(classDeclaration.getName());
+        classEntity.setScope(new Scope(globalScope.getScope()));
+        classDeclaration.setClassEntity(classEntity);
+        globalScope.putClassEntity(classEntity.getName(), classEntity);
+    }
+
+    private void addClassFunction(ClassDeclaration classDeclaration) {
+        ClassEntity classEntity = globalScope.getClassEntity(classDeclaration.getName());
+        enterScope(classEntity.getScope());
+        if(classDeclaration.getConstructor() != null) {
+            addFunction(classDeclaration.getConstructor());
+        }
+        for(FunctionDeclaration functionDeclaration : classDeclaration.getMethods()) {
+            addFunction(functionDeclaration);
+        }
+        exitScope();
+    }
+
+    private void addFunction(FunctionDeclaration functionDeclaration) {
+        FunctionEntity functionEntity = new FunctionEntity();
+        functionEntity.setName(functionDeclaration.getName());
+        functionEntity.setReturnType(getType(functionDeclaration.getReturnType()));
+        List<VariableEntity> parameters = new LinkedList<VariableEntity>();
+        for(VariableDeclaration variableDeclaration : functionDeclaration.getParameters()) {
+            parameters.add(getVariableEntity(variableDeclaration));
+        }
+        functionEntity.setParameters(parameters);
+        currentScope.putFunction(functionEntity.getName(), functionEntity);
+    }
 
     @Override
     public void visit(Program node) {
+        for(ClassDeclaration classDeclaration : node.getClasses()) {
+            addClass(classDeclaration);
+        }
+        for(FunctionDeclaration functionDeclaration : node.getFunctions()) {
+            addFunction(functionDeclaration);
+        }
+
     }
+
     @Override
     public void visit(Declaration node) {
 
