@@ -14,6 +14,7 @@ public class FunctionDeclaration extends Declaration {
         returnType = null;
         parameters = null;
         body = null;
+        functionEntity = null;
     }
 
     public void setFunctionEntity(FunctionEntity functionEntity) {

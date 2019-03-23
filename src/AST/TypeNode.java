@@ -22,6 +22,24 @@ public class TypeNode extends Node{
         return type;
     }
 
+    public boolean isPrimitiveType() {
+        switch (type.getType()) {
+            case INT:
+            case BOOL:
+            case VOID:
+            case STRING:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public boolean isClassType() {
+        return type.getType() == Type.types.CLASS;
+    }
+
+    public boolean isArrayType() {return  type.getType() == Type.types.ARRAY; }
+
     @Override
     public void accept(ASTVistor vistor) {
         vistor.visit(this);

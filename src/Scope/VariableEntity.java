@@ -4,9 +4,11 @@ import Type.Type;
 
 public class VariableEntity extends Entity {
     private Type type;
+    private boolean isGlobal;
 
     public VariableEntity() {
         type = null;
+        isGlobal = false;
     }
 
     public VariableEntity(Type type, String name) {
@@ -22,4 +24,7 @@ public class VariableEntity extends Entity {
         return type;
     }
 
+    public void setGlobal(boolean global) {
+        isGlobal = global;
+    }
 }

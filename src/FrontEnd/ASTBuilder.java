@@ -83,6 +83,7 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
     @Override
     public FunctionDeclaration visitConstructorDeclaration(ConstructorDeclarationContext ctx) {
         FunctionDeclaration constructor = new FunctionDeclaration();
+        constructor.setReturnType(new TypeNode());
         constructor.setName(ctx.IDENTIFIER().getSymbol().getText());
         constructor.setParameters(visitParameterList(ctx.parameterList()));
         constructor.setBody(visitStatementList(ctx.block().statementList()));
@@ -156,7 +157,9 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
 
     @Override
     public TypeNode visitClassType(ClassTypeContext ctx) {
-        return new TypeNode(new Type(ctx.token.getText()), new Location(ctx));
+        Type type = new Type("class");
+        type.setTypeName(ctx.token.getText());
+        return new TypeNode(type, new Location(ctx));
     }
 
     @Override

@@ -3,6 +3,7 @@ package FrontEnd;
 import AST.*;
 import Scope.*;
 import Type.Type;
+import Utility.SemanticError;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,23 +27,37 @@ public class ScopeBuilder implements ASTVistor {
         curScope = curScope.getParent();
     }
 
-    private Type getType(TypeNode typeNode) {
-        return typeNode.getType();
+    private Type resolveType(TypeNode typeNode) {
+        if(typeNode.isPrimitiveType()) {
+            return typeNode.getType();
+        } else if(typeNode.isArrayType()) {
+            return resolveType(((ArrayTypeNode) typeNode).getBaseType());
+        } else if(typeNode.isClassType()) {
+            if(globalScope.getClassEntity(typeNode.getType().getTypeName()) == null) {
+                return null;
+            } else {
+                return typeNode.getType();
+            }
+        } else {
+            return null;
+        }
     }
 
     private VariableEntity getVariableEntity (VariableDeclaration variableDeclaration) {
         VariableEntity variableEntity = new VariableEntity();
-        variableEntity.setType(getType(variableDeclaration.getType()));
+        variableEntity.setType(variableDeclaration.getType().getType());
+        variableEntity.setName(variableDeclaration.getName());
         return variableEntity;
     }
 
     @Override
     public void visit(Program node) {
-        for(FunctionDeclaration functionDeclaration : node.getFunctions()) {
-            visit(functionDeclaration);
-        }
+        //ClassDeclaration comes first
         for(ClassDeclaration classDeclaration : node.getClasses()) {
             visit(classDeclaration);
+        }
+        for(FunctionDeclaration functionDeclaration : node.getFunctions()) {
+            visit(functionDeclaration);
         }
         for(VariableDeclaration variableDeclaration : node.getVariables()) {
             visit(variableDeclaration);
@@ -58,16 +73,19 @@ public class ScopeBuilder implements ASTVistor {
     public void visit(FunctionDeclaration node) {
         FunctionEntity functionEntity = new FunctionEntity();
         functionEntity.setName(node.getName());
-        functionEntity.setReturnType(getType(node.getReturnType()));
+        functionEntity.setReturnType(node.getReturnType().getType());
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
         for(VariableDeclaration variableDeclaration : node.getParameters()) {
             parameters.add(getVariableEntity(variableDeclaration));
         }
         functionEntity.setParameters(parameters);
-
         node.setFunctionEntity(functionEntity);
 
-        curScope.putFunction(functionEntity.getName(), functionEntity);
+        if(curScope.getFunction(functionEntity.getName()) != null) {
+            throw new SemanticError(node.getLocation(), "Duplicate FunctionDeclaration");
+        } else {
+            curScope.putFunction(functionEntity.getName(), functionEntity);
+        }
     }
 
     @Override
@@ -78,17 +96,19 @@ public class ScopeBuilder implements ASTVistor {
         node.setClassEntity(classEntity);
 
         enterScope(classEntity.getScope());
-
         if(node.getConstructor() != null) {
             visit(node.getConstructor());
         }
         for(FunctionDeclaration functionDeclaration : node.getMethods()) {
             visit(functionDeclaration);
         }
-
         exitScope();
 
-        globalScope.putClassEntity(classEntity.getName(), classEntity);
+        if(globalScope.getClassEntity(node.getName()) != null) {
+            throw new SemanticError(node.getLocation(), "Duplicate ClassDeclaration");
+        } else {
+            globalScope.putClassEntity(classEntity.getName(), classEntity);
+        }
     }
 
     @Override
@@ -97,8 +117,18 @@ public class ScopeBuilder implements ASTVistor {
             node.getInit().accept(this);
         }
         VariableEntity variableEntity = new VariableEntity();
-        variableEntity.setType(getType(node.getType()));
-        curScope.putVariable(node.getName(), variableEntity);
+        variableEntity.setType(resolveType(node.getType()));
+        variableEntity.setName(node.getName());
+
+        if(curScope == globalScope.getScope()) {
+            variableEntity.setGlobal(true);
+        }
+
+        if(curScope.getVariable(node.getName()) != null) {
+            throw new SemanticError(node.getLocation(), "Duplicate VariableDeclaration");
+        } else {
+            curScope.putVariable(variableEntity.getName(), variableEntity);
+        }
     }
 
     @Override
@@ -119,6 +149,7 @@ public class ScopeBuilder implements ASTVistor {
     @Override
     public void visit(IfStatement node) {
         node.getCondition().accept(this);
+        node.getThenStatement().accept(this);
         if(node.getElseStatement() != null) {
             node.getElseStatement().accept(this);
         }
@@ -213,7 +244,11 @@ public class ScopeBuilder implements ASTVistor {
 
     @Override
     public void visit(Identifier node) {
-        node.setVariableEntity(curScope.getRecursiveVariable(node.getName()));
+        if(curScope.getRecursiveVariable(node.getName()) == null) {
+            throw new SemanticError(node.getLocation(), "Cannot find identifier");
+        } else {
+            node.setVariableEntity(curScope.getRecursiveVariable(node.getName()));
+        }
         node.setType(node.getVariableEntity().getType());
     }
 
@@ -238,7 +273,11 @@ public class ScopeBuilder implements ASTVistor {
 
     @Override
     public void visit(FuncCallExpression node) {
-        node.setFunctionEntity(curScope.getRecursiveFunction(node.getName().getName()));
+        if(curScope.getRecursiveFunction(node.getName().getName()) == null) {
+            throw new SemanticError(node.getLocation(), "Cannot find function");
+        } else {
+            node.setFunctionEntity(curScope.getRecursiveFunction(node.getName().getName()));
+        }
         for(Expression expression : node.getArguments()) {
             expression.accept(this);
         }
@@ -253,7 +292,7 @@ public class ScopeBuilder implements ASTVistor {
                 expression.accept(this);
             }
         }
-        node.setType(node.getType());
+        node.setType(resolveType(node.getTypeNode()));
     }
 
     @Override

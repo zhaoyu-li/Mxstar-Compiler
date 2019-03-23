@@ -3,22 +3,24 @@ package AST;
 import Type.Type;
 
 public class ArrayTypeNode extends TypeNode {
+    private TypeNode baseType;
     private int dimension;
 
     public ArrayTypeNode() {
+        type.setType(Type.types.ARRAY);
+        baseType = new TypeNode();
         dimension = 1;
     }
 
-    public ArrayTypeNode(Type type, Location location, int dimension) {
-        this.type = type;
-        this.location = location;
+    public ArrayTypeNode(TypeNode typeNode, int dimension) {
+        type.setType(Type.types.ARRAY);
+        location = typeNode.getLocation();
+        baseType = typeNode;
         this.dimension = dimension;
     }
 
-    public ArrayTypeNode(TypeNode typeNode, int dimension) {
-        this.type = typeNode.type;
-        this.location = typeNode.getLocation();
-        this.dimension = dimension;
+    public TypeNode getBaseType() {
+        return baseType;
     }
 
     public void setDimension(int dimension) {
