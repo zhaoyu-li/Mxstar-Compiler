@@ -15,6 +15,7 @@ public class ScopeBuilder implements ASTVistor {
     public ScopeBuilder() {
         globalScope = new GlobalScopeBuilder();
         curScope = globalScope.getScope();
+        curFunctionEntity = null;
     }
 
     private void enterScope(Scope scope) {
