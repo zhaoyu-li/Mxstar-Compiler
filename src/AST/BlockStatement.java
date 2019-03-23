@@ -1,5 +1,7 @@
 package AST;
 
+import Scope.Scope;
+
 import java.util.LinkedList;
 import java.util.List;
 

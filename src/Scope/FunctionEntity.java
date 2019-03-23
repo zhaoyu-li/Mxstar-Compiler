@@ -10,12 +10,14 @@ public class FunctionEntity extends Entity {
     private List<VariableEntity> parameters;
     private Map<String, VariableEntity> variables;
     private Map<String, VariableEntity> globalVariables;
+    private Scope scope;
 
     public FunctionEntity() {
         returnType = null;
         parameters = null;
         variables = null;
         globalVariables = null;
+        scope = null;
     }
 
     public void setReturnType(Type returnType) {
@@ -48,5 +50,13 @@ public class FunctionEntity extends Entity {
 
     public Map<String, VariableEntity> getGlobalVariables() {
         return globalVariables;
+    }
+
+    public void setScope(Scope scope) {
+        this.scope = scope;
+    }
+
+    public Scope getScope() {
+        return scope;
     }
 }

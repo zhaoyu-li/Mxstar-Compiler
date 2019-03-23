@@ -231,13 +231,12 @@ public class GlobalScopeBuilder extends BaseScopeBuilder {
     @Override
     public void visit(VariableDeclaration node) {
         VariableEntity variableEntity = new VariableEntity();
+        checkInitType(node);
         variableEntity.setType(resolveType(node.getType()));
         variableEntity.setName(node.getName());
-
         if(curScope == globalScope) {
             variableEntity.setGlobal(true);
         }
-
         if(curScope.getVariable(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "Duplicate VariableDeclaration");
         } else {

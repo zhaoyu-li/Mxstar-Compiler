@@ -50,9 +50,61 @@ public class ScopeBuilder implements ASTVistor {
         return variableEntity;
     }
 
+    private void firstVisit(FunctionDeclaration node) {
+        if(curScope.getFunction(node.getName()) != null) {
+            throw new SemanticError(node.getLocation(), "Duplicate FunctionDeclaration");
+        }
+        if(globalScope.getClassEntity(node.getName()) != null) {
+            throw new SemanticError(node.getLocation(), "The name of function conflicts with a class");
+        }
+        FunctionEntity functionEntity = new FunctionEntity();
+        functionEntity.setName(node.getName());
+        functionEntity.setReturnType(node.getReturnType().getType());
+        List<VariableEntity> parameters = new LinkedList<VariableEntity>();
+        for(VariableDeclaration variableDeclaration : node.getParameters()) {
+            parameters.add(getVariableEntity(variableDeclaration));
+        }
+        functionEntity.setParameters(parameters);
+        node.setFunctionEntity(functionEntity);
+
+        curScope.putFunction(functionEntity.getName(), functionEntity);
+
+    }
+
+    private void firstVisit(ClassDeclaration node) {
+        if(globalScope.getClassEntity(node.getName()) != null) {
+            throw new SemanticError(node.getLocation(), "Duplicate ClassDeclaration");
+        }
+        if(globalScope.getScope().getFunction(node.getName()) != null) {
+            throw new SemanticError(node.getLocation(), "The name of class conflicts with a function");
+        }
+
+        ClassEntity classEntity = new ClassEntity();
+        classEntity.setName(node.getName());
+        classEntity.setScope(new Scope(globalScope.getScope()));
+        node.setClassEntity(classEntity);
+
+        enterScope(classEntity.getScope());
+        if(node.getConstructor() != null) {
+            firstVisit(node.getConstructor());
+        }
+        for(FunctionDeclaration functionDeclaration : node.getMethods()) {
+            firstVisit(functionDeclaration);
+        }
+        exitScope();
+
+        globalScope.putClassEntity(classEntity.getName(), classEntity);
+
+    }
+
     @Override
     public void visit(Program node) {
-        //ClassDeclaration comes first
+        for(ClassDeclaration classDeclaration : node.getClasses()) {
+            firstVisit(classDeclaration);
+        }
+        for(FunctionDeclaration functionDeclaration : node.getFunctions()) {
+            firstVisit(functionDeclaration);
+        }
         for(ClassDeclaration classDeclaration : node.getClasses()) {
             visit(classDeclaration);
         }
@@ -71,21 +123,18 @@ public class ScopeBuilder implements ASTVistor {
 
     @Override
     public void visit(FunctionDeclaration node) {
-        FunctionEntity functionEntity = new FunctionEntity();
-        functionEntity.setName(node.getName());
-        functionEntity.setReturnType(node.getReturnType().getType());
-        List<VariableEntity> parameters = new LinkedList<VariableEntity>();
+        FunctionEntity functionEntity = curScope.getFunction(node.getName());
+        curFunctionEntity = functionEntity;
+        functionEntity.setScope(new Scope(curScope));
+        enterScope(functionEntity.getScope());
         for(VariableDeclaration variableDeclaration : node.getParameters()) {
-            parameters.add(getVariableEntity(variableDeclaration));
+            visit(variableDeclaration);
         }
-        functionEntity.setParameters(parameters);
-        node.setFunctionEntity(functionEntity);
-
-        if(curScope.getFunction(functionEntity.getName()) != null) {
-            throw new SemanticError(node.getLocation(), "Duplicate FunctionDeclaration");
-        } else {
-            curScope.putFunction(functionEntity.getName(), functionEntity);
+        for(Statement statement : node.getBody()) {
+            statement.accept(this);
         }
+        exitScope();
+        curFunctionEntity = null;
     }
 
     @Override
