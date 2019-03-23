@@ -58,6 +58,19 @@ public class Scope {
         return functions.get(name);
     }
 
+    public FunctionEntity getRecursiveFunction(String name) {
+        FunctionEntity functionEntity = functions.get(name);
+        if(functionEntity != null) {
+            return functionEntity;
+        } else {
+            if(parent != null) {
+                return parent.getRecursiveFunction(name);
+            } else {
+                return null;
+            }
+        }
+    }
+
 
 
 }

@@ -141,12 +141,13 @@ public class ASTPrinter implements ASTVistor {
         appendNewLine("IfStatement: " + node.getLocation().toString());
         indent();
         node.getCondition().accept(this);
-        unindent();
+        indent();
+        node.getThenStatement().accept(this);
         if(node.getElseStatement() != null) {
-            indent();
             node.getElseStatement().accept(this);
-            unindent();
         }
+        unindent();
+        unindent();
     }
 
     @Override

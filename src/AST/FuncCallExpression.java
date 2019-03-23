@@ -7,13 +7,12 @@ import java.util.List;
 public class FuncCallExpression extends Expression {
     private Identifier name;
     private List<Expression> arguments;
-
     private FunctionEntity functionEntity;
 
     public FuncCallExpression() {
         name = null;
         arguments = null;
-
+        functionEntity = null;
     }
 
     public void setName(String identifiername) {
@@ -30,6 +29,14 @@ public class FuncCallExpression extends Expression {
 
     public List<Expression> getArguments() {
         return arguments;
+    }
+
+    public void setFunctionEntity(FunctionEntity functionEntity) {
+        this.functionEntity = functionEntity;
+    }
+
+    public FunctionEntity getFunctionEntity() {
+        return functionEntity;
     }
 
     @Override

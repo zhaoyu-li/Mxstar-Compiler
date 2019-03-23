@@ -212,15 +212,20 @@ public class ScopeBuilder implements ASTVistor {
 
     @Override
     public void visit(Identifier node) {
-        VariableEntity variableEntity = curScope.getRecursiveVariable(node.getName());
-        node.setVariableEntity(variableEntity);
-        node.setType(variableEntity.getType());
+        node.setVariableEntity(curScope.getRecursiveVariable(node.getName()));
+        node.setType(node.getVariableEntity().getType());
     }
 
     @Override
     public void visit(MemberExpression node) {
         node.getExpr().accept(this);
-
+        if(node.getMember() != null) {
+            visit(node.getMember());
+            node.setType(node.getMember().getType());
+        } else {
+            visit(node.getFuncCall());
+            node.setType(node.getFuncCall().getType());
+        }
     }
 
     @Override
@@ -232,6 +237,11 @@ public class ScopeBuilder implements ASTVistor {
 
     @Override
     public void visit(FuncCallExpression node) {
+        node.setFunctionEntity(curScope.getRecursiveFunction(node.getName().getName()));
+        for(Expression expression : node.getArguments()) {
+            expression.accept(this);
+        }
+        node.setType(node.getFunctionEntity().getReturnType());
 
     }
 

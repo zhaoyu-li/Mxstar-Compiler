@@ -19,8 +19,8 @@ public class MemberExpression extends Expression {
         return expr;
     }
 
-    public void setMember (String membername) {
-        this.member = new Identifier(membername);
+    public void setMember(Identifier member) {
+        this.member = member;
     }
 
     public Identifier getMember() {

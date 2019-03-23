@@ -23,7 +23,15 @@ public class FunctionEntity extends Entity {
         this.returnType = returnType;
     }
 
+    public Type getReturnType() {
+        return returnType;
+    }
+
     public void setParameters(List<VariableEntity> parameters) {
         this.parameters = parameters;
+    }
+
+    public List<VariableEntity> getParameters() {
+        return parameters;
     }
 }

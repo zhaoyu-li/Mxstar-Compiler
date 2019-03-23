@@ -30,8 +30,6 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
                 program.add(visitClassDeclaration(ctx.classDeclaration()));
             } else if(ctx.variableDeclaration() != null) {
                 program.addAll(visitVariableDeclaration(ctx.variableDeclaration()));
-            } else {
-                throw new SemanticError(new Location(ctx), "Invalid global-declaration");
             }
         }
         return program;
@@ -191,7 +189,10 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
     public IfStatement visitIfStatement(IfStatementContext ctx) {
         IfStatement ifStatement = new IfStatement();
         ifStatement.setCondition((Expression) ctx.expression().accept(this));
-        ifStatement.setElseStatement((Statement) ctx.statement(0).accept(this));
+        ifStatement.setThenStatement((Statement) ctx.statement(0).accept(this));
+        if(ctx.statement(1) != null) {
+            ifStatement.setElseStatement((Statement) ctx.statement(1).accept(this));
+        }
         ifStatement.setLocation(ctx);
         return ifStatement;
     }
@@ -208,9 +209,15 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
     @Override
     public ForStatement visitForStatement(ForStatementContext ctx) {
         ForStatement forStatement = new ForStatement();
-        forStatement.setInit((Expression) ctx.forInit.accept(this));
-        forStatement.setCondition((Expression) ctx.forCondition.accept(this));
-        forStatement.setUpdate((Expression) ctx.forUpdate.accept(this));
+        if(ctx.forInit != null) {
+            forStatement.setInit((Expression) ctx.forInit.accept(this));
+        }
+        if(ctx.forCondition != null) {
+            forStatement.setCondition((Expression) ctx.forCondition.accept(this));
+        }
+        if(ctx.forUpdate != null) {
+            forStatement.setUpdate((Expression) ctx.forUpdate.accept(this));
+        }
         forStatement.setBody((Statement) ctx.statement().accept(this));
         forStatement.setLocation(ctx);
         return forStatement;
@@ -233,7 +240,9 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
     @Override
     public ReturnStatement visitReturnStatement(ReturnStatementContext ctx) {
         ReturnStatement returnStatement = new ReturnStatement();
-        returnStatement.setRet((Expression) ctx.expression().accept(this));
+        if(ctx.expression() != null) {
+            returnStatement.setRet((Expression) ctx.expression().accept(this));
+        }
         returnStatement.setLocation(ctx);
         return returnStatement;
     }
@@ -289,7 +298,7 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
                     identifier.setLocation(ctx);
                     return identifier;
                 default:
-                    throw new SemanticError(new Location(ctx), "Invalid primary expression");
+                    throw new SemanticError(new Location(ctx), "Invalid PrimaryExpression");
             }
         }
     }
@@ -300,7 +309,7 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
         MemberExpression memberExpression = new MemberExpression();
         memberExpression.setExpr((Expression) ctx.expression().accept(this));
         if(ctx.IDENTIFIER() != null) {
-            memberExpression.setMember(ctx.IDENTIFIER().getSymbol().getText());
+            memberExpression.setMember(new Identifier(ctx.IDENTIFIER().getSymbol().getText()));
         } else {
             memberExpression.setFuncCall(visitFuncCall(ctx.funcCall()));
         }
