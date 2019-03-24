@@ -8,12 +8,12 @@ public class Identifier extends Expression {
 
     public Identifier() {
         name = null;
-        variableEntity = null;
+        variableEntity = new VariableEntity();
     }
 
     public Identifier(String name) {
         this.name = name;
-        variableEntity = null;
+        variableEntity = new VariableEntity();
     }
 
     public void setVariableEntity(VariableEntity variableEntity) {

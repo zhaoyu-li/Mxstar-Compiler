@@ -5,6 +5,7 @@ import Scope.*;;
 import Type.Type;
 import Utility.SemanticError;
 
+import java.sql.Types;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -72,9 +73,9 @@ public class SemanticChecker implements ASTVistor {
     public void visit(VariableDeclaration node) {
         if (node.getInit() != null) {
             node.getInit().accept(this);
-        }
-        if(node.getType().getType().getType() != node.getInit().getType().getType()) {
-            throw new SemanticError(node.getLocation(), "Invalid type init");
+            if(node.getType().getType().getType() != node.getInit().getType().getType()) {
+                throw new SemanticError(node.getLocation(), "Invalid type init");
+            }
         }
     }
 
@@ -120,6 +121,9 @@ public class SemanticChecker implements ASTVistor {
             node.getInit().accept(this);
         }
         if(node.getCondition() != null) {
+            if(node.getCondition().getType().getType() != Type.types.BOOL) {
+                throw new SemanticError(node.getLocation(), "Invalid condition");
+            }
             node.getCondition().accept(this);
         }
         if(node.getUpdate() != null) {

@@ -2,6 +2,8 @@ package Scope;
 
 import Type.Type;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,11 +15,11 @@ public class FunctionEntity extends Entity {
     private Scope scope;
 
     public FunctionEntity() {
-        returnType = null;
-        parameters = null;
-        variables = null;
-        globalVariables = null;
-        scope = null;
+        returnType = new Type();
+        parameters = new LinkedList<VariableEntity>();
+        variables = new HashMap<String, VariableEntity>();
+        globalVariables = new HashMap<String, VariableEntity>();
+        scope = new Scope();
     }
 
     public void setReturnType(Type returnType) {

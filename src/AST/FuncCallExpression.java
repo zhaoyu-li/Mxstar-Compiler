@@ -11,9 +11,9 @@ public class FuncCallExpression extends Expression {
     private FunctionEntity functionEntity;
 
     public FuncCallExpression() {
-        name = null;
+        name = new Identifier();
         arguments = new LinkedList<>();
-        functionEntity = null;
+        functionEntity = new FunctionEntity();
     }
 
     public void setName(String identifiername) {

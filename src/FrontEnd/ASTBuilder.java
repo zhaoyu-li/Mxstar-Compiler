@@ -322,8 +322,10 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
         memberExpression.setExpr((Expression) ctx.expression().accept(this));
         if(ctx.IDENTIFIER() != null) {
             memberExpression.setMember(new Identifier(ctx.IDENTIFIER().getSymbol().getText()));
+            memberExpression.setType(memberExpression.getMember().getType());
         } else {
             memberExpression.setFuncCall(visitFuncCall(ctx.funcCall()));
+            memberExpression.setType(memberExpression.getFuncCall().getFunctionEntity().getReturnType());
         }
         memberExpression.setLocation(ctx);
         return memberExpression;
