@@ -401,7 +401,7 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
         FuncCallExpression funcCallExpression = new FuncCallExpression();
         funcCallExpression.setName(ctx.IDENTIFIER().getSymbol().getText());
         List<Expression> arguments = new LinkedList<>();
-        if(ctx.expressionList().expression() != null) {
+        if(ctx.expressionList() != null) {
             for(ExpressionContext c : ctx.expressionList().expression()) {
                 arguments.add((Expression) c.accept(this));
             }

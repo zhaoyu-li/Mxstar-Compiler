@@ -2,6 +2,7 @@ package AST;
 
 import Scope.ClassEntity;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class ClassDeclaration extends Declaration {
@@ -12,8 +13,8 @@ public class ClassDeclaration extends Declaration {
 
     public ClassDeclaration() {
         constructor = null;
-        fields = null;
-        methods = null;
+        fields = new LinkedList<>();
+        methods = new LinkedList<>();
         classEntity = null;
     }
 

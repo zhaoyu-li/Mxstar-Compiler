@@ -2,6 +2,7 @@ package AST;
 
 import Scope.FunctionEntity;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class FuncCallExpression extends Expression {
@@ -11,7 +12,7 @@ public class FuncCallExpression extends Expression {
 
     public FuncCallExpression() {
         name = null;
-        arguments = null;
+        arguments = new LinkedList<>();
         functionEntity = null;
     }
 

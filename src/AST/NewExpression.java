@@ -1,5 +1,6 @@
 package AST;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class NewExpression extends Expression {
@@ -9,7 +10,7 @@ public class NewExpression extends Expression {
 
     public NewExpression() {
         typeNode = null;
-        dimensions = null;
+        dimensions = new LinkedList<>();
         numDimension = 0;
     }
 

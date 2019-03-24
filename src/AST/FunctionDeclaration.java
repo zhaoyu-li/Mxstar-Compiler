@@ -2,6 +2,7 @@ package AST;
 
 import Scope.FunctionEntity;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class FunctionDeclaration extends Declaration {
@@ -12,8 +13,8 @@ public class FunctionDeclaration extends Declaration {
 
     public FunctionDeclaration() {
         returnType = null;
-        parameters = null;
-        body = null;
+        parameters = new LinkedList<>();
+        body = new LinkedList<>();
         functionEntity = null;
     }
 

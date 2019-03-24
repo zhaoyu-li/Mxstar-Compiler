@@ -41,7 +41,9 @@ public class Main {
         ASTBuilder astBuilder = new ASTBuilder();
         astBuilder.visit(tree);
         Program program = astBuilder.getProgram();
+
         ASTPrinter astPrinter = new ASTPrinter();
+
         astPrinter.visit(program);
         //astPrinter.print();
         ScopeBuilder scopeBuilder = new ScopeBuilder();
