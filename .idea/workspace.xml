@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5b70593b-d050-4773-9af7-d0e2532db099" name="Default Changelist" comment="bash fix">
+    <list default="true" id="5b70593b-d050-4773-9af7-d0e2532db099" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/ClassDeclaration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ClassDeclaration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/FuncCallExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/FuncCallExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/FunctionDeclaration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/FunctionDeclaration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/Identifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/Identifier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/NewExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/NewExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FrontEnd/ASTBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FrontEnd/ASTBuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Scope/FunctionEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scope/FunctionEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Type/ClassType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Type/ClassType.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,21 +17,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="335" column="34" selection-start-line="335" selection-start-column="34" selection-end-line="335" selection-end-column="34" />
+            <state relative-caret-position="90">
+              <caret line="5" column="29" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
               <folding>
-                <element signature="imports" expanded="true" />
                 <element signature="e#631#632#0" expanded="true" />
                 <element signature="e#663#664#0" expanded="true" />
                 <element signature="e#988#989#0" expanded="true" />
                 <element signature="e#1023#1024#0" expanded="true" />
                 <element signature="e#874#875#0" expanded="true" />
                 <element signature="e#908#909#0" expanded="true" />
-                <element signature="e#8915#8916#0" expanded="true" />
-                <element signature="e#9027#9028#0" expanded="true" />
-                <element signature="e#9531#9532#0" expanded="true" />
-                <element signature="e#9634#9635#0" expanded="true" />
-                <element signature="e#9735#9736#0" expanded="true" />
+                <element signature="e#8889#8890#0" expanded="true" />
+                <element signature="e#9001#9002#0" expanded="true" />
+                <element signature="e#9505#9506#0" expanded="true" />
+                <element signature="e#9608#9609#0" expanded="true" />
+                <element signature="e#9709#9710#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -59,8 +48,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="236">
-              <caret line="48" selection-start-line="48" selection-end-line="48" />
+            <state relative-caret-position="774">
+              <caret line="43" column="10" selection-start-line="43" selection-start-column="10" selection-end-line="43" selection-end-column="10" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -206,10 +195,10 @@
         <option value="$PROJECT_DIR$/src/AST/TypeNode.java" />
         <option value="$PROJECT_DIR$/src/Type/ClassType.java" />
         <option value="$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java" />
-        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/program.cpp" />
         <option value="$PROJECT_DIR$/src/FrontEnd/ASTBuilder.java" />
         <option value="$PROJECT_DIR$/src/Scope/FunctionEntity.java" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java" />
       </list>
     </option>
@@ -286,7 +275,7 @@
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-listener" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-visitor" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/output-dir" value="C:\Users\apoll\Desktop\Mxstar-Complier\src" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553435934876" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553436223705" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -498,7 +487,21 @@
       <option name="project" value="LOCAL" />
       <updated>1553422189346</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="bash fix">
+      <created>1553435918338</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1553435918338</updated>
+    </task>
+    <task id="LOCAL-00026" summary="bash fix">
+      <created>1553435985953</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1553435985953</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TodoView">
@@ -520,11 +523,11 @@
       <window_info id="UI Designer" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="Favorites" order="5" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="6" visible="true" weight="0.33467203" />
+      <window_info active="true" content_ui="combo" id="Project" order="6" visible="true" weight="0.33467203" />
       <window_info anchor="bottom" id="Messages" order="0" weight="0.3253521" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32621083" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.32253522" />
+      <window_info anchor="bottom" id="Run" order="3" visible="true" weight="0.32253522" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -969,16 +972,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="48" selection-start-line="48" selection-end-line="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AST/Identifier.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-90">
@@ -993,23 +986,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java">
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="335" column="34" selection-start-line="335" selection-start-column="34" selection-end-line="335" selection-end-column="34" />
+        <state relative-caret-position="774">
+          <caret line="43" column="10" selection-start-line="43" selection-start-column="10" selection-end-line="43" selection-end-column="10" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="29" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
+          <folding>
             <element signature="e#631#632#0" expanded="true" />
             <element signature="e#663#664#0" expanded="true" />
             <element signature="e#988#989#0" expanded="true" />
             <element signature="e#1023#1024#0" expanded="true" />
             <element signature="e#874#875#0" expanded="true" />
             <element signature="e#908#909#0" expanded="true" />
-            <element signature="e#8915#8916#0" expanded="true" />
-            <element signature="e#9027#9028#0" expanded="true" />
-            <element signature="e#9531#9532#0" expanded="true" />
-            <element signature="e#9634#9635#0" expanded="true" />
-            <element signature="e#9735#9736#0" expanded="true" />
+            <element signature="e#8889#8890#0" expanded="true" />
+            <element signature="e#9001#9002#0" expanded="true" />
+            <element signature="e#9505#9506#0" expanded="true" />
+            <element signature="e#9608#9609#0" expanded="true" />
+            <element signature="e#9709#9710#0" expanded="true" />
           </folding>
         </state>
       </provider>
