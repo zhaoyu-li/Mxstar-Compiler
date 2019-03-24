@@ -19,9 +19,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        //String inputFile = "test.cpp";
-        //InputStream inputStream = new FileInputStream(inputFile);
-        InputStream inputStream = System.in;
+        String inputFile = "program.cpp";
+        InputStream inputStream = new FileInputStream(inputFile);
         try{
             compile(inputStream);
         } catch (Error error) {
