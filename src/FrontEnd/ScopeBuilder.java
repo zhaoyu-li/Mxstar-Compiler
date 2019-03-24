@@ -94,6 +94,7 @@ public class ScopeBuilder implements ASTVistor {
         for(VariableDeclaration variableDeclaration : node.getFields()) {
             visit(variableDeclaration);
         }
+
         exitScope();
 
         globalScope.putClassEntity(classEntity.getName(), classEntity);

@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
 set -e
 cd "$(dirname "$0")"
-export CCHK="java -classpath ./lib/antlr-4.6-complete.jar:./bin cn.edu.sjtu.acm.compiler2017.demo.Semantic"
-cat > program.txt   # save everything in stdin to program.txt
-$CCHK
+export Mxstar="java -classpath ./lib/antlr-runtime-4.7.2.jar:./bin Mxstar.Mxstar-Compiler"
+cat > program.cpp   # save everything in stdin to astProgram.txt
+$Mxstar
