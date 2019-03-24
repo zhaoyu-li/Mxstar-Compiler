@@ -31,19 +31,9 @@ public class ScopeBuilder implements ASTVistor {
         curScope = curScope.getParent();
     }
 
-    private void exitScope(Scope preScope) {
-        curScope = preScope;
-    }
-
     private Type resolveType(TypeNode typeNode) {
         if(typeNode.isPrimitiveType()) {
-            if(typeNode.getType().getType() != Type.types.STRING) {
-                return typeNode.getType();
-            } else {
-                ClassType classType = new ClassType("string");
-                classType.setClassEntity(globalScope.getClassEntity("string"));
-                return classType;
-            }
+            return typeNode.getType();
         } else if(typeNode.isArrayType()) {
             return resolveType(((ArrayTypeNode) typeNode).getBaseType());
         } else if(typeNode.isClassType()) {
@@ -61,13 +51,7 @@ public class ScopeBuilder implements ASTVistor {
 
     private Type resolveType(Type type) {
         if(type.isPrimitiveType()) {
-            if(type.getType() != Type.types.STRING) {
-                return type;
-            } else {
-                ClassType classType = new ClassType("string");
-                classType.setClassEntity(globalScope.getClassEntity("string"));
-                return classType;
-            }
+            return type;
         } else if(type.isArrayType()) {
             return resolveType(((ArrayType) type).getBaseType());
         } else if(type.isClassType()) {
@@ -313,9 +297,7 @@ public class ScopeBuilder implements ASTVistor {
 
     @Override
     public void visit(StringLiteral node) {
-        ClassType classType = new ClassType("string");
-        classType.setClassEntity(globalScope.getClassEntity("string"));
-        node.setType(classType);
+        node.setType(new Type("string"));
     }
 
     @Override
@@ -331,12 +313,43 @@ public class ScopeBuilder implements ASTVistor {
     @Override
     public void visit(MemberExpression node) {
         node.getExpr().accept(this);
-        if(node.getMember() != null) {
-            visit(node.getMember());
-            node.setType(resolveType(node.getMember().getType()));
+        if(node.getExpr().getType() instanceof ClassType) {
+            ClassEntity classEntity = ((ClassType) node.getExpr().getType()).getClassEntity();
+            if(node.getMember() != null) {
+                if(classEntity.getScope().getVariable(node.getMember().getName()) == null) {
+                    throw new SemanticError(node.getLocation(), "Cannot find member");
+                } else {
+                    node.getMember().setVariableEntity(classEntity.getScope().getVariable(node.getMember().getName()));
+                    node.getMember().setType(node.getMember().getVariableEntity().getType());
+                }
+                node.setType(resolveType(node.getMember().getType()));
+            } else {
+                if(classEntity.getScope().getFunction(node.getFuncCall().getName().getName()) == null) {
+                    throw new SemanticError(node.getLocation(), "Cannot find function");
+                } else {
+                    node.getFuncCall().setFunctionEntity(classEntity.getScope().getFunction(node.getFuncCall().getName().getName()));
+                    for(Expression expression : node.getFuncCall().getArguments()) {
+                        expression.accept(this);
+                    }
+                    node.getFuncCall().setType(resolveType(node.getFuncCall().getFunctionEntity().getReturnType()));
+                }
+                node.setType(node.getFuncCall().getType());
+            }
+        } else if (node.getExpr().getType().getType() == Type.types.STRING) {
+            if(node.getFuncCall() != null) {
+                if(globalScope.getClassEntity("string").getScope().getFunction(node.getFuncCall().getName().getName()) == null) {
+                    throw new SemanticError(node.getLocation(), "Cannot find function");
+                } else {
+                    node.getFuncCall().setFunctionEntity(globalScope.getClassEntity("string").getScope().getFunction(node.getFuncCall().getName().getName()));
+                    for(Expression expression : node.getFuncCall().getArguments()) {
+                        expression.accept(this);
+                    }
+                    node.getFuncCall().setType(resolveType(node.getFuncCall().getFunctionEntity().getReturnType()));
+                }
+                node.setType(node.getFuncCall().getType());
+            }
         } else {
-            visit(node.getFuncCall());
-            node.setType(resolveType(node.getFuncCall().getType()));
+            throw new SemanticError(node.getLocation(), "Invalid MemberExpression");
         }
     }
 
