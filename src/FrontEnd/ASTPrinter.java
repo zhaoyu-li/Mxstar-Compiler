@@ -261,7 +261,11 @@ public class ASTPrinter implements ASTVistor {
         indent();
         node.getExpr().accept(this);
         indent();
-        node.getMember().accept(this);
+        if(node.getMember() != null){
+            node.getMember().accept(this);
+        } else {
+            node.getFuncCall().accept(this);
+        }
         unindent();
         unindent();
     }

@@ -4,7 +4,7 @@ public class ClassEntity extends Entity {
     private Scope scope;
 
     public ClassEntity() {
-        scope = null;
+        scope = new Scope();
     }
 
     public Scope getScope() {

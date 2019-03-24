@@ -133,6 +133,15 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
     }
 
     @Override
+    public VariableDeclaration visitParameter(ParameterContext ctx) {
+        VariableDeclaration variableDeclaration = new VariableDeclaration();
+        variableDeclaration.setType(visitType(ctx.type()));
+        variableDeclaration.setName(ctx.IDENTIFIER().getSymbol().getText());
+        variableDeclaration.setLocation(ctx);
+        return variableDeclaration;
+    }
+
+    @Override
     public TypeNode visitType(TypeContext ctx) {
         if(ctx.empty().isEmpty()) {
             return visitBaseType(ctx.baseType());
