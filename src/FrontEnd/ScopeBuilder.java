@@ -19,6 +19,10 @@ public class ScopeBuilder implements ASTVistor {
         //curFunctionEntity = null;
     }
 
+    public GlobalScopeBuilder getGlobalScope() {
+        return globalScope;
+    }
+
     private void enterScope(Scope scope) {
         curScope = scope;
     }

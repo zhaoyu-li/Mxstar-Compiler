@@ -1,7 +1,5 @@
 import AST.Program;
-import FrontEnd.ASTBuilder;
-import FrontEnd.ASTPrinter;
-import FrontEnd.PaserErrorListener;
+import FrontEnd.*;
 import Parser.MxstarLexer;
 import Parser.MxstarParser;
 import org.antlr.v4.runtime.ANTLRFileStream;
@@ -21,9 +19,9 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String inputFile = "test.cpp";
-        InputStream inputStream = new FileInputStream(inputFile);
-
+        //String inputFile = "test.cpp";
+        //InputStream inputStream = new FileInputStream(inputFile);
+        InputStream inputStream = System.in;
         try{
             compile(inputStream);
         } catch (Error error) {
@@ -45,6 +43,10 @@ public class Main {
         Program program = astBuilder.getProgram();
         ASTPrinter astPrinter = new ASTPrinter();
         astPrinter.visit(program);
-        astPrinter.print();
+        //astPrinter.print();
+        ScopeBuilder scopeBuilder = new ScopeBuilder();
+        scopeBuilder.visit(program);
+        SemanticChecker semanticChecker = new SemanticChecker(scopeBuilder.getGlobalScope());
+        semanticChecker.visit(program);
     }
 }
