@@ -73,7 +73,7 @@ public class SemanticChecker implements ASTVistor {
         if (node.getInit() != null) {
             node.getInit().accept(this);
         }
-        if(!node.getType().getType().equals(node.getInit().getType())) {
+        if(node.getType().getType().getType() != node.getInit().getType().getType()) {
             throw new SemanticError(node.getLocation(), "Invalid type init");
         }
     }

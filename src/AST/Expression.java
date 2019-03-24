@@ -6,7 +6,7 @@ public abstract class Expression extends Node {
     protected Type type;
 
     public Expression() {
-        type = null;
+        type = new Type();
     }
 
     public void setType(Type type) {

@@ -1,17 +1,15 @@
 package Type;
 
 public class ArrayType extends Type {
-    private Type basetype;
-
-    static private ArrayType arraytype = new ArrayType(null);
+    private Type baseType;
 
     public ArrayType(Type basetype) {
         type = types.ARRAY;
-        this.basetype = basetype;
+        this.baseType = basetype;
     }
 
-    public Type getBasetype() {
-        return basetype;
+    public Type getBaseType() {
+        return baseType;
     }
 
 }
