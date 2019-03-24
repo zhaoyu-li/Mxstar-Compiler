@@ -61,6 +61,7 @@ public class ScopeBuilder implements ASTVistor {
         if(globalScope.getClassEntity(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "The name of function conflicts with a class");
         }
+
         FunctionEntity functionEntity = new FunctionEntity();
         functionEntity.setName(node.getName());
         functionEntity.setReturnType(node.getReturnType().getType());
