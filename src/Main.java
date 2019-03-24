@@ -19,9 +19,9 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        String inputFile = "test.cpp";
-        InputStream inputStream = new FileInputStream(inputFile);
-        //InputStream inputStream = System.in;
+        //String inputFile = "test.cpp";
+        //InputStream inputStream = new FileInputStream(inputFile);
+        InputStream inputStream = System.in;
         try{
             compile(inputStream);
         } catch (Error error) {
@@ -44,8 +44,8 @@ public class Main {
 
         ASTPrinter astPrinter = new ASTPrinter();
 
-        astPrinter.visit(program);
-        astPrinter.print();
+        //astPrinter.visit(program);
+        //astPrinter.print();
         ScopeBuilder scopeBuilder = new ScopeBuilder();
         scopeBuilder.visit(program);
         SemanticChecker semanticChecker = new SemanticChecker(scopeBuilder.getGlobalScope());
