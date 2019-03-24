@@ -1,7 +1,5 @@
 package Type;
 
-import java.lang.module.Configuration;
-
 public class ArrayType extends Type {
     private Type basetype;
 

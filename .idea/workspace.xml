@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5b70593b-d050-4773-9af7-d0e2532db099" name="Default Changelist" comment="">
+    <list default="true" id="5b70593b-d050-4773-9af7-d0e2532db099" name="Default Changelist" comment="解体了 version 0.2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.bash" beforeDir="false" afterPath="$PROJECT_DIR$/build.bash" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Type/ArrayType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Type/ArrayType.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,11 +29,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.bash">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="54">
               <caret line="3" column="80" selection-start-line="3" selection-start-column="80" selection-end-line="3" selection-end-column="80" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Type/ArrayType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="13" selection-start-column="13" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -117,7 +126,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/AST/ExprStatement.java" />
         <option value="$PROJECT_DIR$/src/AST/ForStatement.java" />
         <option value="$PROJECT_DIR$/src/AST/IntLiteral.java" />
         <option value="$PROJECT_DIR$/src/AST/NewExpression.java" />
@@ -168,6 +176,7 @@
         <option value="$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/build.bash" />
+        <option value="$PROJECT_DIR$/src/Type/ArrayType.java" />
       </list>
     </option>
   </component>
@@ -195,17 +204,6 @@
             <path>
               <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
               <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="antlr-runtime-4.7.2.jar" type="ab9368bb:PsiFileNode" />
-            </path>
-            <path>
-              <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -213,6 +211,12 @@
               <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="FrontEnd" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Type" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -371,7 +375,21 @@
       <option name="project" value="LOCAL" />
       <updated>1553397237445</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="解体了 version 0.2">
+      <created>1553397572769</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1553397572769</updated>
+    </task>
+    <task id="LOCAL-00015" summary="解体了 version 0.2">
+      <created>1553397820387</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1553397820387</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TodoView">
@@ -424,7 +442,8 @@
     <MESSAGE value="CHEER UP" />
     <MESSAGE value="解体了 version 0.0" />
     <MESSAGE value="解体了 version 0.1" />
-    <option name="LAST_COMMIT_MESSAGE" value="解体了 version 0.1" />
+    <MESSAGE value="解体了 version 0.2" />
+    <option name="LAST_COMMIT_MESSAGE" value="解体了 version 0.2" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/Parser/MxstarListener.java">
@@ -652,13 +671,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Type/ArrayType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Type/BoolType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
@@ -865,6 +877,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="3" column="80" selection-start-line="3" selection-start-column="80" selection-end-line="3" selection-end-column="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Type/ArrayType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="13" selection-start-column="13" selection-end-column="13" />
         </state>
       </provider>
     </entry>
