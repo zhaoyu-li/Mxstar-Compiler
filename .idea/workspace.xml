@@ -4,8 +4,6 @@
     <list default="true" id="5b70593b-d050-4773-9af7-d0e2532db099" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.bash" beforeDir="false" afterPath="$PROJECT_DIR$/build.bash" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/smantic.bash" beforeDir="false" afterPath="$PROJECT_DIR$/smantic.bash" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,61 +17,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1386">
-              <caret line="95" column="9" selection-start-line="95" selection-start-column="9" selection-end-line="95" selection-end-column="9" />
+            <state relative-caret-position="304">
+              <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#530#531#0" expanded="true" />
+                <element signature="e#564#565#0" expanded="true" />
                 <element signature="method#resolveType#0;class#ScopeBuilder#0" />
-                <element signature="e#7363#7364#0" expanded="true" />
-                <element signature="e#7406#7407#0" expanded="true" />
-                <element signature="e#7468#7469#0" expanded="true" />
-                <element signature="e#7518#7519#0" expanded="true" />
-                <element signature="e#7976#7977#0" expanded="true" />
-                <element signature="e#8022#8023#0" expanded="true" />
-                <element signature="e#8079#8080#0" expanded="true" />
-                <element signature="e#8125#8126#0" expanded="true" />
-                <element signature="e#8181#8182#0" expanded="true" />
-                <element signature="e#8226#8227#0" expanded="true" />
-                <element signature="e#8285#8286#0" expanded="true" />
-                <element signature="e#8333#8334#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="23" column="44" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/FrontEnd/GlobalScopeBuilder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1973">
-              <caret line="112" column="37" lean-forward="true" selection-start-line="112" selection-start-column="37" selection-end-line="112" selection-end-column="37" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#527#528#0" expanded="true" />
-                <element signature="e#555#556#0" expanded="true" />
-                <element signature="e#627#628#0" expanded="true" />
-                <element signature="e#673#674#0" expanded="true" />
-                <element signature="e#727#728#0" expanded="true" />
-                <element signature="e#767#768#0" expanded="true" />
-                <element signature="e#1033#1049#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.bash">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="54">
-              <caret line="3" column="47" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
+              <caret line="3" column="80" selection-start-line="3" selection-start-column="80" selection-end-line="3" selection-end-column="80" />
             </state>
           </provider>
         </entry>
@@ -83,6 +43,49 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="72">
               <caret line="4" column="7" lean-forward="true" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="462">
+              <caret line="48" column="91" selection-start-line="48" selection-start-column="91" selection-end-line="48" selection-end-column="91" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4752">
+              <caret line="274" column="49" selection-start-line="274" selection-start-column="49" selection-end-line="274" selection-end-column="49" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#4433#4434#0" expanded="true" />
+                <element signature="e#4476#4477#0" expanded="true" />
+                <element signature="e#4538#4539#0" expanded="true" />
+                <element signature="e#4582#4583#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/FrontEnd/GlobalScopeBuilder.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1854">
+              <caret line="112" column="37" selection-start-line="112" selection-start-column="37" selection-end-line="112" selection-end-column="37" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#527#528#0" expanded="true" />
+                <element signature="e#555#556#0" expanded="true" />
+                <element signature="e#627#628#0" expanded="true" />
+                <element signature="e#673#674#0" expanded="true" />
+                <element signature="e#727#728#0" expanded="true" />
+                <element signature="e#767#768#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -161,17 +164,17 @@
         <option value="$PROJECT_DIR$/src/Scope/FunctionEntity.java" />
         <option value="$PROJECT_DIR$/src/Parser/Mxstar.g4" />
         <option value="$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java" />
-        <option value="$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java" />
-        <option value="$PROJECT_DIR$/build.bash" />
         <option value="$PROJECT_DIR$/smantic.bash" />
+        <option value="$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
+        <option value="$PROJECT_DIR$/build.bash" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="952" />
-    <option name="width" value="977" />
-    <option name="height" value="1038" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="951" />
+    <option name="width" value="978" />
+    <option name="height" value="1039" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -181,6 +184,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -192,6 +196,12 @@
               <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
               <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="antlr-runtime-4.7.2.jar" type="ab9368bb:PsiFileNode" />
             </path>
             <path>
               <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
@@ -208,7 +218,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope">
         <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
@@ -227,7 +236,7 @@
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-listener" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-visitor" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/output-dir" value="C:\Users\apoll\Desktop\Mxstar-Complier\src" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553397158119" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553397260385" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -355,7 +364,14 @@
       <option name="project" value="LOCAL" />
       <updated>1553396049738</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="解体了 version 0.1">
+      <created>1553397237445</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1553397237445</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TodoView">
@@ -368,7 +384,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="762" y="0" width="781" height="830" extended-state="0" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
@@ -377,8 +393,8 @@
       <window_info id="UI Designer" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="Favorites" order="5" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="6" weight="0.39448276" />
-      <window_info anchor="bottom" id="Messages" order="0" weight="0.32676056" />
+      <window_info active="true" content_ui="combo" id="Project" order="6" visible="true" weight="0.40495315" />
+      <window_info anchor="bottom" id="Messages" order="0" visible="true" weight="0.32621083" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32621083" />
       <window_info anchor="bottom" id="Run" order="3" weight="0.32816902" />
@@ -615,64 +631,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ScopeBuilder/BaseScopeBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="8" selection-start-line="8" selection-end-line="15" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ScopeBuilder/GlobalScopeBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1440">
-          <caret line="160" selection-start-line="160" selection-end-line="172" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#globalPrintFunction#0;class#GlobalScopeBuilder#0" />
-            <element signature="method#globalPrintlnFunction#0;class#GlobalScopeBuilder#0" />
-            <element signature="method#globalGetStringFunction#0;class#GlobalScopeBuilder#0" />
-            <element signature="method#globalGetIntFunction#0;class#GlobalScopeBuilder#0" />
-            <element signature="method#globalToStringFunction#0;class#GlobalScopeBuilder#0" />
-            <element signature="method#stringLengthFunction#0;class#GlobalScopeBuilder#0" />
-            <element signature="method#stringSubstringFunction#0;class#GlobalScopeBuilder#0" />
-            <element signature="method#stringParseIntFunction#0;class#GlobalScopeBuilder#0" />
-            <element signature="method#stringOrdFunction#0;class#GlobalScopeBuilder#0" />
-            <element signature="method#putStringBuildinFunction#0;class#GlobalScopeBuilder#0" />
-            <element signature="e#5630#5631#0" expanded="true" />
-            <element signature="e#5662#5663#0" expanded="true" />
-            <element signature="e#5694#5695#0" expanded="true" />
-            <element signature="e#5741#5742#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4752">
-          <caret line="274" column="49" selection-start-line="274" selection-start-column="49" selection-end-line="274" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4433#4434#0" expanded="true" />
-            <element signature="e#4476#4477#0" expanded="true" />
-            <element signature="e#4538#4539#0" expanded="true" />
-            <element signature="e#4582#4583#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ScopeBuilder/FunctionScopeBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4428">
-          <caret line="268" column="5" selection-start-line="268" selection-start-column="5" selection-end-line="268" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ScopeBuilder/BaseScopeBuilder.java" />
+    <entry file="file://$PROJECT_DIR$/src/ScopeBuilder/GlobalScopeBuilder.java" />
+    <entry file="file://$PROJECT_DIR$/src/ScopeBuilder/FunctionScopeBuilder.java" />
     <entry file="file://$PROJECT_DIR$/src/AST/ClassDeclaration.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
@@ -683,13 +644,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Type/FunctionType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Type/FunctionType.java" />
     <entry file="file://$PROJECT_DIR$/test.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -849,10 +804,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4752">
+          <caret line="274" column="49" selection-start-line="274" selection-start-column="49" selection-end-line="274" selection-end-column="49" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4433#4434#0" expanded="true" />
+            <element signature="e#4476#4477#0" expanded="true" />
+            <element signature="e#4538#4539#0" expanded="true" />
+            <element signature="e#4582#4583#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/FrontEnd/GlobalScopeBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1973">
-          <caret line="112" column="37" lean-forward="true" selection-start-line="112" selection-start-column="37" selection-end-line="112" selection-end-column="37" />
+        <state relative-caret-position="1854">
+          <caret line="112" column="37" selection-start-line="112" selection-start-column="37" selection-end-line="112" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#527#528#0" expanded="true" />
@@ -861,15 +830,27 @@
             <element signature="e#673#674#0" expanded="true" />
             <element signature="e#727#728#0" expanded="true" />
             <element signature="e#767#768#0" expanded="true" />
-            <element signature="e#1033#1049#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.bash">
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" column="47" selection-start-line="3" selection-start-column="47" selection-end-line="3" selection-end-column="47" />
+        <state relative-caret-position="462">
+          <caret line="48" column="91" selection-start-line="48" selection-start-column="91" selection-end-line="48" selection-end-column="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="22" column="8" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#530#531#0" expanded="true" />
+            <element signature="e#564#565#0" expanded="true" />
+            <element signature="method#resolveType#0;class#ScopeBuilder#0" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -880,33 +861,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java">
+    <entry file="file://$PROJECT_DIR$/build.bash">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1386">
-          <caret line="95" column="9" selection-start-line="95" selection-start-column="9" selection-end-line="95" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#resolveType#0;class#ScopeBuilder#0" />
-            <element signature="e#7363#7364#0" expanded="true" />
-            <element signature="e#7406#7407#0" expanded="true" />
-            <element signature="e#7468#7469#0" expanded="true" />
-            <element signature="e#7518#7519#0" expanded="true" />
-            <element signature="e#7976#7977#0" expanded="true" />
-            <element signature="e#8022#8023#0" expanded="true" />
-            <element signature="e#8079#8080#0" expanded="true" />
-            <element signature="e#8125#8126#0" expanded="true" />
-            <element signature="e#8181#8182#0" expanded="true" />
-            <element signature="e#8226#8227#0" expanded="true" />
-            <element signature="e#8285#8286#0" expanded="true" />
-            <element signature="e#8333#8334#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="23" column="44" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
+        <state relative-caret-position="54">
+          <caret line="3" column="80" selection-start-line="3" selection-start-column="80" selection-end-line="3" selection-end-column="80" />
         </state>
       </provider>
     </entry>
