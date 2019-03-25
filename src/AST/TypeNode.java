@@ -18,6 +18,10 @@ public class TypeNode extends Node{
         type = typeNode.getType();
     }
 
+    public TypeNode(Type type) {
+        this.type = type;
+    }
+
     public void setType(Type type) {
         this.type = type;
     }

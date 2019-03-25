@@ -2,16 +2,15 @@ package Type;
 
 public class ArrayType extends Type {
     private Type baseType;
-    private int dimension;
 
-    public ArrayType(Type basetype, int dimension) {
+    public ArrayType(Type basetype) {
         type = types.ARRAY;
         this.baseType = basetype;
-        this.dimension = dimension;
     }
 
-    public int getDimension() {
-        return dimension;
+    @Override
+    public types getType() {
+        return super.getType();
     }
 
     public Type getBaseType() {

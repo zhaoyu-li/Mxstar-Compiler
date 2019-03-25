@@ -49,6 +49,28 @@ public class Type {
 
     public void setType(types type) {
         this.type = type;
+        switch (type) {
+            case VOID:
+                typeName = "void";
+                break;
+            case INT:
+                typeName = "int";
+                break;
+            case BOOL:
+                typeName = "bool";
+                break;
+            case STRING:
+                typeName = "string";
+                break;
+            case CLASS:
+                break;
+            case ARRAY:
+                typeName = "array";
+                break;
+            case NULL:
+                typeName = "null";
+                break;
+        }
     }
 
     public types getType() {

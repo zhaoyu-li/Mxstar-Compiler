@@ -33,16 +33,10 @@ public class ScopeBuilder implements ASTVistor {
         if(typeNode.isPrimitiveType()) {
             return typeNode.getType();
         } else if(typeNode instanceof ArrayTypeNode) {
-            System.out.println("2");
-            ArrayTypeNode oldArray = (ArrayTypeNode) typeNode;
-            Type baseType;
-            if(((ArrayTypeNode) typeNode).getDimension() > 1) {
-                baseType = new ArrayType(oldArray.getBaseType().getType(), oldArray.getDimension() - 1);
-                return baseType;
-            } else {
-                baseType = resolveType(((ArrayTypeNode) typeNode).getBaseType());
-                return baseType;
-            }
+            /*ArrayTypeNode oldArray = (ArrayTypeNode) typeNode;
+            Type baseType = resolveType(oldArray.getBaseType());
+            return new ArrayType(baseType);*/
+            return resolveArrayType((ArrayTypeNode) typeNode);
         } else if(typeNode.isClassType()) {
             if(globalScope.getClassEntity(typeNode.getType().getTypeName()) == null) {
                 return null;
@@ -56,7 +50,20 @@ public class ScopeBuilder implements ASTVistor {
         }
     }
 
-    private Type resolveType(Type type) {
+    private Type resolveArrayType(ArrayTypeNode typeNode) {
+        int dimension = typeNode.getDimension();
+        if(dimension == 1) {
+            TypeNode newType = new TypeNode(typeNode.getBaseType().getType());
+            return new ArrayType(resolveType(newType));
+        } else {
+            ArrayTypeNode newType = new ArrayTypeNode();
+            newType.setBaseType(typeNode.getBaseType());
+            newType.setDimension(dimension - 1);
+            return new ArrayType(resolveType(newType));
+        }
+    }
+
+    /*private Type resolveType(Type type) {
         if(type.isPrimitiveType()) {
             return type;
         } else if(type.isArrayType()){
@@ -73,7 +80,7 @@ public class ScopeBuilder implements ASTVistor {
         } else {
             return null;
         }
-    }
+    }*/
 
     private VariableEntity getVariableEntity (VariableDeclaration variableDeclaration) {
         VariableEntity variableEntity = new VariableEntity();
@@ -126,6 +133,7 @@ public class ScopeBuilder implements ASTVistor {
         thisType.setClassEntity(classEntity);
         thisVariable.setType(thisType);
         classEntity.getScope().putVariable("this", thisVariable);
+
         exitScope();
         globalScope.putClassEntity(classEntity.getName(), classEntity);
 
@@ -292,7 +300,7 @@ public class ScopeBuilder implements ASTVistor {
     @Override
     public void visit(ThisExpression node) {
         node.setVariableEntity(curScope.getRecursiveVariable("this"));
-        node.setType(resolveType(node.getVariableEntity().getType()));
+        node.setType(node.getVariableEntity().getType());
     }
 
     @Override
@@ -322,7 +330,7 @@ public class ScopeBuilder implements ASTVistor {
         } else {
             node.setVariableEntity(curScope.getRecursiveVariable(node.getName()));
         }
-        node.setType(resolveType(node.getVariableEntity().getType()));
+        node.setType(node.getVariableEntity().getType());
     }
 
     @Override
@@ -337,7 +345,7 @@ public class ScopeBuilder implements ASTVistor {
                     node.getMember().setVariableEntity(classEntity.getScope().getVariable(node.getMember().getName()));
                     node.getMember().setType(node.getMember().getVariableEntity().getType());
                 }
-                node.setType(resolveType(node.getMember().getType()));
+                node.setType(node.getMember().getType());
             } else {
                 if(classEntity.getScope().getFunction(node.getFuncCall().getName().getName()) == null) {
                     throw new SemanticError(node.getLocation(), "Cannot find function");
@@ -346,7 +354,7 @@ public class ScopeBuilder implements ASTVistor {
                     for(Expression expression : node.getFuncCall().getArguments()) {
                         expression.accept(this);
                     }
-                    node.getFuncCall().setType(resolveType(node.getFuncCall().getFunctionEntity().getReturnType()));
+                    node.getFuncCall().setType(node.getFuncCall().getFunctionEntity().getReturnType());
                 }
                 node.setType(node.getFuncCall().getType());
             }
@@ -359,7 +367,7 @@ public class ScopeBuilder implements ASTVistor {
                     for(Expression expression : node.getFuncCall().getArguments()) {
                         expression.accept(this);
                     }
-                    node.getFuncCall().setType(resolveType(node.getFuncCall().getFunctionEntity().getReturnType()));
+                    node.getFuncCall().setType(node.getFuncCall().getFunctionEntity().getReturnType());
                 }
                 node.setType(node.getFuncCall().getType());
             }
@@ -372,7 +380,7 @@ public class ScopeBuilder implements ASTVistor {
                     for(Expression expression : node.getFuncCall().getArguments()) {
                         expression.accept(this);
                     }
-                    node.getFuncCall().setType(resolveType(node.getFuncCall().getFunctionEntity().getReturnType()));
+                    node.getFuncCall().setType(node.getFuncCall().getFunctionEntity().getReturnType());
                 }
                 node.setType(node.getFuncCall().getType());
             }
@@ -386,8 +394,11 @@ public class ScopeBuilder implements ASTVistor {
     public void visit(ArrayExpression node) {
         node.getArr().accept(this);
         node.getIdx().accept(this);
-        System.out.println("1");
-        node.setType(resolveType(node.getArr().getType()));
+        if(node.getArr().getType() instanceof ArrayType){
+            node.setType(((ArrayType) node.getArr().getType()).getBaseType());
+        } else {
+            throw new SemanticError(node.getLocation(), "Expect a array type");
+        }
     }
 
     @Override
@@ -400,29 +411,34 @@ public class ScopeBuilder implements ASTVistor {
         for(Expression expression : node.getArguments()) {
             expression.accept(this);
         }
-        node.setType(resolveType(node.getFunctionEntity().getReturnType()));
+        node.setType(node.getFunctionEntity().getReturnType());
     }
 
     @Override
     public void visit(NewExpression node) {
+        int dimension = node.getDimensions().size() + node.getNumDimension();
         if(node.getDimensions() != null) {
             for(Expression expression : node.getDimensions()) {
                 expression.accept(this);
             }
         }
-        node.setType(resolveType(node.getTypeNode()));
+        if(dimension != 0) {
+            node.setType(new ArrayType(node.getTypeNode().getType()));
+        } else {
+            node.setType(resolveType(node.getTypeNode()));
+        }
     }
 
     @Override
     public void visit(SuffixExpression node) {
         node.getExpr().accept(this);
-        node.setType(resolveType(node.getExpr().getType()));
+        node.setType(node.getExpr().getType());
     }
 
     @Override
     public void visit(PrefixExpression node) {
         node.getExpr().accept(this);
-        node.setType(resolveType(node.getExpr().getType()));
+        node.setType(node.getExpr().getType());
     }
 
     @Override
@@ -439,7 +455,7 @@ public class ScopeBuilder implements ASTVistor {
                 node.setType(new Type("bool"));
                 break;
             default:
-                node.setType(resolveType(node.getLhs().getType()));
+                node.setType(node.getLhs().getType());
                 break;
         }
     }
