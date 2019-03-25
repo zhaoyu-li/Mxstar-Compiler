@@ -14,6 +14,10 @@ public class TypeNode extends Node{
         this.location = location;
     }
 
+    public TypeNode(TypeNode typeNode) {
+        type = typeNode.getType();
+    }
+
     public void setType(Type type) {
         this.type = type;
     }

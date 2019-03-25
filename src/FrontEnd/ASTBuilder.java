@@ -391,18 +391,18 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
     public NewExpression visitCreator(CreatorContext ctx) {
         NewExpression newExpression = new NewExpression();
         List<Expression> dimensions = new LinkedList<>();
-        if(ctx.expression() != null) {
+        if(!ctx.expression().isEmpty()) {
             for(ExpressionContext c : ctx.expression()) {
                 dimensions.add((Expression) c.accept(this));
             }
         }
         newExpression.setDimensions(dimensions);
-        if(ctx.empty() != null) {
+        if(!ctx.empty().isEmpty()) {
             newExpression.setNumDimension(ctx.empty().size());
         } else {
             newExpression.setNumDimension(0);
         }
-        if(ctx.expression() != null || ctx.empty() != null) {
+        if((!ctx.expression().isEmpty()) || (!ctx.empty().isEmpty())) {
             ArrayTypeNode arrayTypeNode = new ArrayTypeNode(visitBaseType(ctx.baseType()), ctx.expression().size() + ctx.empty().size());
             newExpression.setTypeNode(arrayTypeNode);
         } else {

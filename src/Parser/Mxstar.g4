@@ -126,7 +126,7 @@ expression
     ;
 
 creator
-    : baseType (('[' expression ']')*('['empty']')*| ('(' ')'))
+    : baseType (('[' expression ']')* ('['empty']')* | ('(' ')'))
     ;
 
 funcCall

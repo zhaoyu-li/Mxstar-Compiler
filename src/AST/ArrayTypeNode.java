@@ -19,6 +19,10 @@ public class ArrayTypeNode extends TypeNode {
         this.dimension = dimension;
     }
 
+    public void setBaseType(TypeNode baseType) {
+        this.baseType = baseType;
+    }
+
     public TypeNode getBaseType() {
         return baseType;
     }

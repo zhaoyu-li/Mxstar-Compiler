@@ -33,7 +33,16 @@ public class ScopeBuilder implements ASTVistor {
         if(typeNode.isPrimitiveType()) {
             return typeNode.getType();
         } else if(typeNode instanceof ArrayTypeNode) {
-            return new ArrayType(resolveType(((ArrayTypeNode) typeNode).getBaseType()));
+            System.out.println("2");
+            ArrayTypeNode oldArray = (ArrayTypeNode) typeNode;
+            Type baseType;
+            if(((ArrayTypeNode) typeNode).getDimension() > 1) {
+                baseType = new ArrayType(oldArray.getBaseType().getType(), oldArray.getDimension() - 1);
+                return baseType;
+            } else {
+                baseType = resolveType(((ArrayTypeNode) typeNode).getBaseType());
+                return baseType;
+            }
         } else if(typeNode.isClassType()) {
             if(globalScope.getClassEntity(typeNode.getType().getTypeName()) == null) {
                 return null;
@@ -48,8 +57,10 @@ public class ScopeBuilder implements ASTVistor {
     }
 
     private Type resolveType(Type type) {
-        if(type.isPrimitiveType() || type.isArrayType()) {
+        if(type.isPrimitiveType()) {
             return type;
+        } else if(type.isArrayType()){
+            return ((ArrayType)type).getBaseType();
         }
         else if(type.isClassType()) {
             if(globalScope.getClassEntity(type.getTypeName()) == null) {
@@ -311,7 +322,6 @@ public class ScopeBuilder implements ASTVistor {
         } else {
             node.setVariableEntity(curScope.getRecursiveVariable(node.getName()));
         }
-
         node.setType(resolveType(node.getVariableEntity().getType()));
     }
 
@@ -376,7 +386,8 @@ public class ScopeBuilder implements ASTVistor {
     public void visit(ArrayExpression node) {
         node.getArr().accept(this);
         node.getIdx().accept(this);
-        node.setType(((ArrayType) node.getArr().getType()).getBaseType());
+        System.out.println("1");
+        node.setType(resolveType(node.getArr().getType()));
     }
 
     @Override

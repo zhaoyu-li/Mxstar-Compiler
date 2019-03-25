@@ -285,6 +285,8 @@ public class SemanticChecker implements ASTVistor {
         node.getLhs().accept(this);
         node.getRhs().accept(this);
         if(node.getLhs().getType().getType() != node.getRhs().getType().getType()) {
+            System.out.println(node.getLhs().getType().getType());
+            System.out.println(node.getRhs().getType().getType());
             throw new SemanticError(node.getLocation(), "LHS type isnot equal to RHS type");
         }
         switch (node.getOp()) {
@@ -329,6 +331,8 @@ public class SemanticChecker implements ASTVistor {
         node.getLhs().accept(this);
         node.getRhs().accept(this);
         if(node.getLhs().getType().getType() != node.getRhs().getType().getType()) {
+            System.out.println(node.getLhs().getType().getType());
+            System.out.println(node.getRhs().getType().getType());
             throw new SemanticError(node.getLocation(), "LHS type isnot equal to RHS type");
         }
     }
