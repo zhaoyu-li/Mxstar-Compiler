@@ -89,6 +89,7 @@ statement
     | expression ';'                                     #exprStatement
     | variableDeclaration                                #varDeclStatement
     | block                                              #blockStatement
+    | ';'                                                #emptyStatement
     ;
 
 expressionList

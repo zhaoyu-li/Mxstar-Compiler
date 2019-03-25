@@ -227,8 +227,6 @@ public class SemanticChecker implements ASTVistor {
     public void visit(FuncCallExpression node) {
         for(int i = 0; i < node.getArguments().size(); i++) {
             if(node.getArguments().get(i).getType().getType() != node.getFunctionEntity().getParameters().get(i).getType().getType()) {
-                System.out.println(node.getArguments().get(i).getType().getType().toString());
-                System.out.println(node.getFunctionEntity().getParameters().get(i).getType().getType());
                 throw new SemanticError(node.getLocation(), "Invalid paramenter type");
             }
         }
@@ -331,8 +329,6 @@ public class SemanticChecker implements ASTVistor {
         node.getLhs().accept(this);
         node.getRhs().accept(this);
         if(node.getLhs().getType().getType() != node.getRhs().getType().getType()) {
-            System.out.println(node.getLhs().getType().getTypeName());
-            System.out.println(node.getRhs().getType().getTypeName());
             throw new SemanticError(node.getLocation(), "LHS type isnot equal to RHS type");
         }
     }

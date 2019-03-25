@@ -11,12 +11,10 @@ import java.util.List;
 public class ScopeBuilder implements ASTVistor {
     private GlobalScopeBuilder globalScope;
     private Scope curScope;
-    //private FunctionEntity curFunctionEntity;
 
     public ScopeBuilder() {
         globalScope = new GlobalScopeBuilder();
         curScope = globalScope.getScope();
-        //curFunctionEntity = null;
     }
 
     public GlobalScopeBuilder getGlobalScope() {
@@ -112,6 +110,13 @@ public class ScopeBuilder implements ASTVistor {
         for(FunctionDeclaration functionDeclaration : node.getMethods()) {
             registerFunction(functionDeclaration);
         }
+
+        VariableEntity thisVariable = new VariableEntity();
+        thisVariable.setName("this");
+        ClassType thisType = new ClassType(node.getName());
+        thisType.setClassEntity(classEntity);
+        thisVariable.setType(thisType);
+        classEntity.getScope().putVariable("this", thisVariable);
         exitScope();
         globalScope.putClassEntity(classEntity.getName(), classEntity);
 
@@ -159,14 +164,14 @@ public class ScopeBuilder implements ASTVistor {
     public void visit(ClassDeclaration node) {
         ClassEntity classEntity = globalScope.getClassEntity(node.getName());
         enterScope(classEntity.getScope());
+        for(VariableDeclaration variableDeclaration : node.getFields()) {
+            visit(variableDeclaration);
+        }
         if(node.getConstructor() != null) {
             visit(node.getConstructor());
         }
         for(FunctionDeclaration functionDeclaration : node.getMethods()) {
             visit(functionDeclaration);
-        }
-        for(VariableDeclaration variableDeclaration : node.getFields()) {
-            visit(variableDeclaration);
         }
         exitScope();
     }
@@ -277,7 +282,8 @@ public class ScopeBuilder implements ASTVistor {
 
     @Override
     public void visit(ThisExpression node) {
-
+        node.setVariableEntity(curScope.getRecursiveVariable("this"));
+        node.setType(resolveType(node.getVariableEntity().getType()));
     }
 
     @Override
@@ -349,6 +355,7 @@ public class ScopeBuilder implements ASTVistor {
                 node.setType(node.getFuncCall().getType());
             }
         } else {
+            System.out.println(node.getExpr().getType().getTypeName());
             throw new SemanticError(node.getLocation(), "Invalid MemberExpression");
         }
     }
