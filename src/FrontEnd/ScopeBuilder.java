@@ -32,8 +32,8 @@ public class ScopeBuilder implements ASTVistor {
     private Type resolveType(TypeNode typeNode) {
         if(typeNode.isPrimitiveType()) {
             return typeNode.getType();
-        } else if(typeNode.isArrayType()) {
-            return resolveType(((ArrayTypeNode) typeNode).getBaseType());
+        } else if(typeNode instanceof ArrayTypeNode) {
+            return new ArrayType(resolveType(((ArrayTypeNode) typeNode).getBaseType()));
         } else if(typeNode.isClassType()) {
             if(globalScope.getClassEntity(typeNode.getType().getTypeName()) == null) {
                 return null;
@@ -48,11 +48,10 @@ public class ScopeBuilder implements ASTVistor {
     }
 
     private Type resolveType(Type type) {
-        if(type.isPrimitiveType()) {
+        if(type.isPrimitiveType() || type.isArrayType()) {
             return type;
-        } else if(type.isArrayType()) {
-            return resolveType(((ArrayType) type).getBaseType());
-        } else if(type.isClassType()) {
+        }
+        else if(type.isClassType()) {
             if(globalScope.getClassEntity(type.getTypeName()) == null) {
                 return null;
             } else {
@@ -79,7 +78,6 @@ public class ScopeBuilder implements ASTVistor {
         if(globalScope.getClassEntity(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "The name of function conflicts with a class");
         }
-
         FunctionEntity functionEntity = new FunctionEntity();
         functionEntity.setName(node.getName());
         functionEntity.setReturnType(node.getReturnType().getType());
@@ -313,6 +311,7 @@ public class ScopeBuilder implements ASTVistor {
         } else {
             node.setVariableEntity(curScope.getRecursiveVariable(node.getName()));
         }
+
         node.setType(resolveType(node.getVariableEntity().getType()));
     }
 
@@ -354,8 +353,21 @@ public class ScopeBuilder implements ASTVistor {
                 }
                 node.setType(node.getFuncCall().getType());
             }
-        } else {
-            System.out.println(node.getExpr().getType().getTypeName());
+        } else if (node.getExpr().getType() instanceof ArrayType) {
+            if(node.getFuncCall() != null) {
+                if(globalScope.getClassEntity("array").getScope().getFunction(node.getFuncCall().getName().getName()) == null) {
+                    throw new SemanticError(node.getLocation(), "Cannot find function");
+                } else {
+                    node.getFuncCall().setFunctionEntity(globalScope.getClassEntity("array").getScope().getFunction(node.getFuncCall().getName().getName()));
+                    for(Expression expression : node.getFuncCall().getArguments()) {
+                        expression.accept(this);
+                    }
+                    node.getFuncCall().setType(resolveType(node.getFuncCall().getFunctionEntity().getReturnType()));
+                }
+                node.setType(node.getFuncCall().getType());
+            }
+        }
+        else {
             throw new SemanticError(node.getLocation(), "Invalid MemberExpression");
         }
     }
@@ -364,7 +376,7 @@ public class ScopeBuilder implements ASTVistor {
     public void visit(ArrayExpression node) {
         node.getArr().accept(this);
         node.getIdx().accept(this);
-        node.setType(resolveType(node.getArr().getType()));
+        node.setType(((ArrayType) node.getArr().getType()).getBaseType());
     }
 
     @Override

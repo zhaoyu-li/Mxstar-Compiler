@@ -9,14 +9,18 @@ public class GlobalScopeBuilder {
     private Map<String, ClassEntity> classes;
     private Scope scope;
     private ClassEntity stringEntity;
+    private ClassEntity arrayEntity;
 
     public GlobalScopeBuilder() {
         scope = new Scope();
         stringEntity = new ClassEntity();
+        arrayEntity = new ClassEntity();
         classes = new HashMap<String, ClassEntity>();
         putGlobalBuildinFunction();
         putStringBuildinFunction();
+        putArrayBuildinFunciotn();
         classes.put("string", stringEntity);
+        classes.put("array", arrayEntity);
     }
 
     public Scope getScope() {
@@ -31,95 +35,104 @@ public class GlobalScopeBuilder {
         return classes.get(name);
     }
 
-    private FunctionEntity globalPrintFunction() {
-        FunctionEntity printFunction = new FunctionEntity();
-        printFunction.setName("print");
-        printFunction.setReturnType(new Type("void"));
+    private FunctionEntity globalfunction() {
+        FunctionEntity function = new FunctionEntity();
+        function.setName("print");
+        function.setReturnType(new Type("void"));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
         parameters.add(new VariableEntity(new Type("string"), "str"));
-        printFunction.setParameters(parameters);
-        return printFunction;
+        function.setParameters(parameters);
+        return function;
     }
 
     private FunctionEntity globalPrintlnFunction() {
-        FunctionEntity printFunction = new FunctionEntity();
-        printFunction.setName("println");
-        printFunction.setReturnType(new Type("void"));
+        FunctionEntity function = new FunctionEntity();
+        function.setName("println");
+        function.setReturnType(new Type("void"));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
         parameters.add(new VariableEntity(new Type("string"), "str"));
-        printFunction.setParameters(parameters);
-        return printFunction;
+        function.setParameters(parameters);
+        return function;
     }
 
     private FunctionEntity globalGetStringFunction() {
-        FunctionEntity printFunction = new FunctionEntity();
-        printFunction.setName("getString");
-        printFunction.setReturnType(new Type("string"));
+        FunctionEntity function = new FunctionEntity();
+        function.setName("getString");
+        function.setReturnType(new Type("string"));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
-        printFunction.setParameters(parameters);
-        return printFunction;
+        function.setParameters(parameters);
+        return function;
     }
 
     private FunctionEntity globalGetIntFunction() {
-        FunctionEntity printFunction = new FunctionEntity();
-        printFunction.setName("getInt");
-        printFunction.setReturnType(new Type("int"));
+        FunctionEntity function = new FunctionEntity();
+        function.setName("getInt");
+        function.setReturnType(new Type("int"));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
-        printFunction.setParameters(parameters);
-        return printFunction;
+        function.setParameters(parameters);
+        return function;
     }
 
     private FunctionEntity globalToStringFunction() {
-        FunctionEntity printFunction = new FunctionEntity();
-        printFunction.setName("toString");
-        printFunction.setReturnType(new Type("string"));
+        FunctionEntity function = new FunctionEntity();
+        function.setName("toString");
+        function.setReturnType(new Type("string"));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
         parameters.add(new VariableEntity(new Type("int"), "i"));
-        printFunction.setParameters(parameters);
-        return printFunction;
+        function.setParameters(parameters);
+        return function;
     }
 
     private FunctionEntity stringLengthFunction() {
-        FunctionEntity printFunction = new FunctionEntity();
-        printFunction.setName("length");
-        printFunction.setReturnType(new Type("int"));
+        FunctionEntity function = new FunctionEntity();
+        function.setName("length");
+        function.setReturnType(new Type("int"));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
-        printFunction.setParameters(parameters);
-        return printFunction;
+        function.setParameters(parameters);
+        return function;
     }
 
     private FunctionEntity stringSubstringFunction() {
-        FunctionEntity printFunction = new FunctionEntity();
-        printFunction.setName("substring");
-        printFunction.setReturnType(new Type("string"));
+        FunctionEntity function = new FunctionEntity();
+        function.setName("substring");
+        function.setReturnType(new Type("string"));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
         parameters.add(new VariableEntity(new Type("int"), "left"));
         parameters.add(new VariableEntity(new Type("int"), "right"));
-        printFunction.setParameters(parameters);
-        return printFunction;
+        function.setParameters(parameters);
+        return function;
     }
 
     private FunctionEntity stringParseIntFunction() {
-        FunctionEntity printFunction = new FunctionEntity();
-        printFunction.setName("parseInt");
-        printFunction.setReturnType(new Type("int"));
+        FunctionEntity function = new FunctionEntity();
+        function.setName("parseInt");
+        function.setReturnType(new Type("int"));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
-        printFunction.setParameters(parameters);
-        return printFunction;
+        function.setParameters(parameters);
+        return function;
     }
 
     private FunctionEntity stringOrdFunction() {
-        FunctionEntity printFunction = new FunctionEntity();
-        printFunction.setName("ord");
-        printFunction.setReturnType(new Type("int"));
+        FunctionEntity function = new FunctionEntity();
+        function.setName("ord");
+        function.setReturnType(new Type("int"));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
         parameters.add(new VariableEntity(new Type("int"), "pos"));
-        printFunction.setParameters(parameters);
-        return printFunction;
+        function.setParameters(parameters);
+        return function;
+    }
+
+    private FunctionEntity arraySizeFunction() {
+        FunctionEntity function = new FunctionEntity();
+        function.setName("size");
+        function.setReturnType(new Type("int"));
+        List<VariableEntity> parameters = new LinkedList<VariableEntity>();
+        function.setParameters(parameters);
+        return function;
     }
 
     private void putGlobalBuildinFunction() {
-        scope.putFunction("print", globalPrintFunction());
+        scope.putFunction("print", globalfunction());
         scope.putFunction("println", globalPrintlnFunction());
         scope.putFunction("getString", globalGetStringFunction());
         scope.putFunction("getInt", globalGetIntFunction());
@@ -133,5 +146,7 @@ public class GlobalScopeBuilder {
         stringEntity.getScope().putFunction("ord", stringOrdFunction());
     }
 
-
+    private void putArrayBuildinFunciotn() {
+        arrayEntity.getScope().putFunction("size", arraySizeFunction());
+    }
 }

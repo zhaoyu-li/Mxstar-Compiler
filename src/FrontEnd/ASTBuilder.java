@@ -325,7 +325,7 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
             memberExpression.setType(memberExpression.getMember().getType());
         } else {
             memberExpression.setFuncCall(visitFuncCall(ctx.funcCall()));
-            memberExpression.setType(memberExpression.getFuncCall().getFunctionEntity().getReturnType());
+            memberExpression.setType(memberExpression.getFuncCall().getType());
         }
         memberExpression.setLocation(ctx);
         return memberExpression;
@@ -390,7 +390,6 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
     @Override
     public NewExpression visitCreator(CreatorContext ctx) {
         NewExpression newExpression = new NewExpression();
-        newExpression.setTypeNode(visitBaseType(ctx.baseType()));
         List<Expression> dimensions = new LinkedList<>();
         if(ctx.expression() != null) {
             for(ExpressionContext c : ctx.expression()) {
@@ -402,6 +401,12 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
             newExpression.setNumDimension(ctx.empty().size());
         } else {
             newExpression.setNumDimension(0);
+        }
+        if(ctx.expression() != null || ctx.empty() != null) {
+            ArrayTypeNode arrayTypeNode = new ArrayTypeNode(visitBaseType(ctx.baseType()), ctx.expression().size() + ctx.empty().size());
+            newExpression.setTypeNode(arrayTypeNode);
+        } else {
+            newExpression.setTypeNode(visitBaseType(ctx.baseType()));
         }
         newExpression.setLocation(ctx);
         return newExpression;
