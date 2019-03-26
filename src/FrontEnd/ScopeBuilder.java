@@ -75,7 +75,7 @@ public class ScopeBuilder implements ASTVistor {
         if(curScope.getFunction(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "Duplicate FunctionDeclaration");
         }
-        if(globalScope.getClassEntity(node.getName()) != null) {
+        if(globalScope.getClassEntity(node.getName()) != null && node.getReturnType().getType().getType() != Type.types.NULL) {
             throw new SemanticError(node.getLocation(), "The name of function conflicts with a class");
         }
         FunctionEntity functionEntity = new FunctionEntity();
