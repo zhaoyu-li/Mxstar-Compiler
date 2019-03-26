@@ -5,12 +5,10 @@ import Type.Type;
 public class VariableEntity extends Entity {
     private Type type;
     private boolean isGlobal;
-    private boolean isMutable;
 
     public VariableEntity() {
         type = null;
         isGlobal = false;
-        isMutable = false;
     }
 
     public VariableEntity(Type type, String name) {
@@ -30,11 +28,4 @@ public class VariableEntity extends Entity {
         isGlobal = global;
     }
 
-    public void setMmutable(boolean mutable) {
-        isMutable = mutable;
-    }
-
-    public boolean isMutable() {
-        return isMutable;
-    }
 }

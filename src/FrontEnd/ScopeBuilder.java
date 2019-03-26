@@ -33,9 +33,6 @@ public class ScopeBuilder implements ASTVistor {
         if(typeNode.isPrimitiveType()) {
             return typeNode.getType();
         } else if(typeNode instanceof ArrayTypeNode) {
-            /*ArrayTypeNode oldArray = (ArrayTypeNode) typeNode;
-            Type baseType = resolveType(oldArray.getBaseType());
-            return new ArrayType(baseType);*/
             return resolveArrayType((ArrayTypeNode) typeNode);
         } else if(typeNode.isClassType()) {
             if(globalScope.getClassEntity(typeNode.getType().getTypeName()) == null) {
@@ -210,6 +207,7 @@ public class ScopeBuilder implements ASTVistor {
         VariableEntity variableEntity = new VariableEntity();
         variableEntity.setName(node.getName());
         variableEntity.setType(resolveType(node.getType()));
+        node.getType().setType(variableEntity.getType());
         if(node.getType().getType().getType() == Type.types.VOID) {
             throw new SemanticError(node.getLocation(), "VariableDeclaration's type cannot be void");
         }
