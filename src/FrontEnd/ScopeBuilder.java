@@ -428,15 +428,16 @@ public class ScopeBuilder implements ASTVistor {
     @Override
     public void visit(NewExpression node) {
         int dimension = node.getDimensions().size() + node.getNumDimension();
+        node.setType(resolveType(node.getTypeNode()));
         if(node.getDimensions() != null) {
             for(Expression expression : node.getDimensions()) {
                 expression.accept(this);
             }
         }
         if(dimension != 0) {
-            node.setType(new ArrayType(node.getTypeNode().getType()));
-        } else {
-            node.setType(resolveType(node.getTypeNode()));
+            for(int i = 0; i < dimension; i++) {
+                node.setType(new ArrayType(node.getType()));
+            }
         }
         if(node.getTypeNode().getType().getType() == Type.types.VOID) {
             throw new SemanticError(node.getLocation(), "Cannot new void");
