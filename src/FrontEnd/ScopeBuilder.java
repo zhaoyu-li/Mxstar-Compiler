@@ -80,11 +80,8 @@ public class ScopeBuilder implements ASTVistor {
         }
         FunctionEntity functionEntity = new FunctionEntity();
         functionEntity.setName(node.getName());
-        if(resolveType(node.getReturnType()) == null){
+        if(resolveType(node.getReturnType()) == null){ //constructor
             if(globalScope.getClassEntity(node.getName()) != null) {
-                /*ClassType classType = new ClassType(node.getName());
-                classType.setClassEntity(globalScope.getClassEntity(node.getName()));
-                functionEntity.setReturnType(classType);*/
                 if(curScope == globalScope.getClassEntity(node.getName()).getScope()) {
                     functionEntity.setReturnType(new Type());
                 } else {
