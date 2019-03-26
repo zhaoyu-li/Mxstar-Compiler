@@ -2,7 +2,7 @@ package FrontEnd;
 
 import AST.*;
 import Scope.*;;
-import Type.Type;
+import Type.*;
 import Utility.SemanticError;
 
 import java.sql.Types;
@@ -75,10 +75,7 @@ public class SemanticChecker implements ASTVistor {
     public void visit(VariableDeclaration node) {
         if (node.getInit() != null) {
             node.getInit().accept(this);
-            if(node.getType().getType().getType() != node.getInit().getType().getType()
-                    &&(node.getType().getType().getType() != Type.types.CLASS && node.getInit().getType().getType() != Type.types.NULL)
-                    &&(node.getType().getType().getType() != Type.types.ARRAY && node.getInit().getType().getType() != Type.types.NULL)
-            ) {
+            if(!node.getInit().getType().match(node.getInit().getType())) {
                 throw new SemanticError(node.getLocation(), "Invalid type init");
             }
         }

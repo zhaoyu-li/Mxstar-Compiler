@@ -402,12 +402,7 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
         } else {
             newExpression.setNumDimension(0);
         }
-        if((!ctx.expression().isEmpty()) || (!ctx.empty().isEmpty())) {
-            ArrayTypeNode arrayTypeNode = new ArrayTypeNode(visitBaseType(ctx.baseType()), ctx.expression().size() + ctx.empty().size());
-            newExpression.setTypeNode(arrayTypeNode);
-        } else {
-            newExpression.setTypeNode(visitBaseType(ctx.baseType()));
-        }
+        newExpression.setTypeNode(visitBaseType(ctx.baseType()));
         newExpression.setLocation(ctx);
         return newExpression;
     }
