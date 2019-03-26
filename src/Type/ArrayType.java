@@ -9,8 +9,14 @@ public class ArrayType extends Type {
     }
 
     @Override
-    public types getType() {
-        return super.getType();
+    public boolean match(Type other) {
+        if(other instanceof ArrayType) {
+            return baseType.match(((ArrayType) other).getBaseType());
+        } else if(other.getType() == types.NULL) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Type getBaseType() {

@@ -158,10 +158,7 @@ public class SemanticChecker implements ASTVistor {
     @Override
     public void visit(ReturnStatement node) {
         if(node.getRet() != null) {
-            if(node.getRet().getType().getType() != curFunctionEntity.getReturnType().getType()
-                    && (curFunctionEntity.getReturnType().getType() != Type.types.CLASS && node.getRet().getType().getType() != Type.types.NULL)
-                    && (curFunctionEntity.getReturnType().getType() != Type.types.ARRAY && node.getRet().getType().getType() != Type.types.NULL)
-            ) {
+            if(!node.getRet().getType().match(curFunctionEntity.getReturnType())) {
                 throw new SemanticError(node.getLocation(), "Invalid return type");
             }
         } else {
@@ -242,7 +239,7 @@ public class SemanticChecker implements ASTVistor {
     @Override
     public void visit(FuncCallExpression node) {
         for(int i = 0; i < node.getArguments().size(); i++) {
-            if(node.getArguments().get(i).getType().getType() != node.getFunctionEntity().getParameters().get(i).getType().getType()) {
+            if(!node.getArguments().get(i).getType().match(node.getFunctionEntity().getParameters().get(i).getType())) {
                 throw new SemanticError(node.getLocation(), "Invalid paramenter type");
             }
         }
@@ -300,10 +297,7 @@ public class SemanticChecker implements ASTVistor {
     public void visit(BinaryExpression node) {
         node.getLhs().accept(this);
         node.getRhs().accept(this);
-        if(node.getLhs().getType().getType() != node.getRhs().getType().getType()
-                && (node.getLhs().getType().getType() != Type.types.CLASS && node.getRhs().getType().getType() != Type.types.NULL)
-                && (node.getLhs().getType().getType() != Type.types.ARRAY && node.getRhs().getType().getType() != Type.types.NULL)
-        ) {
+        if(!node.getLhs().getType().match(node.getRhs().getType())) {
             throw new SemanticError(node.getLocation(), "LHS type isnot equal to RHS type");
         }
         switch (node.getOp()) {
@@ -347,10 +341,7 @@ public class SemanticChecker implements ASTVistor {
     public void visit(AssignExpression node) {
         node.getLhs().accept(this);
         node.getRhs().accept(this);
-        if(node.getLhs().getType().getType() != node.getRhs().getType().getType()
-                && (node.getLhs().getType().getType() != Type.types.CLASS && node.getRhs().getType().getType() != Type.types.NULL)
-                && (node.getLhs().getType().getType() != Type.types.ARRAY && node.getRhs().getType().getType() != Type.types.NULL)
-        ) {
+        if(!node.getLhs().getType().match(node.getRhs().getType())) {
             throw new SemanticError(node.getLocation(), "LHS type isnot equal to RHS type");
         }
         if(node.getLhs().getType().getType() == Type.types.VOID) {

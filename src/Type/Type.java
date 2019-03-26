@@ -85,21 +85,7 @@ public class Type {
         return typeName;
     }
 
-    public boolean isPrimitiveType() {
-        switch (type) {
-            case INT:
-            case BOOL:
-            case VOID:
-            case STRING:
-                return true;
-            default:
-                return false;
-        }
+    public boolean match(Type other) {
+        return type == other.getType();
     }
-
-    public boolean isClassType() {
-        return type == Type.types.CLASS;
-    }
-
-    public boolean isArrayType() {return  type == Type.types.ARRAY; }
 }

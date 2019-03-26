@@ -24,4 +24,13 @@ public class ClassType extends Type {
     public ClassEntity getClassEntity() {
         return classEntity;
     }
+
+    @Override
+    public boolean match(Type other) {
+        if(other instanceof ClassType) {
+            return typeName.equals(other.getTypeName());
+        } else if(other.getType() == types.NULL) {
+            return true;
+        } else return false;
+    }
 }
