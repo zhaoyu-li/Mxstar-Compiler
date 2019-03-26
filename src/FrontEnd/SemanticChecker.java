@@ -297,9 +297,6 @@ public class SemanticChecker implements ASTVistor {
                 if(node.getExpr().getType().getType() != Type.types.INT) {
                     throw new SemanticError(node.getLocation(), "Invalid PrefixExpression");
                 }
-                if(!node.getExpr().isMutable()) {
-                    throw new SemanticError(node.getLocation(), "Invalid immutable operator");
-                }
                 break;
             case "!":
                 if(node.getExpr().getType().getType() != Type.types.BOOL) {
@@ -309,7 +306,9 @@ public class SemanticChecker implements ASTVistor {
             default:
                 throw new SemanticError(node.getLocation(), "Invalid PrefixExpression");
         }
-        node.setMutable(false);
+        if(node.getOp() != "++" && node.getOp() != "--") {
+            node.setMutable(false);
+        }
     }
 
     @Override
