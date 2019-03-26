@@ -66,6 +66,9 @@ public class ScopeBuilder implements ASTVistor {
     private VariableEntity getVariableEntity (VariableDeclaration variableDeclaration) {
         VariableEntity variableEntity = new VariableEntity();
         variableEntity.setType(resolveType(variableDeclaration.getType()));
+        if(variableDeclaration.getType().getType().getType() == Type.types.VOID) {
+            throw new SemanticError(variableDeclaration.getLocation(), "VariableDeclaration's type cannot be void");
+        }
         variableEntity.setName(variableDeclaration.getName());
         return variableEntity;
     }
@@ -74,15 +77,22 @@ public class ScopeBuilder implements ASTVistor {
         if(curScope.getFunction(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "Duplicate FunctionDeclaration");
         }
-        if(globalScope.getClassEntity(node.getName()) != null) {
+        /*if(globalScope.getClassEntity(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "The name of function conflicts with a class");
-        }
+        }*/
         FunctionEntity functionEntity = new FunctionEntity();
         functionEntity.setName(node.getName());
-        if(resolveType(node.getReturnType()) == null) {
-            throw new SemanticError(node.getLocation(), "Invalid return type of function");
+        if(resolveType(node.getReturnType()) == null){
+            if(globalScope.getClassEntity(node.getName()) != null) {
+                ClassType classType = new ClassType(node.getName());
+                classType.setClassEntity(globalScope.getClassEntity(node.getName()));
+                functionEntity.setReturnType(classType);
+            } else {
+                throw new SemanticError(node.getLocation(), "Invalid return type of function");
+            }
+        } else {
+            functionEntity.setReturnType(resolveType(node.getReturnType()));
         }
-        functionEntity.setReturnType(resolveType(node.getReturnType()));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
         for(VariableDeclaration variableDeclaration : node.getParameters()) {
             parameters.add(getVariableEntity(variableDeclaration));
@@ -200,6 +210,9 @@ public class ScopeBuilder implements ASTVistor {
         VariableEntity variableEntity = new VariableEntity();
         variableEntity.setName(node.getName());
         variableEntity.setType(resolveType(node.getType()));
+        if(node.getType().getType().getType() == Type.types.VOID) {
+            throw new SemanticError(node.getLocation(), "VariableDeclaration's type cannot be void");
+        }
         if(curScope == globalScope.getScope()) {
             variableEntity.setGlobal(true);
         }
@@ -424,6 +437,9 @@ public class ScopeBuilder implements ASTVistor {
             node.setType(new ArrayType(node.getTypeNode().getType()));
         } else {
             node.setType(resolveType(node.getTypeNode()));
+        }
+        if(node.getTypeNode().getType().getType() == Type.types.VOID) {
+            throw new SemanticError(node.getLocation(), "Cannot new void");
         }
     }
 

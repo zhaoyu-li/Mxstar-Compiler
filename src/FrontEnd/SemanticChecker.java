@@ -12,10 +12,12 @@ import java.util.List;
 public class SemanticChecker implements ASTVistor {
     private GlobalScopeBuilder globalScope;
     private FunctionEntity curFunctionEntity;
+    int loop;
 
     public SemanticChecker(GlobalScopeBuilder globalScope) {
         this.globalScope = globalScope;
         curFunctionEntity = null;
+        loop = 0;
     }
 
     private void checkMainFunction() {
@@ -73,7 +75,10 @@ public class SemanticChecker implements ASTVistor {
     public void visit(VariableDeclaration node) {
         if (node.getInit() != null) {
             node.getInit().accept(this);
-            if(node.getType().getType().getType() != node.getInit().getType().getType()) {
+            if(node.getType().getType().getType() != node.getInit().getType().getType()
+                    &&(node.getType().getType().getType() != Type.types.CLASS && node.getInit().getType().getType() != Type.types.NULL)
+                    &&(node.getType().getType().getType() != Type.types.ARRAY && node.getInit().getType().getType() != Type.types.NULL)
+            ) {
                 throw new SemanticError(node.getLocation(), "Invalid type init");
             }
         }
@@ -112,7 +117,9 @@ public class SemanticChecker implements ASTVistor {
         if(node.getCondition().getType().getType() != Type.types.BOOL) {
             throw new SemanticError(node.getLocation(), "Invalid condition");
         }
+        loop++;
         node.getBody().accept(this);
+        loop--;
     }
 
     @Override
@@ -129,17 +136,23 @@ public class SemanticChecker implements ASTVistor {
         if(node.getUpdate() != null) {
             node.getUpdate().accept(this);
         }
+        loop++;
         node.getBody().accept(this);
+        loop--;
     }
 
     @Override
     public void visit(BreakStatement node) {
-
+        if(loop == 0) {
+            throw new SemanticError(node.getLocation(), "Invalid use of break");
+        }
     }
 
     @Override
     public void visit(ContinueStatement node) {
-
+        if(loop == 0) {
+            throw new SemanticError(node.getLocation(), "Invalid use of continue");
+        }
     }
 
     @Override
