@@ -135,12 +135,6 @@ public class ScopeBuilder implements ASTVistor {
     }
 
     private void registerClassVariable(ClassDeclaration node) {
-        if(globalScope.getClassEntity(node.getName()) != null) {
-            throw new SemanticError(node.getLocation(), "The name of variable conflicts with a class");
-        }
-        if(globalScope.getScope().getFunction(node.getName()) != null) {
-            throw new SemanticError(node.getLocation(), "The name of vairable conflicts with a function");
-        }
         ClassEntity classEntity = globalScope.getClassEntity(node.getName());
         enterScope(classEntity.getScope());
         for(VariableDeclaration variableDeclaration : node.getFields()) {
@@ -208,12 +202,6 @@ public class ScopeBuilder implements ASTVistor {
 
     @Override
     public void visit(VariableDeclaration node) {
-        if(globalScope.getClassEntity(node.getName()) != null) {
-            throw new SemanticError(node.getLocation(), "The name of variable conflicts with a class");
-        }
-        if(globalScope.getScope().getFunction(node.getName()) != null) {
-            throw new SemanticError(node.getLocation(), "The name of variable conflicts with a function");
-        }
         if(node.getInit() != null) {
             node.getInit().accept(this);
         }

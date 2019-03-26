@@ -2,21 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b70593b-d050-4773-9af7-d0e2532db099" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/AST/EmptyStatement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AST/ASTVistor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AST/ASTVistor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FrontEnd/ASTBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FrontEnd/ASTBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FrontEnd/ASTPrinter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FrontEnd/ASTPrinter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Mxstar.interp" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Mxstar.interp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/MxstarBaseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/MxstarBaseListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/MxstarBaseVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/MxstarBaseVisitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/MxstarLexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/MxstarLexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/MxstarListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/MxstarListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/MxstarParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/MxstarParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/MxstarVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/MxstarVisitor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Scope/VariableEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scope/VariableEntity.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,8 +16,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1398">
-              <caret line="145" column="9" lean-forward="true" selection-start-line="145" selection-start-column="9" selection-end-line="145" selection-end-column="9" />
+            <state relative-caret-position="282">
+              <caret line="214" column="77" selection-start-line="214" selection-start-column="77" selection-end-line="214" selection-end-column="77" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#9966#9967#0" expanded="true" />
@@ -46,6 +32,28 @@
                 <element signature="e#10957#10958#0" expanded="true" />
                 <element signature="e#11016#11017#0" expanded="true" />
                 <element signature="e#11064#11065#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.bash">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/semantic.bash">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="143">
+              <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -130,15 +138,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Parser/MxstarBaseVisitor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2865">
-              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AST/ASTVistor.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="177">
@@ -148,19 +147,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Parser/Mxstar.g4">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="91" column="72" lean-forward="true" selection-start-line="91" selection-start-column="72" selection-end-line="91" selection-end-column="72" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/program.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+            <state relative-caret-position="306">
+              <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -269,8 +259,8 @@
         <option value="$PROJECT_DIR$/src/FrontEnd/ASTBuilder.java" />
         <option value="$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java" />
         <option value="$PROJECT_DIR$/src/FrontEnd/ASTPrinter.java" />
-        <option value="$PROJECT_DIR$/program.cpp" />
         <option value="$PROJECT_DIR$/src/Scope/VariableEntity.java" />
+        <option value="$PROJECT_DIR$/program.cpp" />
         <option value="$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java" />
       </list>
     </option>
@@ -347,7 +337,7 @@
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-listener" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-visitor" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/output-dir" value="C:\Users\apoll\Desktop\Mxstar-Compiler\src" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553580567007" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553581054979" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -678,7 +668,14 @@
       <option name="project" value="LOCAL" />
       <updated>1553573710401</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="laonanhongchen 我儿子">
+      <created>1553580627179</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1553580627179</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TodoView">
@@ -700,11 +697,11 @@
       <window_info id="UI Designer" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="Favorites" order="5" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="6" weight="0.16867469" />
+      <window_info active="true" content_ui="combo" id="Project" order="6" visible="true" weight="0.16800536" />
       <window_info anchor="bottom" id="Messages" order="0" weight="0.32676056" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32621083" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.35915494" />
+      <window_info anchor="bottom" id="Run" order="3" visible="true" weight="0.35915494" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.41826215" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -775,23 +772,10 @@
     <MESSAGE value="GIRLFRIEND IS HAPPY WITH ME NOW" />
     <MESSAGE value="GIRLFRIEND IS VERY HAPPY WITH ME NOW" />
     <MESSAGE value="EVERTHING IS ALL RIGHT" />
-    <option name="LAST_COMMIT_MESSAGE" value="EVERTHING IS ALL RIGHT" />
+    <MESSAGE value="laonanhongchen 我儿子" />
+    <option name="LAST_COMMIT_MESSAGE" value="laonanhongchen 我儿子" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/AST/BoolLiteral.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/AST/BreakStatement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AST/ClassDeclaration.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
@@ -1101,13 +1085,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3">
-          <caret line="7" column="34" lean-forward="true" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AST/Expression.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
@@ -1264,10 +1241,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/program.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1398">
-          <caret line="145" column="9" lean-forward="true" selection-start-line="145" selection-start-column="9" selection-end-line="145" selection-end-column="9" />
+        <state relative-caret-position="282">
+          <caret line="214" column="77" selection-start-line="214" selection-start-column="77" selection-end-line="214" selection-end-column="77" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#9966#9967#0" expanded="true" />
@@ -1286,10 +1270,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/program.cpp">
+    <entry file="file://$PROJECT_DIR$/build.bash">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/semantic.bash">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        <state relative-caret-position="143">
+          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
