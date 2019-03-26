@@ -21,7 +21,7 @@ public interface ASTVistor {
     void visit(ExprStatement node);
     void visit(VarDeclStatement node);
     void visit(BlockStatement node);
-
+    void visit(EmptyStatement node);
 
     void visit(Expression node);
     void visit(ThisExpression node);
@@ -38,6 +38,4 @@ public interface ASTVistor {
     void visit(PrefixExpression node);
     void visit(BinaryExpression node);
     void visit(AssignExpression node);
-
-
 }

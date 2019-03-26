@@ -1,14 +1,17 @@
 package Scope;
 
+import AST.Location;
 import Type.Type;
 
 public class VariableEntity extends Entity {
     private Type type;
     private boolean isGlobal;
+    private Location location;
 
     public VariableEntity() {
         type = null;
         isGlobal = false;
+        location = new Location();
     }
 
     public VariableEntity(Type type, String name) {
@@ -28,4 +31,11 @@ public class VariableEntity extends Entity {
         isGlobal = global;
     }
 
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
 }

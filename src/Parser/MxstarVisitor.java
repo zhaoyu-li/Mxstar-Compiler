@@ -1,4 +1,4 @@
-// Generated from C:/Users/apoll/Desktop/Mxstar-Complier/src/Parser\Mxstar.g4 by ANTLR 4.7.2
+// Generated from C:/Users/apoll/Desktop/Mxstar-Compiler/src/Parser\Mxstar.g4 by ANTLR 4.7.2
 package Parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -181,6 +181,13 @@ public interface MxstarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBlockStatement(MxstarParser.BlockStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code emptyStatement}
+	 * labeled alternative in {@link MxstarParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEmptyStatement(MxstarParser.EmptyStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MxstarParser#expressionList}.
 	 * @param ctx the parse tree

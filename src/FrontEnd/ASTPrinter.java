@@ -223,6 +223,11 @@ public class ASTPrinter implements ASTVistor {
     }
 
     @Override
+    public void visit(EmptyStatement node) {
+
+    }
+
+    @Override
     public void visit(Expression node) {
 
     }

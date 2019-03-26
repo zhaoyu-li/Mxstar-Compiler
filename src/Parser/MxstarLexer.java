@@ -1,4 +1,4 @@
-// Generated from C:/Users/apoll/Desktop/Mxstar-Complier/src/Parser\Mxstar.g4 by ANTLR 4.7.2
+// Generated from C:/Users/apoll/Desktop/Mxstar-Compiler/src/Parser\Mxstar.g4 by ANTLR 4.7.2
 package Parser;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;

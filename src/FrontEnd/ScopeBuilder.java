@@ -63,6 +63,7 @@ public class ScopeBuilder implements ASTVistor {
     private VariableEntity getVariableEntity (VariableDeclaration variableDeclaration) {
         VariableEntity variableEntity = new VariableEntity();
         variableEntity.setType(resolveType(variableDeclaration.getType()));
+        variableEntity.setLocation(variableDeclaration.getLocation());
         if(variableDeclaration.getType().getType().getType() == Type.types.VOID) {
             throw new SemanticError(variableDeclaration.getLocation(), "VariableDeclaration's type cannot be void");
         }
@@ -74,9 +75,9 @@ public class ScopeBuilder implements ASTVistor {
         if(curScope.getFunction(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "Duplicate FunctionDeclaration");
         }
-        /*if(globalScope.getClassEntity(node.getName()) != null) {
+        if(globalScope.getClassEntity(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "The name of function conflicts with a class");
-        }*/
+        }
         FunctionEntity functionEntity = new FunctionEntity();
         functionEntity.setName(node.getName());
         if(resolveType(node.getReturnType()) == null){
@@ -134,6 +135,12 @@ public class ScopeBuilder implements ASTVistor {
     }
 
     private void registerClassVariable(ClassDeclaration node) {
+        if(globalScope.getClassEntity(node.getName()) != null) {
+            throw new SemanticError(node.getLocation(), "The name of variable conflicts with a class");
+        }
+        if(globalScope.getScope().getFunction(node.getName()) != null) {
+            throw new SemanticError(node.getLocation(), "The name of vairable conflicts with a function");
+        }
         ClassEntity classEntity = globalScope.getClassEntity(node.getName());
         enterScope(classEntity.getScope());
         for(VariableDeclaration variableDeclaration : node.getFields()) {
@@ -201,6 +208,12 @@ public class ScopeBuilder implements ASTVistor {
 
     @Override
     public void visit(VariableDeclaration node) {
+        if(globalScope.getClassEntity(node.getName()) != null) {
+            throw new SemanticError(node.getLocation(), "The name of variable conflicts with a class");
+        }
+        if(globalScope.getScope().getFunction(node.getName()) != null) {
+            throw new SemanticError(node.getLocation(), "The name of variable conflicts with a function");
+        }
         if(node.getInit() != null) {
             node.getInit().accept(this);
         }
@@ -208,6 +221,7 @@ public class ScopeBuilder implements ASTVistor {
         variableEntity.setName(node.getName());
         variableEntity.setType(resolveType(node.getType()));
         node.getType().setType(variableEntity.getType());
+        variableEntity.setLocation(node.getLocation());
         if(node.getType().getType().getType() == Type.types.VOID) {
             throw new SemanticError(node.getLocation(), "VariableDeclaration's type cannot be void");
         }
@@ -303,6 +317,11 @@ public class ScopeBuilder implements ASTVistor {
     }
 
     @Override
+    public void visit(EmptyStatement node) {
+
+    }
+
+    @Override
     public void visit(Expression node) {
 
     }
@@ -335,9 +354,15 @@ public class ScopeBuilder implements ASTVistor {
 
     @Override
     public void visit(Identifier node) {
-        if(curScope.getRecursiveVariable(node.getName()) == null) {
+        VariableEntity variableEntity = curScope.getRecursiveVariable(node.getName());
+        if(variableEntity == null) {
             throw new SemanticError(node.getLocation(), "Cannot find identifier");
         } else {
+            if(!(variableEntity.getType() instanceof ClassType)){
+                if(variableEntity.getLocation().getLine() > node.getLocation().getLine()) {
+                    throw new SemanticError(node.getLocation(), "Cannot find identifier");
+                }
+            }
             node.setVariableEntity(curScope.getRecursiveVariable(node.getName()));
         }
         node.setType(node.getVariableEntity().getType());

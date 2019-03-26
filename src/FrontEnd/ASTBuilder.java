@@ -276,6 +276,13 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
     }
 
     @Override
+    public EmptyStatement visitEmptyStatement(EmptyStatementContext ctx) {
+        EmptyStatement emptyStatement = new EmptyStatement();
+        emptyStatement.setLocation(ctx);
+        return emptyStatement;
+    }
+
+    @Override
     public Expression visitPrimaryExpression(PrimaryExpressionContext ctx) {
         if(ctx.token == null) {
             return (Expression) ctx.expression().accept(this);

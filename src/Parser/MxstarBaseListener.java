@@ -1,4 +1,4 @@
-// Generated from C:/Users/apoll/Desktop/Mxstar-Complier/src/Parser\Mxstar.g4 by ANTLR 4.7.2
+// Generated from C:/Users/apoll/Desktop/Mxstar-Compiler/src/Parser\Mxstar.g4 by ANTLR 4.7.2
 package Parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -335,6 +335,18 @@ public class MxstarBaseListener implements MxstarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBlockStatement(MxstarParser.BlockStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEmptyStatement(MxstarParser.EmptyStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEmptyStatement(MxstarParser.EmptyStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

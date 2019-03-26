@@ -1,4 +1,4 @@
-// Generated from C:/Users/apoll/Desktop/Mxstar-Complier/src/Parser\Mxstar.g4 by ANTLR 4.7.2
+// Generated from C:/Users/apoll/Desktop/Mxstar-Compiler/src/Parser\Mxstar.g4 by ANTLR 4.7.2
 package Parser;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -295,6 +295,18 @@ public interface MxstarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBlockStatement(MxstarParser.BlockStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code emptyStatement}
+	 * labeled alternative in {@link MxstarParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterEmptyStatement(MxstarParser.EmptyStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code emptyStatement}
+	 * labeled alternative in {@link MxstarParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitEmptyStatement(MxstarParser.EmptyStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MxstarParser#expressionList}.
 	 * @param ctx the parse tree
