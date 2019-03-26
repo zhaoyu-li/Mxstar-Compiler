@@ -63,28 +63,9 @@ public class ScopeBuilder implements ASTVistor {
         }
     }
 
-    /*private Type resolveType(Type type) {
-        if(type.isPrimitiveType()) {
-            return type;
-        } else if(type.isArrayType()){
-            return ((ArrayType)type).getBaseType();
-        }
-        else if(type.isClassType()) {
-            if(globalScope.getClassEntity(type.getTypeName()) == null) {
-                return null;
-            } else {
-                ClassType classType = new ClassType(type.getTypeName());
-                classType.setClassEntity(globalScope.getClassEntity(type.getTypeName()));
-                return classType;
-            }
-        } else {
-            return null;
-        }
-    }*/
-
     private VariableEntity getVariableEntity (VariableDeclaration variableDeclaration) {
         VariableEntity variableEntity = new VariableEntity();
-        variableEntity.setType(variableDeclaration.getType().getType());
+        variableEntity.setType(resolveType(variableDeclaration.getType()));
         variableEntity.setName(variableDeclaration.getName());
         return variableEntity;
     }
@@ -98,7 +79,10 @@ public class ScopeBuilder implements ASTVistor {
         }
         FunctionEntity functionEntity = new FunctionEntity();
         functionEntity.setName(node.getName());
-        functionEntity.setReturnType(node.getReturnType().getType());
+        if(resolveType(node.getReturnType()) == null) {
+            throw new SemanticError(node.getLocation(), "Invalid return type of function");
+        }
+        functionEntity.setReturnType(resolveType(node.getReturnType()));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
         for(VariableDeclaration variableDeclaration : node.getParameters()) {
             parameters.add(getVariableEntity(variableDeclaration));
@@ -120,29 +104,47 @@ public class ScopeBuilder implements ASTVistor {
         classEntity.setScope(new Scope(globalScope.getScope()));
         node.setClassEntity(classEntity);
         enterScope(classEntity.getScope());
-        if(node.getConstructor() != null) {
-            registerFunction(node.getConstructor());
-        }
-        for(FunctionDeclaration functionDeclaration : node.getMethods()) {
-            registerFunction(functionDeclaration);
-        }
-
         VariableEntity thisVariable = new VariableEntity();
         thisVariable.setName("this");
         ClassType thisType = new ClassType(node.getName());
         thisType.setClassEntity(classEntity);
         thisVariable.setType(thisType);
         classEntity.getScope().putVariable("this", thisVariable);
-
         exitScope();
         globalScope.putClassEntity(classEntity.getName(), classEntity);
+    }
 
+    private void registerClassFunction(ClassDeclaration node) {
+        ClassEntity classEntity = globalScope.getClassEntity(node.getName());
+        enterScope(classEntity.getScope());
+        if(node.getConstructor() != null) {
+            registerFunction(node.getConstructor());
+        }
+        for(FunctionDeclaration functionDeclaration : node.getMethods()) {
+            registerFunction(functionDeclaration);
+        }
+        exitScope();
+    }
+
+    private void registerClassVariable(ClassDeclaration node) {
+        ClassEntity classEntity = globalScope.getClassEntity(node.getName());
+        enterScope(classEntity.getScope());
+        for(VariableDeclaration variableDeclaration : node.getFields()) {
+            visit(variableDeclaration);
+        }
+        exitScope();
     }
 
     @Override
     public void visit(Program node) {
         for(ClassDeclaration classDeclaration : node.getClasses()) {
             registerClass(classDeclaration);
+        }
+        for(ClassDeclaration classDeclaration : node.getClasses()) {
+            registerClassFunction(classDeclaration);
+        }
+        for(ClassDeclaration classDeclaration : node.getClasses()) {
+            registerClassVariable(classDeclaration);
         }
         for(FunctionDeclaration functionDeclaration : node.getFunctions()) {
             registerFunction(functionDeclaration);
@@ -181,9 +183,6 @@ public class ScopeBuilder implements ASTVistor {
     public void visit(ClassDeclaration node) {
         ClassEntity classEntity = globalScope.getClassEntity(node.getName());
         enterScope(classEntity.getScope());
-        for(VariableDeclaration variableDeclaration : node.getFields()) {
-            visit(variableDeclaration);
-        }
         if(node.getConstructor() != null) {
             visit(node.getConstructor());
         }
@@ -384,8 +383,7 @@ public class ScopeBuilder implements ASTVistor {
                 }
                 node.setType(node.getFuncCall().getType());
             }
-        }
-        else {
+        } else {
             throw new SemanticError(node.getLocation(), "Invalid MemberExpression");
         }
     }

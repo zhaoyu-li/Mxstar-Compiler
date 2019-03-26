@@ -188,7 +188,9 @@ public class ASTPrinter implements ASTVistor {
     public void visit(ReturnStatement node) {
         appendNewLine("ReturnStatement: " + node.getLocation().toString());
         indent();
-        node.getRet().accept(this);
+        if(node.getRet() != null){
+            node.getRet().accept(this);
+        }
         unindent();
     }
 
