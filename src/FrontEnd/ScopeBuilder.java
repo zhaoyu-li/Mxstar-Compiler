@@ -417,14 +417,10 @@ public class ScopeBuilder implements ASTVistor {
     public void visit(ArrayExpression node) {
         node.getArr().accept(this);
         node.getIdx().accept(this);
-        if(node.getArr() instanceof NewExpression) {
-            node.setType(node.getArr().getType());
-        } else{
-            if(node.getArr().getType() instanceof ArrayType){
-                node.setType(((ArrayType) node.getArr().getType()).getBaseType());
-            } else {
-                throw new SemanticError(node.getLocation(), "Expect a array type");
-            }
+        if(node.getArr().getType() instanceof ArrayType){
+            node.setType(((ArrayType) node.getArr().getType()).getBaseType());
+        } else {
+            throw new SemanticError(node.getLocation(), "Expect a array type");
         }
     }
 

@@ -426,15 +426,29 @@ public interface MxstarListener extends ParseTreeListener {
 	 */
 	void exitFuncCallExpression(MxstarParser.FuncCallExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MxstarParser#creator}.
+	 * Enter a parse tree produced by the {@code errorCreator}
+	 * labeled alternative in {@link MxstarParser#creator}.
 	 * @param ctx the parse tree
 	 */
-	void enterCreator(MxstarParser.CreatorContext ctx);
+	void enterErrorCreator(MxstarParser.ErrorCreatorContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MxstarParser#creator}.
+	 * Exit a parse tree produced by the {@code errorCreator}
+	 * labeled alternative in {@link MxstarParser#creator}.
 	 * @param ctx the parse tree
 	 */
-	void exitCreator(MxstarParser.CreatorContext ctx);
+	void exitErrorCreator(MxstarParser.ErrorCreatorContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code correctCreator}
+	 * labeled alternative in {@link MxstarParser#creator}.
+	 * @param ctx the parse tree
+	 */
+	void enterCorrectCreator(MxstarParser.CorrectCreatorContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code correctCreator}
+	 * labeled alternative in {@link MxstarParser#creator}.
+	 * @param ctx the parse tree
+	 */
+	void exitCorrectCreator(MxstarParser.CorrectCreatorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MxstarParser#funcCall}.
 	 * @param ctx the parse tree

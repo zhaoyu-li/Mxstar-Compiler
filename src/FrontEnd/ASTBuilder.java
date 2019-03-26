@@ -354,7 +354,7 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
 
     @Override
     public NewExpression visitNewExpression(NewExpressionContext ctx) {
-        return visitCreator(ctx.creator());
+        return (NewExpression) ctx.creator().accept(this);
     }
 
     @Override
@@ -395,7 +395,7 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
     }
 
     @Override
-    public NewExpression visitCreator(CreatorContext ctx) {
+    public NewExpression visitCorrectCreator(CorrectCreatorContext ctx) {
         NewExpression newExpression = new NewExpression();
         List<Expression> dimensions = new LinkedList<>();
         if(!ctx.expression().isEmpty()) {
@@ -412,6 +412,11 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
         newExpression.setTypeNode(visitBaseType(ctx.baseType()));
         newExpression.setLocation(ctx);
         return newExpression;
+    }
+
+    @Override
+    public NewExpression visitErrorCreator(ErrorCreatorContext ctx) {
+        throw new SemanticError(new Location(ctx), "Error Creator");
     }
 
     @Override
