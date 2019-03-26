@@ -159,7 +159,7 @@ public class SemanticChecker implements ASTVistor {
                 throw new SemanticError(node.getLocation(), "Invalid return type");
             }
         } else {
-            if(curFunctionEntity.getReturnType().getType() != Type.types.VOID) {
+            if(curFunctionEntity.getReturnType().getType() != Type.types.VOID && curFunctionEntity.getReturnType().getType() != Type.types.NULL) {
                 throw new SemanticError(node.getLocation(), "Invalid return type");
             }
         }

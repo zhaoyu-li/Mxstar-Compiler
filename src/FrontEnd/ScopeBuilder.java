@@ -82,9 +82,10 @@ public class ScopeBuilder implements ASTVistor {
         functionEntity.setName(node.getName());
         if(resolveType(node.getReturnType()) == null){
             if(globalScope.getClassEntity(node.getName()) != null) {
-                ClassType classType = new ClassType(node.getName());
+                /*ClassType classType = new ClassType(node.getName());
                 classType.setClassEntity(globalScope.getClassEntity(node.getName()));
-                functionEntity.setReturnType(classType);
+                functionEntity.setReturnType(classType);*/
+                functionEntity.setReturnType(new Type());
             } else {
                 throw new SemanticError(node.getLocation(), "Invalid return type of function");
             }
@@ -417,7 +418,7 @@ public class ScopeBuilder implements ASTVistor {
         node.getArr().accept(this);
         node.getIdx().accept(this);
         if(node.getArr().getType() instanceof ArrayType){
-            node.setType(((ArrayType) node.getArr().getType()).getBaseType());
+            node.setType(new ArrayType(((ArrayType) node.getArr().getType()).getBaseType()));
         } else {
             throw new SemanticError(node.getLocation(), "Expect a array type");
         }
