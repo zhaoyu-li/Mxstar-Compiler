@@ -287,6 +287,7 @@ public class SemanticChecker implements ASTVistor {
 
     @Override
     public void visit(PrefixExpression node) {
+        node.getExpr().accept(this);
         switch (node.getOp()) {
             case "++":
             case "--":
