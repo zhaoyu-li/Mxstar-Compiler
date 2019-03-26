@@ -75,7 +75,7 @@ public class SemanticChecker implements ASTVistor {
     public void visit(VariableDeclaration node) {
         if (node.getInit() != null) {
             node.getInit().accept(this);
-            if(!node.getInit().getType().match(node.getInit().getType())) {
+            if(!node.getType().getType().match(node.getInit().getType())) {
                 throw new SemanticError(node.getLocation(), "Invalid type init");
             }
         }
@@ -155,7 +155,7 @@ public class SemanticChecker implements ASTVistor {
     @Override
     public void visit(ReturnStatement node) {
         if(node.getRet() != null) {
-            if(!node.getRet().getType().match(curFunctionEntity.getReturnType())) {
+            if(!curFunctionEntity.getReturnType().match(node.getRet().getType())) {
                 throw new SemanticError(node.getLocation(), "Invalid return type");
             }
         } else {
@@ -189,27 +189,27 @@ public class SemanticChecker implements ASTVistor {
 
     @Override
     public void visit(ThisExpression node) {
-
+        node.setMutable(false);
     }
 
     @Override
     public void visit(NullLiteral node) {
-
+        node.setMutable(false);
     }
 
     @Override
     public void visit(BoolLiteral node) {
-
+        node.setMutable(false);
     }
 
     @Override
     public void visit(IntLiteral node) {
-
+        node.setMutable(false);
     }
 
     @Override
     public void visit(StringLiteral node) {
-
+        node.setMutable(false);
     }
 
     @Override
@@ -220,10 +220,14 @@ public class SemanticChecker implements ASTVistor {
     @Override
     public void visit(MemberExpression node) {
         node.getExpr().accept(this);
+        if(node.getExpr().getType() instanceof ArrayType) {
+            node.setMutable(false);
+        }
         if(node.getMember() != null) {
             node.getMember().accept(this);
         } else {
             node.getFuncCall().accept(this);
+            node.setMutable(false);
         }
     }
 
@@ -240,6 +244,7 @@ public class SemanticChecker implements ASTVistor {
                 throw new SemanticError(node.getLocation(), "Invalid paramenter type");
             }
         }
+        node.setMutable(false);
     }
 
     @Override
@@ -257,15 +262,22 @@ public class SemanticChecker implements ASTVistor {
                 if(node.getExpr().getType().getType() != Type.types.INT) {
                     throw new SemanticError(node.getLocation(), "Invalid SuffixExpression");
                 }
+                if(!node.getExpr().isMutable()) {
+                    throw new SemanticError(node.getLocation(), "Invalid immutable operator");
+                }
                 break;
             case "--":
                 if(node.getExpr().getType().getType() != Type.types.INT) {
                     throw new SemanticError(node.getLocation(), "Invalid SuffixExpression");
                 }
+                if(!node.getExpr().isMutable()) {
+                    throw new SemanticError(node.getLocation(), "Invalid immutable operator");
+                }
                 break;
             default:
                 throw new SemanticError(node.getLocation(), "Invalid SuffixExpression");
         }
+        node.setMutable(false);
     }
 
     @Override
@@ -279,6 +291,9 @@ public class SemanticChecker implements ASTVistor {
                 if(node.getExpr().getType().getType() != Type.types.INT) {
                     throw new SemanticError(node.getLocation(), "Invalid PrefixExpression");
                 }
+                if(!node.getExpr().isMutable()) {
+                    throw new SemanticError(node.getLocation(), "Invalid immutable operator");
+                }
                 break;
             case "!":
                 if(node.getExpr().getType().getType() != Type.types.BOOL) {
@@ -288,6 +303,7 @@ public class SemanticChecker implements ASTVistor {
             default:
                 throw new SemanticError(node.getLocation(), "Invalid PrefixExpression");
         }
+        node.setMutable(false);
     }
 
     @Override
@@ -332,6 +348,7 @@ public class SemanticChecker implements ASTVistor {
             default:
                 throw new SemanticError(node.getLocation(), "Invalid BinaryExpression");
         }
+        node.setMutable(false);
     }
 
     @Override
@@ -344,6 +361,10 @@ public class SemanticChecker implements ASTVistor {
         if(node.getLhs().getType().getType() == Type.types.VOID) {
             throw new SemanticError(node.getLocation(), "Cannot assign a void type");
         }
+        if(!node.getLhs().isMutable()) {
+            throw new SemanticError(node.getLocation(), "Cannot assign a immutable type");
+        }
+        node.setMutable(false);
     }
 
 }
