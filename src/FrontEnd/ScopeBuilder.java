@@ -85,7 +85,11 @@ public class ScopeBuilder implements ASTVistor {
                 /*ClassType classType = new ClassType(node.getName());
                 classType.setClassEntity(globalScope.getClassEntity(node.getName()));
                 functionEntity.setReturnType(classType);*/
-                functionEntity.setReturnType(new Type());
+                if(curScope == globalScope.getClassEntity(node.getName()).getScope()) {
+                    functionEntity.setReturnType(new Type());
+                } else {
+                    throw new SemanticError(node.getLocation(), "Invalid type of function");
+                }
             } else {
                 throw new SemanticError(node.getLocation(), "Invalid return type of function");
             }
