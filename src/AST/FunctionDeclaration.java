@@ -12,10 +12,10 @@ public class FunctionDeclaration extends Declaration {
     private FunctionEntity functionEntity;
 
     public FunctionDeclaration() {
-        returnType = new TypeNode();
-        parameters = new LinkedList<>();
-        body = new LinkedList<>();
-        functionEntity = new FunctionEntity();
+        returnType = null;
+        parameters = null;
+        body = null;
+        functionEntity = null;
     }
 
     public void setFunctionEntity(FunctionEntity functionEntity) {

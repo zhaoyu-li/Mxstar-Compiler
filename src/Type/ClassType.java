@@ -11,12 +11,6 @@ public class ClassType extends Type {
         classEntity = new ClassEntity();
     }
 
-    public ClassType(String name, ClassEntity classEntity) {
-        type = types.CLASS;
-        typeName = name;
-        this.classEntity = classEntity;
-    }
-
     public void setClassEntity(ClassEntity classEntity) {
         this.classEntity = classEntity;
     }

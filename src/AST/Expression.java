@@ -4,10 +4,10 @@ import Type.Type;
 
 public abstract class Expression extends Node {
     protected Type type;
-    protected boolean isMutable;
+    private boolean isMutable;
 
     public Expression() {
-        type = new Type();
+        type = null;
         isMutable = true;
     }
 

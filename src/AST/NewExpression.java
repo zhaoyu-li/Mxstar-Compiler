@@ -9,8 +9,8 @@ public class NewExpression extends Expression {
     private int numDimension;
 
     public NewExpression() {
-        typeNode = new TypeNode();
-        dimensions = new LinkedList<>();
+        typeNode = null;
+        dimensions = null;
         numDimension = 0;
     }
 

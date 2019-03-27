@@ -8,6 +8,10 @@ public class ArrayType extends Type {
         this.baseType = basetype;
     }
 
+    public Type getBaseType() {
+        return baseType;
+    }
+
     @Override
     public boolean match(Type other) {
         if(other instanceof ArrayType) {
@@ -18,9 +22,4 @@ public class ArrayType extends Type {
             return false;
         }
     }
-
-    public Type getBaseType() {
-        return baseType;
-    }
-
 }

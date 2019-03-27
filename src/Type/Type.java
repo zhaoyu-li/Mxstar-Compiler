@@ -4,10 +4,8 @@ public class Type {
     public enum types {
         VOID, INT, BOOL, STRING, CLASS, ARRAY, NULL
     }
-
     protected types type;
     protected String typeName;
-    protected int allocsize;
 
     public Type() {
         type = types.NULL;

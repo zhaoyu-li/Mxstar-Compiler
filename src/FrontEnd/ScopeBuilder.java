@@ -53,9 +53,7 @@ public class ScopeBuilder implements ASTVistor {
             TypeNode newType = new TypeNode(typeNode.getBaseType().getType());
             return new ArrayType(resolveType(newType));
         } else {
-            ArrayTypeNode newType = new ArrayTypeNode();
-            newType.setBaseType(typeNode.getBaseType());
-            newType.setDimension(dimension - 1);
+            ArrayTypeNode newType = new ArrayTypeNode(typeNode.getBaseType(), dimension - 1);
             return new ArrayType(resolveType(newType));
         }
     }

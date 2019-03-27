@@ -54,8 +54,8 @@ public class ASTBuilder extends MxstarBaseVisitor<Object> {
         List<FunctionDeclaration> methods = new LinkedList<>();
         if(!ctx.constructorDeclaration().isEmpty()){
             classDeclaration.setConstructor(visitConstructorDeclaration(ctx.constructorDeclaration(0)));
-            for(int i = 1; i < ctx.constructorDeclaration().size(); i++) {
-                throw new SemanticError(new Location(ctx.constructorDeclaration(i)), "Invalid number of constuctor");
+            if(ctx.constructorDeclaration().size() > 1) {
+                throw new SemanticError(new Location(ctx.constructorDeclaration(1)), "Invalid number of constuctor");
             }
         }
         for(FieldDeclarationContext c : ctx.fieldDeclaration()) {

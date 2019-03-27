@@ -9,20 +9,17 @@ public class Scope {
     private Map<String, VariableEntity> variables;
     private Map<String, FunctionEntity> functions;
     private Scope parent;
-    private List<Scope> children;
 
     public Scope() {
         this.variables = new LinkedHashMap<String, VariableEntity>();
         this.functions = new LinkedHashMap<String, FunctionEntity>();
         this.parent = null;
-        this.children = new LinkedList<Scope>();
     }
 
     public Scope(Scope parent) {
         this.variables = new LinkedHashMap<String, VariableEntity>();
         this.functions = new LinkedHashMap<String, FunctionEntity>();
         this.parent = parent;
-        this.children = new LinkedList<Scope>();
     }
 
     public Scope getParent() {

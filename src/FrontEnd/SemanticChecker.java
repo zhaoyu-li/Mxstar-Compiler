@@ -1,18 +1,14 @@
 package FrontEnd;
 
 import AST.*;
-import Scope.*;;
+import Scope.*;
 import Type.*;
 import Utility.SemanticError;
-
-import java.sql.Types;
-import java.util.LinkedList;
-import java.util.List;
 
 public class SemanticChecker implements ASTVistor {
     private GlobalScopeBuilder globalScope;
     private FunctionEntity curFunctionEntity;
-    int loop;
+    private int loop;
 
     public SemanticChecker(GlobalScopeBuilder globalScope) {
         this.globalScope = globalScope;
@@ -306,7 +302,7 @@ public class SemanticChecker implements ASTVistor {
             default:
                 throw new SemanticError(node.getLocation(), "Invalid PrefixExpression");
         }
-        if(node.getOp() != "++" && node.getOp() != "--") {
+        if(!node.getOp().equals("++") && !node.getOp().equals("--")) {
             node.setMutable(false);
         }
     }

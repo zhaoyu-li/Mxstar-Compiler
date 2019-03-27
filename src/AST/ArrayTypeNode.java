@@ -6,12 +6,6 @@ public class ArrayTypeNode extends TypeNode {
     private TypeNode baseType;
     private int dimension;
 
-    public ArrayTypeNode() {
-        type.setType(Type.types.ARRAY);
-        baseType = new TypeNode();
-        dimension = 1;
-    }
-
     public ArrayTypeNode(TypeNode typeNode, int dimension) {
         type.setType(Type.types.ARRAY);
         location = typeNode.getLocation();

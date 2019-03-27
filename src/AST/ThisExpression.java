@@ -6,7 +6,7 @@ public class ThisExpression extends Expression {
     private VariableEntity variableEntity;
 
     public ThisExpression() {
-        variableEntity = new VariableEntity();
+        variableEntity = null;
     }
 
     public void setVariableEntity(VariableEntity variableEntity) {

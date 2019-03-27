@@ -13,9 +13,9 @@ public class ClassDeclaration extends Declaration {
 
     public ClassDeclaration() {
         constructor = null;
-        fields = new LinkedList<>();
-        methods = new LinkedList<>();
-        classEntity = new ClassEntity();
+        fields = null;
+        methods = null;
+        classEntity = null;
     }
 
     public void setConstructor(FunctionDeclaration constructor) {
