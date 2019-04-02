@@ -42,9 +42,9 @@ public class Main {
         Program program = astBuilder.getProgram();
 
         //ASTPrinter astPrinter = new ASTPrinter();
-
         //astPrinter.visit(program);
         //astPrinter.print();
+
         ScopeBuilder scopeBuilder = new ScopeBuilder();
         scopeBuilder.visit(program);
         SemanticChecker semanticChecker = new SemanticChecker(scopeBuilder.getGlobalScope());
