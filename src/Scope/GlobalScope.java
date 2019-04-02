@@ -6,18 +6,12 @@ import java.util.*;
 
 public class GlobalScope extends Scope {
     private Map<String, ClassEntity> classes;
-    private ClassEntity stringEntity;
-    private ClassEntity arrayEntity;
 
     public GlobalScope() {
-        stringEntity = new ClassEntity();
-        arrayEntity = new ClassEntity();
         classes = new HashMap<String, ClassEntity>();
         putGlobalBuildinFunction();
         putStringBuildinFunction();
         putArrayBuildinFunciotn();
-        classes.put("string", stringEntity);
-        classes.put("array", arrayEntity);
     }
 
     public void putClassEntity(String name, ClassEntity classEntity) {
@@ -133,13 +127,17 @@ public class GlobalScope extends Scope {
     }
 
     private void putStringBuildinFunction() {
+        ClassEntity stringEntity = new ClassEntity();
         stringEntity.getScope().putFunction("length", stringLengthFunction());
         stringEntity.getScope().putFunction("substring", stringSubstringFunction());
         stringEntity.getScope().putFunction("parseInt", stringParseIntFunction());
         stringEntity.getScope().putFunction("ord", stringOrdFunction());
+        classes.put("string", stringEntity);
     }
 
     private void putArrayBuildinFunciotn() {
+        ClassEntity arrayEntity = new ClassEntity();
         arrayEntity.getScope().putFunction("size", arraySizeFunction());
+        classes.put("array", arrayEntity);
     }
 }
