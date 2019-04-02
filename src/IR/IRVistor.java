@@ -17,6 +17,7 @@ public interface IRVistor {
     void visit(Phi node);
     void visit(Load node);
     void visit(Store node);
+    void visit(StackSlot node);
 
     void visit(Call node);
     void visit(BinaryOperation node);
