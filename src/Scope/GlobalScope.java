@@ -1,18 +1,15 @@
-package FrontEnd;
+package Scope;
 
-import Scope.*;
 import Type.*;
 
 import java.util.*;
 
-public class GlobalScopeBuilder {
+public class GlobalScope extends Scope {
     private Map<String, ClassEntity> classes;
-    private Scope scope;
     private ClassEntity stringEntity;
     private ClassEntity arrayEntity;
 
-    public GlobalScopeBuilder() {
-        scope = new Scope();
+    public GlobalScope() {
         stringEntity = new ClassEntity();
         arrayEntity = new ClassEntity();
         classes = new HashMap<String, ClassEntity>();
@@ -21,10 +18,6 @@ public class GlobalScopeBuilder {
         putArrayBuildinFunciotn();
         classes.put("string", stringEntity);
         classes.put("array", arrayEntity);
-    }
-
-    public Scope getScope() {
-        return scope;
     }
 
     public void putClassEntity(String name, ClassEntity classEntity) {
@@ -132,11 +125,11 @@ public class GlobalScopeBuilder {
     }
 
     private void putGlobalBuildinFunction() {
-        scope.putFunction("print", globalfunction());
-        scope.putFunction("println", globalPrintlnFunction());
-        scope.putFunction("getString", globalGetStringFunction());
-        scope.putFunction("getInt", globalGetIntFunction());
-        scope.putFunction("toString", globalToStringFunction());
+        putFunction("print", globalfunction());
+        putFunction("println", globalPrintlnFunction());
+        putFunction("getString", globalGetStringFunction());
+        putFunction("getInt", globalGetIntFunction());
+        putFunction("toString", globalToStringFunction());
     }
 
     private void putStringBuildinFunction() {

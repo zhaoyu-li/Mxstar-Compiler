@@ -5,18 +5,19 @@ import IR.IRVistor;
 import IR.Operand.Address;
 import IR.Operand.Operand;
 
-public class Move extends Instruction {
-    private Address dest;
+
+public class Load extends Instruction {
+    private Address dst;
     private Operand src;
 
-    public Move(BasicBlock bb, Address dest, Operand src) {
+    public Load(BasicBlock bb, Address dst, Operand src) {
         super(bb);
-        this.dest = dest;
+        this.dst = dst;
         this.src = src;
     }
 
-    public Address getDest() {
-        return dest;
+    public Address getDst() {
+        return dst;
     }
 
     public Operand getSrc() {

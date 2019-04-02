@@ -9,15 +9,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ScopeBuilder implements ASTVistor {
-    private GlobalScopeBuilder globalScope;
+    private GlobalScope globalScope;
     private Scope curScope;
 
     public ScopeBuilder() {
-        globalScope = new GlobalScopeBuilder();
-        curScope = globalScope.getScope();
+        globalScope = new GlobalScope();
+        curScope = globalScope;
     }
 
-    public GlobalScopeBuilder getGlobalScope() {
+    public GlobalScope getGlobalScope() {
         return globalScope;
     }
 
@@ -104,12 +104,12 @@ public class ScopeBuilder implements ASTVistor {
         if(globalScope.getClassEntity(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "Duplicate ClassDeclaration");
         }
-        if(globalScope.getScope().getFunction(node.getName()) != null) {
+        if(globalScope.getFunction(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "The name of class conflicts with a function");
         }
         ClassEntity classEntity = new ClassEntity();
         classEntity.setName(node.getName());
-        classEntity.setScope(new Scope(globalScope.getScope()));
+        classEntity.setScope(new Scope(globalScope));
         node.setClassEntity(classEntity);
         enterScope(classEntity.getScope());
         VariableEntity thisVariable = new VariableEntity();
@@ -213,7 +213,7 @@ public class ScopeBuilder implements ASTVistor {
         if(node.getType().getType().getType() == Type.types.VOID) {
             throw new SemanticError(node.getLocation(), "VariableDeclaration's type cannot be void");
         }
-        if(curScope == globalScope.getScope()) {
+        if(curScope == globalScope) {
             variableEntity.setGlobal(true);
         }
         if(curScope.getVariable(node.getName()) != null) {

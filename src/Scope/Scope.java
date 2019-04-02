@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Scope {
-    private Map<String, VariableEntity> variables;
-    private Map<String, FunctionEntity> functions;
+    protected Map<String, VariableEntity> variables;
+    protected Map<String, FunctionEntity> functions;
     private Scope parent;
 
     public Scope() {

@@ -13,7 +13,12 @@ public interface IRVistor {
     void visit(CJump node);
     void visit(Return node);
     void visit(Allocate node);
+    void visit(Move node);
+    void visit(Phi node);
+    void visit(Load node);
+    void visit(Store node);
 
     void visit(Call node);
     void visit(BinaryOperation node);
+    void visit(UnaryOperation node);
 }

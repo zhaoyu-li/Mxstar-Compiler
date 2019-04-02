@@ -5,17 +5,17 @@ import IR.IRVistor;
 import IR.Operand.Address;
 
 public class Allocate extends Instruction {
-    private Address dest;
+    private Address dst;
     private int size;
 
-    public Allocate(BasicBlock bb, Address dest, int size) {
+    public Allocate(BasicBlock bb, Address dst, int size) {
         super(bb);
-        this.dest = dest;
+        this.dst = dst;
         this.size = size;
     }
 
-    public Address getDest() {
-        return dest;
+    public Address getDst() {
+        return dst;
     }
 
     public int getSize() {

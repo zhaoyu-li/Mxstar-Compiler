@@ -1,26 +1,33 @@
 package IR.Instruction;
 
 import IR.*;
+import IR.Operand.Address;
 import IR.Operand.Operand;
 
 import java.util.List;
 
 public class Call extends Instruction {
-    private Function function;
-    private List<Operand> parameters;
+    private Address dest;
+    private Function func;
+    private List<Operand> args;
 
-    public Call(BasicBlock bb, Function function, List<Operand> parameters) {
+    public Call(BasicBlock bb, Address dest, Function func, List<Operand> args) {
         super(bb);
-        this.function = function;
-        this.parameters = parameters;
+        this.dest = dest;
+        this.func = func;
+        this.args = args;
     }
 
-    public Function getFunction() {
-        return function;
+    public Address getDest() {
+        return dest;
     }
 
-    public List<Operand> getParameters() {
-        return parameters;
+    public Function getFunc() {
+        return func;
+    }
+
+    public List<Operand> getArgs() {
+        return args;
     }
 
     @Override

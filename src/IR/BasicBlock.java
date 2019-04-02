@@ -4,13 +4,13 @@ import IR.Instruction.Instruction;
 
 public class BasicBlock {
     private String name;
-    private Function function;
+    private Function func;
     private Instruction head;
     private Instruction tail;
 
     public BasicBlock() {
         name = null;
-        function = null;
+        func = null;
         head = null;
         tail = null;
     }

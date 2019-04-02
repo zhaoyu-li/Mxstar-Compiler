@@ -2,22 +2,52 @@ package IR.Instruction;
 
 import IR.BasicBlock;
 import IR.IRVistor;
+import IR.Operand.Register;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class Instruction {
     private BasicBlock bb;
     private Instruction prev;
     private Instruction next;
+    private boolean removed;
+    protected Set<Register> useRegs;
 
     public Instruction() {
         bb = null;
         prev = null;
         next = null;
+        removed = false;
+        useRegs = new HashSet<>();
     }
 
     public Instruction(BasicBlock bb) {
         this.bb = bb;
         prev = null;
         next = null;
+        removed = false;
+        useRegs = new HashSet<>();
+    }
+
+    public BasicBlock getBB() {
+        return bb;
+    }
+
+    public Instruction getPrev() {
+        return prev;
+    }
+
+    public Instruction getNext() {
+        return next;
+    }
+
+    public Set<Register> getUseRegs() {
+        return useRegs;
+    }
+
+    public boolean isRemoved() {
+        return removed;
     }
 
     public void prepend(Instruction inst) {
@@ -47,20 +77,34 @@ public abstract class Instruction {
     }
 
     public void remove() {
-        if(prev == null && next == null) {
-            bb.setHead(null);
-            bb.setTail(null);
-        } else if(prev == null) {
+        if (prev == null) {
             bb.setHead(next);
-            next.prev = null;
-        } else if(next == null) {
-            bb.setTail(prev);
-            prev.next = null;
         } else {
             prev.next = next;
+        }
+        if (next == null) {
+            bb.setTail(prev);
+        } else {
             next.prev = prev;
         }
     }
+
+    public void replace(Instruction inst) {
+        inst.prev = prev;
+        inst.next = next;
+        if(prev == null) {
+            bb.setHead(inst);
+        } else {
+            prev.next = inst;
+        }
+        if(next == null) {
+            bb.setTail(inst);
+        } else {
+            next.prev = inst;
+        }
+    }
+
+
 
     public abstract void accept(IRVistor vistor);
 }

@@ -6,18 +6,18 @@ import Type.*;
 import Utility.SemanticError;
 
 public class SemanticChecker implements ASTVistor {
-    private GlobalScopeBuilder globalScope;
+    private GlobalScope globalScope;
     private FunctionEntity curFunctionEntity;
     private int loop;
 
-    public SemanticChecker(GlobalScopeBuilder globalScope) {
+    public SemanticChecker(GlobalScope globalScope) {
         this.globalScope = globalScope;
         curFunctionEntity = null;
         loop = 0;
     }
 
     private void checkMainFunction() {
-        FunctionEntity mainFunction = globalScope.getScope().getFunction("main");
+        FunctionEntity mainFunction = globalScope.getFunction("main");
         if(mainFunction == null) {
             throw new SemanticError(new Location(0,0), "Cannot find main function");
         } else {
