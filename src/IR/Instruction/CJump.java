@@ -3,6 +3,7 @@ package IR.Instruction;
 import IR.BasicBlock;
 import IR.IRVistor;
 import IR.Operand.Operand;
+import IR.Operand.Register;
 
 public class CJump extends Instruction {
     public enum CompareOp {
@@ -23,6 +24,7 @@ public class CJump extends Instruction {
         this.rhs = rhs;
         this.thenBB = thenBB;
         this.elseBB = elseBB;
+        getUsedRegs();;
     }
 
     public CompareOp getOp() {
@@ -43,6 +45,12 @@ public class CJump extends Instruction {
 
     public BasicBlock getThenBB() {
         return thenBB;
+    }
+
+    public void getUsedRegs() {
+        usedRegs.clear();
+        if(lhs instanceof Register) usedRegs.add((Register) lhs);
+        if(rhs instanceof Register) usedRegs.add((Register) rhs);
     }
 
     @Override

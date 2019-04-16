@@ -1,24 +1,22 @@
 package Scope;
 
+import IR.Function;
 import Type.Type;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FunctionEntity extends Entity {
     private Type returnType;
     private List<VariableEntity> parameters;
     private Map<String, VariableEntity> variables;
-    private Map<String, VariableEntity> globalVariables;
+    private HashSet<VariableEntity> globalVariables;
     private Scope scope;
 
     public FunctionEntity() {
         returnType = new Type();
-        parameters = new LinkedList<VariableEntity>();
-        variables = new HashMap<String, VariableEntity>();
-        globalVariables = new HashMap<String, VariableEntity>();
+        parameters = new LinkedList<>();
+        variables = new HashMap<>();
+        globalVariables = new HashSet<>();
         scope = new Scope();
     }
 
@@ -46,11 +44,11 @@ public class FunctionEntity extends Entity {
         return variables;
     }
 
-    public void setGlobalVariables(Map<String, VariableEntity> globalVariables) {
-        this.globalVariables = globalVariables;
+    public void addGlobalVariable(VariableEntity globalVariable) {
+        globalVariables.add(globalVariable);
     }
 
-    public Map<String, VariableEntity> getGlobalVariables() {
+    public HashSet<VariableEntity> getGlobalVariables() {
         return globalVariables;
     }
 

@@ -4,6 +4,7 @@ import IR.BasicBlock;
 import IR.IRVistor;
 import IR.Operand.Address;
 import IR.Operand.Operand;
+import IR.Operand.Register;
 
 
 public class Load extends Instruction {
@@ -14,6 +15,7 @@ public class Load extends Instruction {
         super(bb);
         this.dst = dst;
         this.src = src;
+        getUsedRegs();
     }
 
     public Address getDst() {
@@ -22,6 +24,11 @@ public class Load extends Instruction {
 
     public Operand getSrc() {
         return src;
+    }
+
+    public void getUsedRegs() {
+        usedRegs.clear();
+        if(src instanceof Register) usedRegs.add((Register) src);
     }
 
     @Override

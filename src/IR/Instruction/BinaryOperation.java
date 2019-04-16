@@ -4,26 +4,28 @@ import IR.BasicBlock;
 import IR.IRVistor;
 import IR.Operand.Address;
 import IR.Operand.Operand;
+import IR.Operand.Register;
 
 public class BinaryOperation extends Instruction {
     public enum BinaryOp {
         ADD, SUB, MUL, DIV, MOD, SAL, SAR, AND, OR, XOR
     }
-    private Address dest;
+    private Address dst;
     private BinaryOp op;
     private Operand lhs;
     private Operand rhs;
 
-    public BinaryOperation(BasicBlock bb, Address dest, BinaryOp op, Operand lhs, Operand rhs) {
+    public BinaryOperation(BasicBlock bb, Address dst, BinaryOp op, Operand lhs, Operand rhs) {
         super(bb);
-        this.dest = dest;
+        this.dst = dst;
         this.op = op;
         this.lhs = lhs;
         this.rhs = rhs;
+        getUsedRegs();
     }
 
-    public Address getDest() {
-        return dest;
+    public Address getdst() {
+        return dst;
     }
 
     public BinaryOp getOp() {
@@ -36,6 +38,12 @@ public class BinaryOperation extends Instruction {
 
     public Operand getRhs() {
         return rhs;
+    }
+
+    public void getUsedRegs() {
+        usedRegs.clear();
+        if(lhs instanceof Register) usedRegs.add((Register) lhs);
+        if(rhs instanceof Register) usedRegs.add((Register) rhs);
     }
 
     @Override

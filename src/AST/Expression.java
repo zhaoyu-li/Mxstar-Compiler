@@ -1,5 +1,6 @@
 package AST;
 
+import IR.Operand.Operand;
 import Type.Type;
 
 public abstract class Expression extends Node {
@@ -26,4 +27,5 @@ public abstract class Expression extends Node {
     public boolean isMutable() {
         return isMutable;
     }
+
 }

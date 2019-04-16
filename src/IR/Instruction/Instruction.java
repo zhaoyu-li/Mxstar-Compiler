@@ -4,34 +4,32 @@ import IR.BasicBlock;
 import IR.IRVistor;
 import IR.Operand.Register;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Instruction {
     private BasicBlock bb;
     private Instruction prev;
     private Instruction next;
     private boolean removed;
-    protected Set<Register> useRegs;
-
-    public Instruction() {
-        bb = null;
-        prev = null;
-        next = null;
-        removed = false;
-        useRegs = new HashSet<>();
-    }
+    protected List<Register> usedRegs;
+    protected List<Register> definedRegs;
 
     public Instruction(BasicBlock bb) {
         this.bb = bb;
         prev = null;
         next = null;
         removed = false;
-        useRegs = new HashSet<>();
+        usedRegs = new ArrayList<>();
+        definedRegs = new ArrayList<>();
     }
 
     public BasicBlock getBB() {
         return bb;
+    }
+
+    public void setPrev(Instruction prev) {
+        this.prev = prev;
     }
 
     public Instruction getPrev() {
@@ -42,12 +40,8 @@ public abstract class Instruction {
         return next;
     }
 
-    public Set<Register> getUseRegs() {
-        return useRegs;
-    }
-
-    public boolean isRemoved() {
-        return removed;
+    public void setNext(Instruction next) {
+        this.next = next;
     }
 
     public void prepend(Instruction inst) {
@@ -77,6 +71,7 @@ public abstract class Instruction {
     }
 
     public void remove() {
+        removed = true;
         if (prev == null) {
             bb.setHead(next);
         } else {
@@ -104,7 +99,9 @@ public abstract class Instruction {
         }
     }
 
-
+    public boolean isRemoved() {
+        return removed;
+    }
 
     public abstract void accept(IRVistor vistor);
 }

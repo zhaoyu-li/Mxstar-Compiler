@@ -11,10 +11,12 @@ import java.util.List;
 public class ScopeBuilder implements ASTVistor {
     private GlobalScope globalScope;
     private Scope curScope;
+    private String curClassName;
 
     public ScopeBuilder() {
         globalScope = new GlobalScope();
         curScope = globalScope;
+        curClassName = null;
     }
 
     public GlobalScope getGlobalScope() {
@@ -77,7 +79,11 @@ public class ScopeBuilder implements ASTVistor {
             throw new SemanticError(node.getLocation(), "The name of function conflicts with a class");
         }
         FunctionEntity functionEntity = new FunctionEntity();
-        functionEntity.setName(node.getName());
+        if(curClassName == null) {
+            functionEntity.setName(node.getName());
+        } else {
+            functionEntity.setName(curClassName + '.' + node.getName());
+        }
         if(resolveType(node.getReturnType()) == null){ //constructor
             if(globalScope.getClassEntity(node.getName()) != null) {
                 if(curScope == globalScope.getClassEntity(node.getName()).getScope()) {
@@ -97,7 +103,7 @@ public class ScopeBuilder implements ASTVistor {
         }
         functionEntity.setParameters(parameters);
         node.setFunctionEntity(functionEntity);
-        curScope.putFunction(functionEntity.getName(), functionEntity);
+        curScope.putFunction(node.getName(), functionEntity);
     }
 
     private void registerClass(ClassDeclaration node) {
@@ -111,6 +117,7 @@ public class ScopeBuilder implements ASTVistor {
         classEntity.setName(node.getName());
         classEntity.setScope(new Scope(globalScope));
         node.setClassEntity(classEntity);
+        curClassName = classEntity.getName();
         enterScope(classEntity.getScope());
         VariableEntity thisVariable = new VariableEntity();
         thisVariable.setName("this");
@@ -119,11 +126,13 @@ public class ScopeBuilder implements ASTVistor {
         thisVariable.setType(thisType);
         classEntity.getScope().putVariable("this", thisVariable);
         exitScope();
+        curClassName = null;
         globalScope.putClassEntity(classEntity.getName(), classEntity);
     }
 
     private void registerClassFunction(ClassDeclaration node) {
         ClassEntity classEntity = globalScope.getClassEntity(node.getName());
+        curClassName = classEntity.getName();
         enterScope(classEntity.getScope());
         if(node.getConstructor() != null) {
             registerFunction(node.getConstructor());
@@ -132,6 +141,7 @@ public class ScopeBuilder implements ASTVistor {
             registerFunction(functionDeclaration);
         }
         exitScope();
+        curClassName = null;
     }
 
     private void registerClassVariable(ClassDeclaration node) {
@@ -221,6 +231,7 @@ public class ScopeBuilder implements ASTVistor {
         } else {
             curScope.putVariable(variableEntity.getName(), variableEntity);
         }
+        node.setVariableEntity(variableEntity);
     }
 
     @Override

@@ -5,7 +5,6 @@ import Scope.VariableEntity;
 public class VariableDeclaration extends Declaration {
     private TypeNode type;
     private Expression init;
-
     private VariableEntity variableEntity;
 
     public VariableDeclaration() {
@@ -34,6 +33,14 @@ public class VariableDeclaration extends Declaration {
 
     public void setInit(Expression init) {
         this.init = init;
+    }
+
+    public void setVariableEntity(VariableEntity variableEntity) {
+        this.variableEntity = variableEntity;
+    }
+
+    public VariableEntity getVariableEntity() {
+        return variableEntity;
     }
 
     @Override

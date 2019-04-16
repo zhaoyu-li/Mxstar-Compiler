@@ -4,23 +4,30 @@ import IR.BasicBlock;
 import IR.IRVistor;
 import IR.Operand.Address;
 import IR.Operand.Operand;
+import IR.Operand.Register;
 
 public class Move extends Instruction {
-    private Address dest;
+    private Address dst;
     private Operand src;
 
-    public Move(BasicBlock bb, Address dest, Operand src) {
+    public Move(BasicBlock bb, Address dst, Operand src) {
         super(bb);
-        this.dest = dest;
+        this.dst = dst;
         this.src = src;
+        getUsedRegs();
     }
 
-    public Address getDest() {
-        return dest;
+    public Address getdst() {
+        return dst;
     }
 
     public Operand getSrc() {
         return src;
+    }
+
+    public void getUsedRegs() {
+        usedRegs.clear();
+        if(src instanceof Register) usedRegs.add((Register) src);
     }
 
     @Override

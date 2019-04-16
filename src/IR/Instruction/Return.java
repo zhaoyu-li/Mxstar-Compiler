@@ -3,17 +3,11 @@ package IR.Instruction;
 import IR.BasicBlock;
 import IR.IRVistor;
 import IR.Operand.Operand;
+import IR.Operand.Register;
 
 public class Return extends Instruction {
-    private Operand ret;
-
-    public Return(BasicBlock bb, Operand ret) {
+    public Return(BasicBlock bb) {
         super(bb);
-        this.ret = ret;
-    }
-
-    public Operand getRet() {
-        return ret;
     }
 
     @Override

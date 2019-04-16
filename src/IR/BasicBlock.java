@@ -4,15 +4,23 @@ import IR.Instruction.Instruction;
 
 public class BasicBlock {
     private String name;
-    private Function func;
+    private Function function;
     private Instruction head;
     private Instruction tail;
 
     public BasicBlock() {
         name = null;
-        func = null;
+        function = null;
         head = null;
         tail = null;
+    }
+
+    public BasicBlock(String name, Function function) {
+        this.name = name;
+        this.function = function;
+        head = null;
+        tail = null;
+
     }
 
     public void setName(String name) {
@@ -37,5 +45,20 @@ public class BasicBlock {
 
     public Instruction getTail() {
         return tail;
+    }
+
+    public void addPrevInst(Instruction inst) {
+        head.prepend(inst);
+    }
+
+    public void addNextInst(Instruction inst) {
+        if(head == null) {
+            inst.setPrev(null);
+            inst.setNext(null);
+            head = inst;
+            tail = inst;
+        } else {
+            tail.append(inst);
+        }
     }
 }

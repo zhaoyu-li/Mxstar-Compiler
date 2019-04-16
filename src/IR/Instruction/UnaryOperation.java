@@ -4,24 +4,26 @@ import IR.BasicBlock;
 import IR.IRVistor;
 import IR.Operand.Address;
 import IR.Operand.Operand;
+import IR.Operand.Register;
 
 public class UnaryOperation extends Instruction {
     public enum UnaryOp {
         NEG, NOT, INC, DEC
     }
-    private Address dest;
+    private Address dst;
     private UnaryOp op;
     private Operand src;
 
-    public UnaryOperation(BasicBlock bb, Address dest, UnaryOp op, Operand src) {
+    public UnaryOperation(BasicBlock bb, Address dst, UnaryOp op, Operand src) {
         super(bb);
-        this.dest = dest;
+        this.dst = dst;
         this.op = op;
         this.src = src;
+        getUsedRegs();
     }
 
-    public Address getDest() {
-        return dest;
+    public Address getdst() {
+        return dst;
     }
 
     public UnaryOp getOp() {
@@ -30,6 +32,11 @@ public class UnaryOperation extends Instruction {
 
     public Operand getSrc() {
         return src;
+    }
+
+    public void getUsedRegs() {
+        usedRegs.clear();
+        if(src instanceof Register) usedRegs.add((Register) src);
     }
 
     @Override

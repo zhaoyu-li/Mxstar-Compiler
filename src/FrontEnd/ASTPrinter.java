@@ -254,7 +254,7 @@ public class ASTPrinter implements ASTVistor {
 
     @Override
     public void visit(StringLiteral node) {
-        appendNewLine("StringLiteral: " + node.getValue() + " " + node.getLocation().toString());
+        appendNewLine("StaticString: " + node.getValue() + " " + node.getLocation().toString());
     }
 
     @Override

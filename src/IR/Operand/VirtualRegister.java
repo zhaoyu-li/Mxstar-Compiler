@@ -4,19 +4,33 @@ import IR.IRVistor;
 
 public class VirtualRegister extends Register {
     private String name;
-    private PhysicalRegister forcedPhysicalRegister;
+    private PhysicalRegister allocatedPhysicalRegister;
+    private Memory spillPlace;
 
-    public VirtualRegister() {
-        name = null;
-        forcedPhysicalRegister = null;
-    }
-
-    public void setName(String name) {
+    public VirtualRegister(String name) {
         this.name = name;
+        allocatedPhysicalRegister = null;
+        spillPlace = null;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setAllocatedPhysicalRegister(PhysicalRegister allocatedPhysicalRegister) {
+        this.allocatedPhysicalRegister = allocatedPhysicalRegister;
+    }
+
+    public PhysicalRegister getAllocatedPhysicalRegister() {
+        return allocatedPhysicalRegister;
+    }
+
+    public void setSpillPlace(Memory spillPlace) {
+        this.spillPlace = spillPlace;
+    }
+
+    public Memory getSpillPlace() {
+        return spillPlace;
     }
 
     @Override

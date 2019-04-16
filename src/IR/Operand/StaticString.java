@@ -2,10 +2,11 @@ package IR.Operand;
 
 import IR.IRVistor;
 
-public class StringLiteral extends Operand {
+public class StaticString extends StaticData {
     private String value;
 
-    public StringLiteral(String value) {
+    public StaticString(String name, String value) {
+        super(name);
         this.value = value;
     }
 
