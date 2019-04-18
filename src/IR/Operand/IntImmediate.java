@@ -2,7 +2,7 @@ package IR.Operand;
 
 import IR.IRVistor;
 
-public class IntImmediate extends Operand {
+public class IntImmediate extends Constant {
     private int value;
 
     public IntImmediate(int value) {

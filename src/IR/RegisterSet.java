@@ -6,7 +6,7 @@ import IR.Operand.VirtualRegister;
 import java.util.LinkedList;
 
 public class RegisterSet {
-    public static PhysicalRegister rax;
+    public static PhysicalRegister rax; //作为函数返回值
     public static PhysicalRegister rcx;
     public static PhysicalRegister rdx;
     public static PhysicalRegister rbx;

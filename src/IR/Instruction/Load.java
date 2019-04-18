@@ -15,7 +15,6 @@ public class Load extends Instruction {
         super(bb);
         this.dst = dst;
         this.src = src;
-        getUsedRegs();
     }
 
     public Address getDst() {

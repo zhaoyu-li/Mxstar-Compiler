@@ -12,14 +12,11 @@ public class UnaryOperation extends Instruction {
     }
     private Address dst;
     private UnaryOp op;
-    private Operand src;
 
-    public UnaryOperation(BasicBlock bb, Address dst, UnaryOp op, Operand src) {
+    public UnaryOperation(BasicBlock bb, UnaryOp op, Address dst) {
         super(bb);
         this.dst = dst;
         this.op = op;
-        this.src = src;
-        getUsedRegs();
     }
 
     public Address getdst() {
@@ -28,15 +25,6 @@ public class UnaryOperation extends Instruction {
 
     public UnaryOp getOp() {
         return op;
-    }
-
-    public Operand getSrc() {
-        return src;
-    }
-
-    public void getUsedRegs() {
-        usedRegs.clear();
-        if(src instanceof Register) usedRegs.add((Register) src);
     }
 
     @Override

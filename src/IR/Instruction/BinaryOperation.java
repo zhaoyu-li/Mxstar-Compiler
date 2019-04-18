@@ -12,16 +12,26 @@ public class BinaryOperation extends Instruction {
     }
     private Address dst;
     private BinaryOp op;
-    private Operand lhs;
-    private Operand rhs;
+//    private Operand lhs;
+//    private Operand rhs;
+    private Operand src;
 
-    public BinaryOperation(BasicBlock bb, Address dst, BinaryOp op, Operand lhs, Operand rhs) {
+//    public BinaryOperation(BasicBlock bb, Address dst, BinaryOp op, Operand lhs, Operand rhs) {
+//        super(bb);
+//        this.dst = dst;
+//        this.op = op;
+//        this.lhs = lhs;
+//        this.rhs = rhs;
+//        getUsedRegs();
+//    }
+
+    public BinaryOperation(BasicBlock bb, Address dst, BinaryOp op, Operand src) {
         super(bb);
         this.dst = dst;
         this.op = op;
-        this.lhs = lhs;
-        this.rhs = rhs;
-        getUsedRegs();
+        this.src = src;
+
+//        getUsedRegs();
     }
 
     public Address getdst() {
@@ -32,19 +42,19 @@ public class BinaryOperation extends Instruction {
         return op;
     }
 
-    public Operand getLhs() {
-        return lhs;
-    }
+//    public Operand getLhs() {
+//        return lhs;
+//    }
+//
+//    public Operand getRhs() {
+//        return rhs;
+//    }
 
-    public Operand getRhs() {
-        return rhs;
-    }
-
-    public void getUsedRegs() {
-        usedRegs.clear();
-        if(lhs instanceof Register) usedRegs.add((Register) lhs);
-        if(rhs instanceof Register) usedRegs.add((Register) rhs);
-    }
+//    public void getUsedRegs() {
+//        usedRegs.clear();
+//        if(lhs instanceof Register) usedRegs.add((Register) lhs);
+//        if(rhs instanceof Register) usedRegs.add((Register) rhs);
+//    }
 
     @Override
     public void accept(IRVistor vistor) {

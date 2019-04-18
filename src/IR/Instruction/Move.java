@@ -14,7 +14,6 @@ public class Move extends Instruction {
         super(bb);
         this.dst = dst;
         this.src = src;
-        getUsedRegs();
     }
 
     public Address getdst() {

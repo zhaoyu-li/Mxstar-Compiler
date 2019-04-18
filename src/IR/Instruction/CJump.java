@@ -16,7 +16,7 @@ public class CJump extends Instruction {
     private BasicBlock thenBB;
     private BasicBlock elseBB;
 
-    public CJump(BasicBlock bb, CompareOp op, Operand lhs, Operand rhs,
+    public CJump(BasicBlock bb, Operand lhs, CompareOp op, Operand rhs,
                  BasicBlock thenBB, BasicBlock elseBB) {
         super(bb);
         this.op = op;
@@ -24,7 +24,6 @@ public class CJump extends Instruction {
         this.rhs = rhs;
         this.thenBB = thenBB;
         this.elseBB = elseBB;
-        getUsedRegs();;
     }
 
     public CompareOp getOp() {

@@ -1,25 +1,30 @@
 package Scope;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import org.antlr.v4.runtime.misc.OrderedHashSet;
+
+import java.util.*;
 
 public class Scope {
-    protected Map<String, VariableEntity> variables;
-    protected Map<String, FunctionEntity> functions;
+    private Map<String, VariableEntity> variables;
+    private Map<String, FunctionEntity> functions;
+    private Map<String, Integer> offsets;
     private Scope parent;
+    private Integer curOffset;
 
     public Scope() {
         this.variables = new LinkedHashMap<String, VariableEntity>();
         this.functions = new LinkedHashMap<String, FunctionEntity>();
+        this.offsets = new HashMap<>();
         this.parent = null;
+        curOffset = 0;
     }
 
     public Scope(Scope parent) {
         this.variables = new LinkedHashMap<String, VariableEntity>();
         this.functions = new LinkedHashMap<String, FunctionEntity>();
+        this.offsets = new HashMap<>();
         this.parent = parent;
+        curOffset = 0;
     }
 
     public Scope getParent() {
@@ -28,6 +33,8 @@ public class Scope {
 
     public void putVariable(String name, VariableEntity variable) {
         variables.put(name, variable);
+        offsets.put(name, curOffset);
+        curOffset += 4;
     }
 
     public VariableEntity getVariable(String name) {
@@ -68,6 +75,7 @@ public class Scope {
         }
     }
 
-
-
+    public int getVariableOffset(String name) {
+        return offsets.get(name);
+    }
 }

@@ -12,11 +12,13 @@ public class ScopeBuilder implements ASTVistor {
     private GlobalScope globalScope;
     private Scope curScope;
     private String curClassName;
+    private FunctionEntity curFunction;
 
     public ScopeBuilder() {
         globalScope = new GlobalScope();
         curScope = globalScope;
         curClassName = null;
+        curFunction = null;
     }
 
     public GlobalScope getGlobalScope() {
@@ -98,8 +100,8 @@ public class ScopeBuilder implements ASTVistor {
             functionEntity.setReturnType(resolveType(node.getReturnType()));
         }
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
-        for(VariableDeclaration variableDeclaration : node.getParameters()) {
-            parameters.add(getVariableEntity(variableDeclaration));
+        for(VariableDeclaration parameter : node.getParameters()) {
+            parameters.add(getVariableEntity(parameter));
         }
         functionEntity.setParameters(parameters);
         node.setFunctionEntity(functionEntity);
@@ -146,11 +148,13 @@ public class ScopeBuilder implements ASTVistor {
 
     private void registerClassVariable(ClassDeclaration node) {
         ClassEntity classEntity = globalScope.getClassEntity(node.getName());
+        curClassName = classEntity.getName();
         enterScope(classEntity.getScope());
         for(VariableDeclaration variableDeclaration : node.getFields()) {
             visit(variableDeclaration);
         }
         exitScope();
+        curClassName = null;
     }
 
     @Override
@@ -187,6 +191,7 @@ public class ScopeBuilder implements ASTVistor {
     public void visit(FunctionDeclaration node) {
         FunctionEntity functionEntity = curScope.getFunction(node.getName());
         functionEntity.setScope(new Scope(curScope));
+        curFunction = functionEntity;
         enterScope(functionEntity.getScope());
         for(VariableDeclaration variableDeclaration : node.getParameters()) {
             visit(variableDeclaration);
@@ -195,6 +200,7 @@ public class ScopeBuilder implements ASTVistor {
             statement.accept(this);
         }
         exitScope();
+        curFunction = null;
     }
 
     @Override
@@ -225,6 +231,9 @@ public class ScopeBuilder implements ASTVistor {
         }
         if(curScope == globalScope) {
             variableEntity.setGlobal(true);
+        }
+        if(curClassName != null) {
+            variableEntity.setInClass(true);
         }
         if(curScope.getVariable(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "Duplicate VariableDeclaration");
@@ -365,6 +374,9 @@ public class ScopeBuilder implements ASTVistor {
             node.setVariableEntity(curScope.getRecursiveVariable(node.getName()));
         }
         node.setType(node.getVariableEntity().getType());
+        if(curFunction != null && variableEntity.isGlobal()) {
+            curFunction.addGlobalVariable(variableEntity);
+        }
     }
 
     @Override

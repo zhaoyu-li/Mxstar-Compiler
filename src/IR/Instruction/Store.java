@@ -13,7 +13,6 @@ public class Store extends Instruction {
         super(bb);
         this.value = value;
         this.addr = addr;
-        getUsedRegs();
     }
 
     public Operand getValue() {

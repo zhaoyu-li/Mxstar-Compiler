@@ -23,7 +23,10 @@ public class IRProgram {
     private static Function string_substring;
     private static Function string_parseInt;
     private static Function string_ord;
-    private static Function variable_init;
+    private static Function global_init;
+    private static Function string_concat;
+    private static Function string_compare;
+    private static Function malloc;
 
     private void addBuiltinFunctions() {
         print = new Function(FuncType.Library, "print");
@@ -35,7 +38,10 @@ public class IRProgram {
         string_substring = new Function(FuncType.Library, "string.substring");
         string_parseInt = new Function(FuncType.Library, "string.parseInt");
         string_ord = new Function(FuncType.Library, "string.ord");
-        variable_init = new Function(Function.FuncType.Library, "variable_init");
+        global_init = new Function(FuncType.Library, "globalInit");
+        string_concat = new Function(FuncType.Library, "string.concat");
+        string_compare = new Function(FuncType.Library, "string.compare");
+        malloc = new Function(FuncType.External, "malloc");
 
         addFunction(print);
         addFunction(println);
@@ -46,7 +52,10 @@ public class IRProgram {
         addFunction(string_substring);
         addFunction(string_parseInt);
         addFunction(string_ord);
-        addFunction(variable_init);
+        addFunction(global_init);
+        addFunction(string_concat);
+        addFunction(string_compare);
+        addFunction(malloc);
     }
 
     public IRProgram() {

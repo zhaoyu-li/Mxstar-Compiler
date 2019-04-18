@@ -16,6 +16,7 @@ public interface IRVistor {
     void visit(UnaryOperation node);
     void visit(Alloc node);
     void visit(Move node);
+    void visit(Lea node);
     void visit(Load node);
     void visit(Store node);
     void visit(Call node);
