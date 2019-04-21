@@ -8,19 +8,12 @@ public class BasicBlock {
     private Instruction head;
     private Instruction tail;
 
-    public BasicBlock() {
-        name = null;
-        function = null;
-        head = null;
-        tail = null;
-    }
-
     public BasicBlock(String name, Function function) {
         this.name = name;
         this.function = function;
-        head = null;
-        tail = null;
-
+        this.head = null;
+        this.tail = null;
+        this.function.addBasicBlock(this);
     }
 
     public void setName(String name) {
@@ -60,5 +53,13 @@ public class BasicBlock {
         } else {
             tail.append(inst);
         }
+    }
+
+    public Function getFunction() {
+        return function;
+    }
+
+    public void accept(IRVistor vistor) {
+        vistor.visit(this);
     }
 }

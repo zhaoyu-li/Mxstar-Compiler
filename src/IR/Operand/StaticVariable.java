@@ -3,11 +3,16 @@ package IR.Operand;
 import IR.IRVistor;
 
 public class StaticVariable extends StaticData {
+    private String name;
     private int length;
 
     public StaticVariable(String name, int length) {
-        super(name);
+        this.name = name;
         this.length = length;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getLength() {

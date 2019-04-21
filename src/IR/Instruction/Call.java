@@ -4,6 +4,7 @@ import IR.*;
 import IR.Operand.Address;
 import IR.Operand.Operand;
 import IR.Operand.Register;
+import IR.Operand.StackSlot;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -12,9 +13,9 @@ import java.util.List;
 public class Call extends Instruction {
     private Address dst;
     private Function func;
-    private List<Operand> args;
+    private LinkedList<Operand> args;
 
-    public Call(BasicBlock bb, Address dst, Function func, List<Operand> args) {
+    public Call(BasicBlock bb, Address dst, Function func, LinkedList<Operand> args) {
         super(bb);
         this.dst = dst;
         this.func = func;
@@ -36,15 +37,8 @@ public class Call extends Instruction {
         return func;
     }
 
-    public List<Operand> getArgs() {
+    public LinkedList<Operand> getArgs() {
         return args;
-    }
-
-    public void getUsedRegs() {
-        usedRegs.clear();
-        for(Operand arg : args) {
-            if(arg instanceof Register) usedRegs.add((Register) arg);
-        }
     }
 
     @Override

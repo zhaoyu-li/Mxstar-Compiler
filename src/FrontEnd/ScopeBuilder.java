@@ -183,11 +183,6 @@ public class ScopeBuilder implements ASTVistor {
     }
 
     @Override
-    public void visit(Declaration node) {
-
-    }
-
-    @Override
     public void visit(FunctionDeclaration node) {
         FunctionEntity functionEntity = curScope.getFunction(node.getName());
         functionEntity.setScope(new Scope(curScope));
@@ -250,11 +245,6 @@ public class ScopeBuilder implements ASTVistor {
 
     @Override
     public void visit(ArrayTypeNode node) {
-
-    }
-
-    @Override
-    public void visit(Statement node) {
 
     }
 
@@ -326,11 +316,6 @@ public class ScopeBuilder implements ASTVistor {
 
     @Override
     public void visit(EmptyStatement node) {
-
-    }
-
-    @Override
-    public void visit(Expression node) {
 
     }
 

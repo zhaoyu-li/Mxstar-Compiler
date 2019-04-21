@@ -3,10 +3,10 @@ package IR.Operand;
 import IR.IRVistor;
 
 public class Memory extends Address {
-    private Register base;
+    protected Register base;
     private Register index;
     private int scale;
-    private Constant offset;
+    protected Constant offset;
 
     public Memory() {
 

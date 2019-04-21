@@ -15,6 +15,14 @@ public class Lea extends Instruction {
         this.src = src;
     }
 
+    public Register getDst() {
+        return dst;
+    }
+
+    public Memory getSrc() {
+        return src;
+    }
+
     @Override
     public void accept(IRVistor vistor) {
         vistor.visit(this);

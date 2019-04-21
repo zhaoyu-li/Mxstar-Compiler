@@ -86,4 +86,16 @@ public class Type {
     public boolean match(Type other) {
         return type == other.getType();
     }
+
+    public boolean isStringType() {
+        return type == types.STRING;
+    }
+
+    public boolean isBoolType() {
+        return type == types.BOOL;
+    }
+
+    public boolean isVoidType() {
+        return type == types.VOID;
+    }
 }

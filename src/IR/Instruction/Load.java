@@ -6,7 +6,6 @@ import IR.Operand.Address;
 import IR.Operand.Operand;
 import IR.Operand.Register;
 
-
 public class Load extends Instruction {
     private Address dst;
     private Operand src;
@@ -28,6 +27,14 @@ public class Load extends Instruction {
     public void getUsedRegs() {
         usedRegs.clear();
         if(src instanceof Register) usedRegs.add((Register) src);
+    }
+
+    public void setSrc(Operand src) {
+        this.src = src;
+    }
+
+    public void setDst(Address dst) {
+        this.dst = dst;
     }
 
     @Override

@@ -5,6 +5,9 @@ import IR.IRVistor;
 import IR.Operand.Address;
 import IR.Operand.Operand;
 import IR.Operand.Register;
+import IR.Operand.StackSlot;
+
+import java.util.LinkedList;
 
 public class BinaryOperation extends Instruction {
     public enum BinaryOp {
@@ -12,29 +15,16 @@ public class BinaryOperation extends Instruction {
     }
     private Address dst;
     private BinaryOp op;
-//    private Operand lhs;
-//    private Operand rhs;
     private Operand src;
-
-//    public BinaryOperation(BasicBlock bb, Address dst, BinaryOp op, Operand lhs, Operand rhs) {
-//        super(bb);
-//        this.dst = dst;
-//        this.op = op;
-//        this.lhs = lhs;
-//        this.rhs = rhs;
-//        getUsedRegs();
-//    }
 
     public BinaryOperation(BasicBlock bb, Address dst, BinaryOp op, Operand src) {
         super(bb);
         this.dst = dst;
         this.op = op;
         this.src = src;
-
-//        getUsedRegs();
     }
 
-    public Address getdst() {
+    public Address getDst() {
         return dst;
     }
 
@@ -42,19 +32,9 @@ public class BinaryOperation extends Instruction {
         return op;
     }
 
-//    public Operand getLhs() {
-//        return lhs;
-//    }
-//
-//    public Operand getRhs() {
-//        return rhs;
-//    }
-
-//    public void getUsedRegs() {
-//        usedRegs.clear();
-//        if(lhs instanceof Register) usedRegs.add((Register) lhs);
-//        if(rhs instanceof Register) usedRegs.add((Register) rhs);
-//    }
+    public Operand getSrc() {
+        return src;
+    }
 
     @Override
     public void accept(IRVistor vistor) {

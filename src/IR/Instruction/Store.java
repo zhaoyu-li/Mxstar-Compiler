@@ -2,31 +2,39 @@ package IR.Instruction;
 
 import IR.BasicBlock;
 import IR.IRVistor;
+import IR.Operand.Address;
 import IR.Operand.Operand;
 import IR.Operand.Register;
 
 public class Store extends Instruction {
-    private Operand value;
-    private Operand addr;
+    private Address dst;
+    private Operand src;
 
-    public Store(BasicBlock bb, Operand value, Operand addr) {
+    public Store(BasicBlock bb, Address dst, Operand src) {
         super(bb);
-        this.value = value;
-        this.addr = addr;
+        this.dst = dst;
+        this.src = src;
     }
 
-    public Operand getValue() {
-        return value;
+    public Address getDst() {
+        return dst;
     }
 
-    public Operand getAddr() {
-        return addr;
+    public Operand getSrc() {
+        return src;
     }
 
     public void getUsedRegs() {
         usedRegs.clear();
-        if(value instanceof Register) usedRegs.add((Register) value);
-        if(addr instanceof Register) usedRegs.add((Register) addr);
+        if(src instanceof Register) usedRegs.add((Register) src);
+    }
+
+    public void setSrc(Operand src) {
+        this.src = src;
+    }
+
+    public void setDst(Address dst) {
+        this.dst = dst;
     }
 
     @Override

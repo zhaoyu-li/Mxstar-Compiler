@@ -1,4 +1,5 @@
 import AST.Program;
+import BackEnd.NASMTransformer;
 import FrontEnd.*;
 import Parser.MxstarLexer;
 import Parser.MxstarParser;
@@ -49,5 +50,11 @@ public class Main {
         scopeBuilder.visit(program);
         SemanticChecker semanticChecker = new SemanticChecker(scopeBuilder.getGlobalScope());
         semanticChecker.visit(program);
+
+        IRBuilder irBuilder = new IRBuilder(scopeBuilder.getGlobalScope());
+        irBuilder.visit(program);
+
+        NASMTransformer nasmTransformer = new NASMTransformer();
+        nasmTransformer.visit(irBuilder.getProgram());
     }
 }

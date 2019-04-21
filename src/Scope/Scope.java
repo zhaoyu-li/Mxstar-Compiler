@@ -1,6 +1,6 @@
 package Scope;
 
-import org.antlr.v4.runtime.misc.OrderedHashSet;
+import Utility.Config;
 
 import java.util.*;
 
@@ -34,7 +34,7 @@ public class Scope {
     public void putVariable(String name, VariableEntity variable) {
         variables.put(name, variable);
         offsets.put(name, curOffset);
-        curOffset += 4;
+        curOffset += Config.getRegSize();
     }
 
     public VariableEntity getVariable(String name) {

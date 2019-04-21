@@ -3,17 +3,18 @@ package IR.Instruction;
 import IR.BasicBlock;
 import IR.IRVistor;
 import IR.Operand.Register;
+import IR.Operand.StackSlot;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 public abstract class Instruction {
     private BasicBlock bb;
     private Instruction prev;
     private Instruction next;
     private boolean removed;
-    protected List<Register> usedRegs;
-    protected List<Register> definedRegs;
+    protected ArrayList<Register> usedRegs;
+    protected ArrayList<Register> definedRegs;
 
     public Instruction(BasicBlock bb) {
         this.bb = bb;

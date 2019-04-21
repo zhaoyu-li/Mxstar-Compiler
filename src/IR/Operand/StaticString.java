@@ -5,8 +5,7 @@ import IR.IRVistor;
 public class StaticString extends StaticData {
     private String value;
 
-    public StaticString(String name, String value) {
-        super(name);
+    public StaticString(String value) {
         this.value = value;
     }
 

@@ -1,13 +1,14 @@
 package IR;
 
 import IR.Instruction.Return;
-import IR.Operand.Operand;
 import IR.Operand.PhysicalRegister;
+import IR.Operand.StackSlot;
 import IR.Operand.VirtualRegister;
 import Scope.VariableEntity;
 
+import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Stack;
 
 public class Function {
     public enum FuncType {
@@ -17,18 +18,40 @@ public class Function {
     private String name;
     private BasicBlock headBB;
     private BasicBlock tailBB;
-    private List<VirtualRegister> parameters;
-    private List<VariableEntity> usedGlobalVariables;
-    private List<PhysicalRegister> usedPhysicalRegisters;
-    private List<Return> returnList;
+    private LinkedList<VirtualRegister> parameters;
+    private LinkedList<StackSlot> temporarys;
+
+    private HashSet<Function> callees;
+    private HashSet<Function> visitedFunction;
+
+    private HashSet<VariableEntity> usedGlobalVariables;
+    private HashSet<VariableEntity> usedRecursiveVariables;
+    private HashSet<PhysicalRegister> usedPhysicalRegisters;
+    private LinkedList<Return> returnList;
+
+    private LinkedList<BasicBlock> basicBlocks;
+
+    private int stackSize;
+
+
 
     public Function(FuncType type, String name) {
         this.type = type;
         this.name = name;
         parameters = new LinkedList<>();
-        usedGlobalVariables = new LinkedList<>();
-        usedPhysicalRegisters = new LinkedList<>();
+        temporarys = new LinkedList<>();
+        callees = new HashSet<>();
+        visitedFunction = new HashSet<>();
+        usedGlobalVariables = new HashSet<>();
+        usedRecursiveVariables = new HashSet<>();
+        usedPhysicalRegisters = new HashSet<>();
         returnList = new LinkedList<>();
+        basicBlocks = new LinkedList<>();
+        stackSize = 0;
+    }
+
+    public FuncType getType() {
+        return type;
     }
 
     public String getName() {
@@ -55,23 +78,76 @@ public class Function {
         parameters.add(parameter);
     }
 
-    public List<VirtualRegister> getParameters() {
+    public LinkedList<VirtualRegister> getParameters() {
         return parameters;
+    }
+
+    public void addTemporary(StackSlot temporary) {
+        temporarys.add(temporary);
+    }
+
+    public LinkedList<StackSlot> getTemporarys() {
+        return temporarys;
+    }
+
+    public void addCallee(Function function) {
+        callees.add(function);
+    }
+
+    public HashSet<Function> getCallees() {
+        return callees;
     }
 
     public void addGlobalVariable(VariableEntity var) {
         usedGlobalVariables.add(var);
     }
 
-    public List<VariableEntity> getUsedGlobalVariables() {
+    public HashSet<VariableEntity> getUsedGlobalVariables() {
         return usedGlobalVariables;
+    }
+
+    public void addUsedRecursiveVariables(Function function) {
+        if(visitedFunction.contains(function)) return;
+        visitedFunction.add(function);
+        for(Function func : function.callees) {
+            addUsedRecursiveVariables(func);
+        }
+        usedRecursiveVariables.addAll(function.usedGlobalVariables);
+    }
+
+    public HashSet<VariableEntity> getUsedRecursiveVariables() {
+        return usedRecursiveVariables;
+    }
+
+    public HashSet<PhysicalRegister> getUsedPhysicalRegisters() {
+        return usedPhysicalRegisters;
     }
 
     public void addReturn(Return ret) {
         returnList.add(ret);
     }
 
-    public List<Return> getReturnList() {
+    public LinkedList<Return> getReturnList() {
         return returnList;
+    }
+
+    public void addBasicBlock(BasicBlock bb) {
+        basicBlocks.add(bb);
+    }
+
+    public LinkedList<BasicBlock> getBasicBlocks() {
+        return basicBlocks;
+    }
+
+    public void setStackSize(int stackSize) {
+        this.stackSize = stackSize;
+    }
+
+    public int getStackSize() {
+        return stackSize;
+    }
+
+    public void accept(IRVistor vistor) {
+        vistor.visit(this);
     }
 }

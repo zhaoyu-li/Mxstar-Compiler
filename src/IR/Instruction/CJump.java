@@ -2,12 +2,13 @@ package IR.Instruction;
 
 import IR.BasicBlock;
 import IR.IRVistor;
+import IR.Operand.IntImmediate;
 import IR.Operand.Operand;
 import IR.Operand.Register;
 
 public class CJump extends Instruction {
     public enum CompareOp {
-        EQ, NEQ, LT, GT, LE, GE
+        EQ, NE, LT, GT, LE, GE
     }
 
     private CompareOp op;

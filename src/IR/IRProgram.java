@@ -3,6 +3,7 @@ package IR;
 import IR.Operand.StaticData;
 import IR.Operand.StaticString;
 import IR.Function.FuncType;
+import IR.Operand.StaticVariable;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,8 +12,8 @@ import java.util.Map;
 
 public class IRProgram {
     private Map<String, Function> functions;
-    private List<StaticData> staticDataList;
-    private Map<String, StaticString> staticStrings;
+    private LinkedList<StaticVariable> staticVariables;
+    private LinkedList<StaticString> staticStrings;
 
     private static Function print;
     private static Function println;
@@ -60,7 +61,8 @@ public class IRProgram {
 
     public IRProgram() {
         functions = new HashMap<>();
-        staticDataList = new LinkedList<>();
+        staticVariables = new LinkedList<>();
+        staticStrings = new LinkedList<>();
         addBuiltinFunctions();
     }
 
@@ -72,16 +74,24 @@ public class IRProgram {
         return functions.get(name);
     }
 
-    public void addStaticData(StaticData data) {
-        staticDataList.add(data);
+    public void addStaticVariable(StaticVariable var) {
+        staticVariables.add(var);
     }
 
     public void addStaticString(StaticString str) {
-        staticStrings.put(str.getValue(), str);
+        staticStrings.add(str);
     }
 
-    public StaticString getStaticString(String name) {
-        return staticStrings.get(name);
+    public Map<String, Function> getFunctions() {
+        return functions;
+    }
+
+    public LinkedList<StaticVariable> getStaticVariables() {
+        return staticVariables;
+    }
+
+    public LinkedList<StaticString> getStaticStrings() {
+        return staticStrings;
     }
 
     public void accept(IRVistor vistor) {

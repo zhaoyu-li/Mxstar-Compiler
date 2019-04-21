@@ -52,11 +52,6 @@ public class ASTPrinter implements ASTVistor {
     }
 
     @Override
-    public void visit(Declaration node) {
-
-    }
-
-    @Override
     public void visit(FunctionDeclaration node) {
         appendNewLine("FunctionDeclaration, Location: " + node.getLocation().toString());
         if(node.getReturnType() != null) {
@@ -131,10 +126,6 @@ public class ASTPrinter implements ASTVistor {
         appendNewLine("ArrayType: " + node.getType().toString() + ", Dimemsion: " + String.valueOf(node.getDimension()));
     }
 
-    @Override
-    public void visit(Statement node) {
-
-    }
 
     @Override
     public void visit(IfStatement node) {
@@ -224,11 +215,6 @@ public class ASTPrinter implements ASTVistor {
 
     @Override
     public void visit(EmptyStatement node) {
-
-    }
-
-    @Override
-    public void visit(Expression node) {
 
     }
 

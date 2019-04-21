@@ -12,6 +12,10 @@ public class Pop extends Instruction {
         this.dst = dst;
     }
 
+    public Address getDst() {
+        return dst;
+    }
+
     @Override
     public void accept(IRVistor vistor) {
         vistor.visit(this);

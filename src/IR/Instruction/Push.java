@@ -12,6 +12,10 @@ public class Push extends Instruction {
         this.src = src;
     }
 
+    public Operand getSrc() {
+        return src;
+    }
+
     @Override
     public void accept(IRVistor vistor) {
         vistor.visit(this);

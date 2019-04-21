@@ -3,7 +3,6 @@ package AST;
 public interface ASTVistor {
     void visit(Program node);
 
-    void visit(Declaration node);
     void visit(FunctionDeclaration node);
     void visit(ClassDeclaration node);
     void visit(VariableDeclaration node);
@@ -11,7 +10,6 @@ public interface ASTVistor {
     void visit(TypeNode node);
     void visit(ArrayTypeNode node);
 
-    void visit(Statement node);
     void visit(IfStatement node);
     void visit(WhileStatement node);
     void visit(ForStatement node);
@@ -23,7 +21,6 @@ public interface ASTVistor {
     void visit(BlockStatement node);
     void visit(EmptyStatement node);
 
-    void visit(Expression node);
     void visit(ThisExpression node);
     void visit(NullLiteral node);
     void visit(BoolLiteral node);
