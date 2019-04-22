@@ -230,7 +230,7 @@ public class NASMPrinter implements IRVistor {
     @Override
     public void visit(Move node) {
         add("\tmov ");
-        node.getdst().accept(this);
+        node.getDst().accept(this);
         add(", ");
         node.getSrc().accept(this);
         add("\n");
@@ -252,15 +252,6 @@ public class NASMPrinter implements IRVistor {
             return null;
     }
 
-    @Override
-    public void visit(Load node) {
-
-    }
-
-    @Override
-    public void visit(Store node) {
-
-    }
 
     @Override
     public void visit(Call node) {

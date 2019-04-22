@@ -37,6 +37,16 @@ public class BinaryOperation extends Instruction {
     }
 
     @Override
+    public LinkedList<Register> getUsedRegisters(){
+        return new LinkedList<>();
+    }
+
+    @Override
+    public LinkedList<Register> getDefinedRegisters() {
+        return new LinkedList<>();
+    }
+
+    @Override
     public void accept(IRVistor vistor) {
         vistor.visit(this);
     }

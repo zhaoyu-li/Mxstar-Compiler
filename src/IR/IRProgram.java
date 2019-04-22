@@ -1,13 +1,11 @@
 package IR;
 
-import IR.Operand.StaticData;
 import IR.Operand.StaticString;
 import IR.Function.FuncType;
 import IR.Operand.StaticVariable;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class IRProgram {
@@ -15,34 +13,20 @@ public class IRProgram {
     private LinkedList<StaticVariable> staticVariables;
     private LinkedList<StaticString> staticStrings;
 
-    private static Function print;
-    private static Function println;
-    private static Function getString;
-    private static Function getInt;
-    private static Function toString;
-    private static Function string_length;
-    private static Function string_substring;
-    private static Function string_parseInt;
-    private static Function string_ord;
-    private static Function global_init;
-    private static Function string_concat;
-    private static Function string_compare;
-    private static Function malloc;
-
     private void addBuiltinFunctions() {
-        print = new Function(FuncType.Library, "print");
-        println = new Function(FuncType.Library, "println");
-        getString = new Function(FuncType.Library, "getString");
-        getInt = new Function(FuncType.Library, "getInt");
-        toString = new Function(FuncType.Library, "toString");
-        string_length = new Function(FuncType.Library, "string.length");
-        string_substring = new Function(FuncType.Library, "string.substring");
-        string_parseInt = new Function(FuncType.Library, "string.parseInt");
-        string_ord = new Function(FuncType.Library, "string.ord");
-        global_init = new Function(FuncType.Library, "globalInit");
-        string_concat = new Function(FuncType.Library, "string.concat");
-        string_compare = new Function(FuncType.Library, "string.compare");
-        malloc = new Function(FuncType.External, "malloc");
+        Function print = new Function(FuncType.Library, "print", false);
+        Function println = new Function(FuncType.Library, "println", false);
+        Function getString = new Function(FuncType.Library, "getString", true);
+        Function getInt = new Function(FuncType.Library, "getInt", true);
+        Function toString = new Function(FuncType.Library, "toString", true);
+        Function string_length = new Function(FuncType.Library, "string.length", true);
+        Function string_substring = new Function(FuncType.Library, "string.substring", true);
+        Function string_parseInt = new Function(FuncType.Library, "string.parseInt", true);
+        Function string_ord = new Function(FuncType.Library, "string.ord", true);
+        Function global_init = new Function(FuncType.Library, "globalInit", true);
+        Function string_concat = new Function(FuncType.Library, "string.concat", true);
+        Function string_compare = new Function(FuncType.Library, "string.compare", true);
+        Function malloc = new Function(FuncType.External, "malloc", false);
 
         addFunction(print);
         addFunction(println);

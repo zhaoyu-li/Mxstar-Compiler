@@ -32,7 +32,7 @@ public class StackBuilder {
         LinkedList<StackSlot> restParameters = new LinkedList<>();
         if(function.getParameters().size() > 6) {
             for(int i = 6; i < function.getParameters().size(); i++) {
-                restParameters.add((StackSlot) function.getParameters().get(i).getSpillPlace());
+                restParameters.add((StackSlot) function.getParameters().get(i).getSpillSpace());
             }
         }
         for(StackSlot parameter : restParameters) {

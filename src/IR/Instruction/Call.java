@@ -42,6 +42,16 @@ public class Call extends Instruction {
     }
 
     @Override
+    public LinkedList<Register> getUsedRegisters(){
+        return new LinkedList<>(RegisterSet.args.subList(0, Integer.min(6, args.size())));
+    }
+
+    @Override
+    public LinkedList<Register> getDefinedRegisters() {
+        return new LinkedList<>(RegisterSet.vcallerSave);
+    }
+
+    @Override
     public void accept(IRVistor vistor) {
         vistor.visit(this);
     }

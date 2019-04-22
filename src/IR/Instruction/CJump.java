@@ -3,8 +3,11 @@ package IR.Instruction;
 import IR.BasicBlock;
 import IR.IRVistor;
 import IR.Operand.IntImmediate;
+import IR.Operand.Memory;
 import IR.Operand.Operand;
 import IR.Operand.Register;
+
+import java.util.LinkedList;
 
 public class CJump extends Instruction {
     public enum CompareOp {
@@ -47,10 +50,25 @@ public class CJump extends Instruction {
         return thenBB;
     }
 
-    public void getUsedRegs() {
-        usedRegs.clear();
-        if(lhs instanceof Register) usedRegs.add((Register) lhs);
-        if(rhs instanceof Register) usedRegs.add((Register) rhs);
+    @Override
+    public LinkedList<Register> getUsedRegisters(){
+        LinkedList<Register> registers = new LinkedList<>();
+        if(lhs instanceof Memory) {
+            registers.addAll(((Memory) lhs).getUsedRegisters());
+        } else if (lhs instanceof Register) {
+            registers.add((Register) lhs);
+        }
+        if(rhs instanceof Memory) {
+            registers.addAll(((Memory) rhs).getUsedRegisters());
+        } else if (rhs instanceof Register) {
+            registers.add((Register) rhs);
+        }
+        return registers;
+    }
+
+    @Override
+    public LinkedList<Register> getDefinedRegisters() {
+        return new LinkedList<>();
     }
 
     @Override

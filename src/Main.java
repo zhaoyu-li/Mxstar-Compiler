@@ -1,6 +1,10 @@
 import AST.Program;
+import BackEnd.LivenessAnalyzer;
 import BackEnd.NASMTransformer;
+import BackEnd.SimpleAlocator;
+import BackEnd.StackBuilder;
 import FrontEnd.*;
+import IR.IRProgram;
 import Parser.MxstarLexer;
 import Parser.MxstarParser;
 import org.antlr.v4.runtime.ANTLRFileStream;
@@ -54,7 +58,18 @@ public class Main {
         IRBuilder irBuilder = new IRBuilder(scopeBuilder.getGlobalScope());
         irBuilder.visit(program);
 
+        IRProgram irProgram = irBuilder.getProgram();
+
+        LivenessAnalyzer livenessAnalyzer = new LivenessAnalyzer(irProgram);
+        livenessAnalyzer.analysis();
+
         NASMTransformer nasmTransformer = new NASMTransformer();
-        nasmTransformer.visit(irBuilder.getProgram());
+        nasmTransformer.visit(irProgram);
+
+        SimpleAlocator simpleAlocator = new SimpleAlocator(irProgram);
+        simpleAlocator.allocateRegisters();
+
+        StackBuilder stackBuilder = new StackBuilder(irProgram);
+        stackBuilder.build();
     }
 }

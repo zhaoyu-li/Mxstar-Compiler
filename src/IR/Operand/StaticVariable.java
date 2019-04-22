@@ -11,10 +11,6 @@ public class StaticVariable extends StaticData {
         this.length = length;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public int getLength() {
         return length;
     }

@@ -5,7 +5,6 @@ import IR.IRVistor;
 import IR.Operand.Register;
 import IR.Operand.StackSlot;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public abstract class Instruction {
@@ -13,16 +12,16 @@ public abstract class Instruction {
     private Instruction prev;
     private Instruction next;
     private boolean removed;
-    protected ArrayList<Register> usedRegs;
-    protected ArrayList<Register> definedRegs;
+//    private LinkedList<Register> usedRegisters;
+//    private LinkedList<Register> definedRegisters;
 
     public Instruction(BasicBlock bb) {
         this.bb = bb;
         prev = null;
         next = null;
         removed = false;
-        usedRegs = new ArrayList<>();
-        definedRegs = new ArrayList<>();
+//        usedRegisters = new LinkedList<>();
+//        definedRegisters = new LinkedList<>();
     }
 
     public BasicBlock getBB() {
@@ -103,6 +102,10 @@ public abstract class Instruction {
     public boolean isRemoved() {
         return removed;
     }
+
+    public abstract LinkedList<Register> getUsedRegisters();
+    public abstract LinkedList<Register> getDefinedRegisters();
+
 
     public abstract void accept(IRVistor vistor);
 }

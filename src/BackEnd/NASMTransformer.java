@@ -76,52 +76,6 @@ public class NASMTransformer implements IRVistor {
     }
 
     @Override
-    public void visit(Load node) {
-        node.append(new Move(node.getBB(), node.getDst(), node.getSrc()));
-        node.remove();
-        if(node.getSrc() instanceof Memory && node.getDst() instanceof Memory) {
-            VirtualRegister vr = new VirtualRegister("");
-            node.prepend(new Move(node.getBB(), vr, node.getSrc()));
-            node.setSrc(vr);
-        } else {
-            PhysicalRegister pdst = getPhysical(node.getDst());
-            PhysicalRegister psrc = getPhysical(node.getSrc());
-            if(pdst != null && node.getSrc() instanceof Memory) {
-                VirtualRegister vr = new VirtualRegister("");
-                node.prepend(new Move(node.getBB(), vr, node.getSrc()));
-                node.setSrc(vr);
-            } else if(psrc != null && node.getDst() instanceof Memory) {
-                VirtualRegister vr = new VirtualRegister("");
-                node.prepend(new Move(node.getBB(), vr, node.getDst()));
-                node.setDst(vr);
-            }
-        }
-    }
-
-    @Override
-    public void visit(Store node) {
-        node.append(new Move(node.getBB(), node.getDst(), node.getSrc()));
-        node.remove();
-        if(node.getSrc() instanceof Memory && node.getDst() instanceof Memory) {
-            VirtualRegister vr = new VirtualRegister("");
-            node.prepend(new Move(node.getBB(), vr, node.getSrc()));
-            node.setSrc(vr);
-        } else {
-            PhysicalRegister pdst = getPhysical(node.getDst());
-            PhysicalRegister psrc = getPhysical(node.getSrc());
-            if(pdst != null && node.getSrc() instanceof Memory) {
-                VirtualRegister vr = new VirtualRegister("");
-                node.prepend(new Move(node.getBB(), vr, node.getSrc()));
-                node.setSrc(vr);
-            } else if(psrc != null && node.getDst() instanceof Memory) {
-                VirtualRegister vr = new VirtualRegister("");
-                node.prepend(new Move(node.getBB(), vr, node.getDst()));
-                node.setDst(vr);
-            }
-        }
-    }
-
-    @Override
     public void visit(Call node) {
         Function caller = node.getBB().getFunction();
         Function callee = node.getFunc();
@@ -129,7 +83,7 @@ public class NASMTransformer implements IRVistor {
         HashSet<VariableEntity> calleeUsed = callee.getUsedRecursiveVariables();
         for(VariableEntity var : callerUsed) {
             if(calleeUsed.contains(var)) {
-                node.prepend(new Store(node.getBB(), var.getVirtualRegister().getSpillPlace(), var.getVirtualRegister()));
+                node.prepend(new Move(node.getBB(), var.getVirtualRegister().getSpillSpace(), var.getVirtualRegister()));
                 node.getPrev().accept(this);
             }
         }
@@ -137,12 +91,12 @@ public class NASMTransformer implements IRVistor {
             node.prepend(new Push(node.getBB(), node.getArgs().removeLast()));
         }
         for(int i = node.getArgs().size() - 1; i >= 0; i--) {
-            node.prepend(new Store(node.getBB(), RegisterSet.vargs.get(i), node.getArgs().get(i)));
+            node.prepend(new Move(node.getBB(), RegisterSet.vargs.get(i), node.getArgs().get(i)));
             node.getPrev().accept(this);
         }
         for(VariableEntity var : callerUsed) {
             if(calleeUsed.contains(var)) {
-                node.append(new Move(node.getBB(), var.getVirtualRegister(), var.getVirtualRegister().getSpillPlace()));
+                node.append(new Move(node.getBB(), var.getVirtualRegister(), var.getVirtualRegister().getSpillSpace()));
             }
         }
     }

@@ -3,8 +3,11 @@ package IR.Instruction;
 import IR.BasicBlock;
 import IR.IRVistor;
 import IR.Operand.Address;
+import IR.Operand.Memory;
 import IR.Operand.Operand;
 import IR.Operand.Register;
+
+import java.util.LinkedList;
 
 public class Move extends Instruction {
     private Address dst;
@@ -16,7 +19,7 @@ public class Move extends Instruction {
         this.src = src;
     }
 
-    public Address getdst() {
+    public Address getDst() {
         return dst;
     }
 
@@ -24,9 +27,27 @@ public class Move extends Instruction {
         return src;
     }
 
-    public void getUsedRegs() {
-        usedRegs.clear();
-        if(src instanceof Register) usedRegs.add((Register) src);
+    @Override
+    public LinkedList<Register> getUsedRegisters(){
+        LinkedList<Register> registers = new LinkedList<>();
+        if(dst instanceof Memory) {
+            registers.addAll(((Memory) dst).getUsedRegisters());
+        }
+        if(src instanceof Memory) {
+            registers.addAll(((Memory) src).getUsedRegisters());
+        } else if(src instanceof Register) {
+            registers.add((Register) src);
+        }
+        return registers;
+    }
+
+    @Override
+    public LinkedList<Register> getDefinedRegisters() {
+        LinkedList<Register> registers = new LinkedList<>();
+        if(dst instanceof Register) {
+            registers.add((Register) dst);
+        }
+        return registers;
     }
 
     @Override

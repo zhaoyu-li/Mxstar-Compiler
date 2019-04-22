@@ -16,12 +16,14 @@ public class Function {
     }
     private FuncType type;
     private String name;
+    private Boolean hasReturnValue;
+
     private BasicBlock headBB;
     private BasicBlock tailBB;
     private LinkedList<VirtualRegister> parameters;
-    private LinkedList<StackSlot> temporarys;
+    private LinkedList<StackSlot> temporaries;
 
-    private HashSet<Function> callees;
+    private HashSet<Function> callee;
     private HashSet<Function> visitedFunction;
 
     private HashSet<VariableEntity> usedGlobalVariables;
@@ -35,19 +37,19 @@ public class Function {
 
 
 
-    public Function(FuncType type, String name) {
+    public Function(FuncType type, String name, boolean hasReturnValue) {
         this.type = type;
         this.name = name;
+        this.hasReturnValue = hasReturnValue;
         parameters = new LinkedList<>();
-        temporarys = new LinkedList<>();
-        callees = new HashSet<>();
+        temporaries = new LinkedList<>();
+        callee = new HashSet<>();
         visitedFunction = new HashSet<>();
         usedGlobalVariables = new HashSet<>();
         usedRecursiveVariables = new HashSet<>();
         usedPhysicalRegisters = new HashSet<>();
         returnList = new LinkedList<>();
         basicBlocks = new LinkedList<>();
-        stackSize = 0;
     }
 
     public FuncType getType() {
@@ -56,6 +58,10 @@ public class Function {
 
     public String getName() {
         return name;
+    }
+
+    public Boolean hasReturnValue() {
+        return hasReturnValue;
     }
 
     public void setHeadBB(BasicBlock headBB) {
@@ -83,19 +89,19 @@ public class Function {
     }
 
     public void addTemporary(StackSlot temporary) {
-        temporarys.add(temporary);
+        temporaries.add(temporary);
     }
 
-    public LinkedList<StackSlot> getTemporarys() {
-        return temporarys;
+    public LinkedList<StackSlot> getTemporaries() {
+        return temporaries;
     }
 
     public void addCallee(Function function) {
-        callees.add(function);
+        callee.add(function);
     }
 
     public HashSet<Function> getCallees() {
-        return callees;
+        return callee;
     }
 
     public void addGlobalVariable(VariableEntity var) {
@@ -109,7 +115,7 @@ public class Function {
     public void addUsedRecursiveVariables(Function function) {
         if(visitedFunction.contains(function)) return;
         visitedFunction.add(function);
-        for(Function func : function.callees) {
+        for(Function func : function.callee) {
             addUsedRecursiveVariables(func);
         }
         usedRecursiveVariables.addAll(function.usedGlobalVariables);
@@ -137,14 +143,6 @@ public class Function {
 
     public LinkedList<BasicBlock> getBasicBlocks() {
         return basicBlocks;
-    }
-
-    public void setStackSize(int stackSize) {
-        this.stackSize = stackSize;
-    }
-
-    public int getStackSize() {
-        return stackSize;
     }
 
     public void accept(IRVistor vistor) {

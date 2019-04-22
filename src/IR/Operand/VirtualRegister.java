@@ -5,12 +5,12 @@ import IR.IRVistor;
 public class VirtualRegister extends Register {
     private String name;
     private PhysicalRegister allocatedPhysicalRegister;
-    private Memory spillPlace;
+    private Memory spillSpace;
 
     public VirtualRegister(String name) {
         this.name = name;
         allocatedPhysicalRegister = null;
-        spillPlace = null;
+        spillSpace = null;
     }
 
     public String getName() {
@@ -25,12 +25,12 @@ public class VirtualRegister extends Register {
         return allocatedPhysicalRegister;
     }
 
-    public void setSpillPlace(Memory spillPlace) {
-        this.spillPlace = spillPlace;
+    public void setSpillSpace(Memory spillSpace) {
+        this.spillSpace = spillSpace;
     }
 
-    public Memory getSpillPlace() {
-        return spillPlace;
+    public Memory getSpillSpace() {
+        return spillSpace;
     }
 
     @Override

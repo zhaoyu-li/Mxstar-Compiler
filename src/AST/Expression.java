@@ -9,7 +9,7 @@ public abstract class Expression extends Node {
     protected Type type;
     private boolean isMutable;
     private Operand result;
-    private Address addr;
+    private Address address;
     private BasicBlock trueBB;
     private BasicBlock falseBB;
 
@@ -17,7 +17,7 @@ public abstract class Expression extends Node {
         type = null;
         isMutable = true;
         result = null;
-        addr= null;
+        address = null;
         trueBB = null;
         falseBB = null;
     }
@@ -46,12 +46,12 @@ public abstract class Expression extends Node {
         return result;
     }
 
-    public void setAddr(Address addr) {
-        this.addr = addr;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
-    public Address getAddr() {
-        return addr;
+    public Address getAddress() {
+        return address;
     }
 
     public void setTrueBB(BasicBlock trueBB) {
