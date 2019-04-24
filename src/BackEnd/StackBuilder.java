@@ -9,6 +9,8 @@ import IR.Operand.PhysicalRegister;
 import IR.Operand.StackSlot;
 import Utility.Config;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import static IR.RegisterSet.*;
@@ -22,7 +24,8 @@ public class StackBuilder {
 
     public void build() {
         for(Function function : program.getFunctions().values()) {
-            buildStack(function);
+            if(function.getType() == Function.FuncType.UserDefined)
+                buildStack(function);
         }
     }
 
@@ -35,18 +38,30 @@ public class StackBuilder {
                 restParameters.add((StackSlot) function.getParameters().get(i).getSpillSpace());
             }
         }
+
+        for(BasicBlock bb : function.getBasicBlocks()) {
+            for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
+                LinkedList<StackSlot> slots = inst.getStackSlots();
+                for(StackSlot ss : slots) {
+                    if(!restParameters.contains(ss)) {
+                        function.addTemporary(ss);
+                    }
+                }
+            }
+        }
+
         for(StackSlot parameter : restParameters) {
             parameter.setBase(rbp);
             parameter.setOffset(new IntImmediate(parameterOffset));
             parameterOffset += Config.getRegSize();
         }
-        for(StackSlot temporary : function.getTemporarys()) {
+        for(StackSlot temporary : function.getTemporaries()) {
             temporary.setBase(rbp);
             temporary.setOffset(new IntImmediate(temporaryOffset));
             temporaryOffset -= Config.getRegSize();
         }
 
-        int stackSize = Config.getRegSize() * (restParameters.size() + function.getTemporarys().size() + 1);
+        int stackSize = Config.getRegSize() * (restParameters.size() + function.getTemporaries().size() + 1);
 
         BasicBlock headBB = function.getHeadBB();
         Instruction headInst = headBB.getHead();

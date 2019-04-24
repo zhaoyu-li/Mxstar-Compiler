@@ -5,7 +5,9 @@ import IR.IRVistor;
 import IR.Operand.Memory;
 import IR.Operand.Operand;
 import IR.Operand.Register;
+import IR.Operand.StackSlot;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Push extends Instruction {
@@ -36,6 +38,23 @@ public class Push extends Instruction {
             registers.addAll(((Memory) src).getUsedRegisters());
         }
         return registers;
+    }
+
+    @Override
+    public void renameUsedRegisters(HashMap<Register, Register> renameMap) {
+
+    }
+
+    @Override
+    public void renameDefinedRegisters(HashMap<Register, Register> renameMap) {
+        if(src instanceof Register && renameMap.containsKey(src)) {
+            src = renameMap.get(src);
+        }
+    }
+
+    @Override
+    public LinkedList<StackSlot> getStackSlots() {
+        return calcStackSlots(src);
     }
 
     @Override

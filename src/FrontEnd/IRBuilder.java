@@ -145,7 +145,10 @@ public class IRBuilder implements ASTVistor {
         }
         BasicBlock tailBB = new BasicBlock("tailBB", curFunction);
         for(Return ret : curFunction.getReturnList()) {
-            ret.prepend(new Jump(ret.getBB(), tailBB));
+            assert ret == ret.getBB().getTail();
+            BasicBlock bb = ret.getBB();
+            bb.addNextJumpInst(new Jump(ret.getBB(), tailBB));
+//            ret.prepend(new Jump(ret.getBB(), tailBB));
             ret.remove();
         }
         tailBB.addNextInst(new Return(tailBB));
@@ -156,6 +159,8 @@ public class IRBuilder implements ASTVistor {
             retInst.prepend(new Move(tailBB, variableEntity.getVirtualRegister().getSpillSpace(), variableEntity.getVirtualRegister()));
         }
         curFunction.addUsedRecursiveVariables(curFunction);
+        curFunction.calcReversePostOrder();
+        curFunction.calcReversePrevOrder();
     }
 
     @Override
@@ -201,8 +206,8 @@ public class IRBuilder implements ASTVistor {
             expr.accept(this);
             trueBB.addNextInst(new Move(trueBB, vr, new IntImmediate(1)));
             falseBB.addNextInst(new Move(falseBB, vr, new IntImmediate(0)));
-            trueBB.addNextInst(new Jump(trueBB, mergeBB));
-            falseBB.addNextInst(new Jump(falseBB, mergeBB));
+            trueBB.addNextJumpInst(new Jump(trueBB, mergeBB));
+            falseBB.addNextJumpInst(new Jump(falseBB, mergeBB));
             curBB = mergeBB;
         }
     }
@@ -236,11 +241,11 @@ public class IRBuilder implements ASTVistor {
         node.getCondition().accept(this);
         curBB = thenBB;
         node.getThenStatement().accept(this);
-        curBB.addNextInst(new Jump(curBB, afterBB));
+        curBB.addNextJumpInst(new Jump(curBB, afterBB));
         if(node.getElseStatement() != null) {
             curBB = elseBB;
             node.getElseStatement().accept(this);
-            curBB.addNextInst(new Jump(curBB, afterBB));
+            curBB.addNextJumpInst(new Jump(curBB, afterBB));
         }
         curBB = afterBB;
     }
@@ -250,7 +255,7 @@ public class IRBuilder implements ASTVistor {
         BasicBlock condBB = new BasicBlock("whileConditionBB", curFunction);
         BasicBlock bodyBB = new BasicBlock("whileBodyBB", curFunction);
         BasicBlock afterBB = new BasicBlock("whileAfterBB", curFunction);
-        curBB.addNextInst(new Jump(curBB, condBB));
+        curBB.addNextJumpInst(new Jump(curBB, condBB));
         loopConditionBB.push(condBB);
         loopAfterBB.push(afterBB);
         curBB = condBB;
@@ -259,7 +264,7 @@ public class IRBuilder implements ASTVistor {
         node.getCondition().accept(this);
         curBB = bodyBB;
         node.getBody().accept(this);
-        curBB.addNextInst(new Jump(curBB, condBB));
+        curBB.addNextJumpInst(new Jump(curBB, condBB));
         curBB = afterBB;
         loopConditionBB.pop();
         loopAfterBB.pop();
@@ -274,7 +279,7 @@ public class IRBuilder implements ASTVistor {
         BasicBlock afterBB = new BasicBlock("forAfterBB", curFunction);
         BasicBlock condBB = node.getCondition() == null ? bodyBB : new BasicBlock("forConditionBB", curFunction);
         BasicBlock updateBB = node.getUpdate() == null ? condBB : new BasicBlock("forUpdateBB", curFunction);
-        curBB.addNextInst(new Jump(curBB, condBB));
+        curBB.addNextJumpInst(new Jump(curBB, condBB));
         loopConditionBB.push(condBB);
         loopAfterBB.push(afterBB);
         if(node.getCondition() != null) {
@@ -285,11 +290,11 @@ public class IRBuilder implements ASTVistor {
         }
         curBB = bodyBB;
         node.getBody().accept(this);
-        curBB.addNextInst(new Jump(curBB, updateBB));
+        curBB.addNextJumpInst(new Jump(curBB, updateBB));
         if(node.getUpdate() != null) {
             curBB = updateBB;
             node.getUpdate().accept(this);
-            curBB.addNextInst(new Jump(curBB, condBB));
+            curBB.addNextJumpInst(new Jump(curBB, condBB));
         }
         curBB = afterBB;
         loopConditionBB.pop();
@@ -298,12 +303,12 @@ public class IRBuilder implements ASTVistor {
 
     @Override
     public void visit(BreakStatement node) {
-        curBB.addNextInst(new Jump(curBB, loopAfterBB.peek()));
+        curBB.addNextJumpInst(new Jump(curBB, loopAfterBB.peek()));
     }
 
     @Override
     public void visit(ContinueStatement node) {
-        curBB.addNextInst(new Jump(curBB, loopConditionBB.peek()));
+        curBB.addNextJumpInst(new Jump(curBB, loopConditionBB.peek()));
     }
 
     @Override
@@ -382,7 +387,7 @@ public class IRBuilder implements ASTVistor {
             result = node.getVariableEntity().getVirtualRegister();
         }
         if(node.getTrueBB() != null) {
-            curBB.addNextInst(new CJump(curBB, result, CJump.CompareOp.EQ, new IntImmediate(1), node.getTrueBB(), node.getFalseBB()));
+            curBB.addNextJumpInst(new CJump(curBB, result, CJump.CompareOp.EQ, new IntImmediate(1), node.getTrueBB(), node.getFalseBB()));
         } else {
             node.setResult(result);
         }
@@ -421,7 +426,7 @@ public class IRBuilder implements ASTVistor {
                 }
             }
             if(node.getTrueBB() != null) {
-                curBB.addNextInst(new CJump(curBB, result, CJump.CompareOp.EQ, new IntImmediate(1), node.getTrueBB(), node.getFalseBB()));
+                curBB.addNextJumpInst(new CJump(curBB, result, CJump.CompareOp.EQ, new IntImmediate(1), node.getTrueBB(), node.getFalseBB()));
             } else {
                 node.setResult(result);
             }
@@ -452,7 +457,7 @@ public class IRBuilder implements ASTVistor {
             memory = new Memory(base, vr, Config.getRegSize(), new IntImmediate(Config.getRegSize()));
         }
         if(node.getTrueBB() != null) {
-            curBB.addNextInst(new CJump(curBB, memory, CJump.CompareOp.NE, new IntImmediate(0), node.getTrueBB(), node.getFalseBB()));
+            curBB.addNextJumpInst(new CJump(curBB, memory, CJump.CompareOp.NE, new IntImmediate(0), node.getTrueBB(), node.getFalseBB()));
         } else {
             node.setResult(memory);
         }
@@ -470,7 +475,7 @@ public class IRBuilder implements ASTVistor {
         }
         curBB.addNextInst(new Call(curBB, vrax, program.getFunction(node.getFunctionEntity().getName()), arguments));
         if(node.getTrueBB() != null) {
-            curBB.addNextInst(new CJump(curBB, vrax, CJump.CompareOp.EQ, new IntImmediate(1), node.getTrueBB(), node.getFalseBB()));
+            curBB.addNextJumpInst(new CJump(curBB, vrax, CJump.CompareOp.EQ, new IntImmediate(1), node.getTrueBB(), node.getFalseBB()));
         } else if(!node.getFunctionEntity().getReturnType().isVoidType()) {
             VirtualRegister ret = new VirtualRegister("");
             curBB.addNextInst(new Move(curBB, ret, vrax));
@@ -511,8 +516,8 @@ public class IRBuilder implements ASTVistor {
             BasicBlock condBB = new BasicBlock("allocateConditionBB", curFunction);
             BasicBlock bodyBB = new BasicBlock("allocateBodyBB", curFunction);
             BasicBlock afterBB = new BasicBlock("allocateAfterBB", curFunction);
-            curBB.addNextInst(new Jump(curBB, condBB));
-            condBB.addNextInst(new CJump(condBB, size, CJump.CompareOp.GT, new IntImmediate(0), bodyBB, afterBB));
+            curBB.addNextJumpInst(new Jump(curBB, condBB));
+            condBB.addNextJumpInst(new CJump(condBB, size, CJump.CompareOp.GT, new IntImmediate(0), bodyBB, afterBB));
             curBB = bodyBB;
             if(dims.size() == 1) {
                 Operand pointer = allocateArray(new LinkedList<>(), baseBytes, constructor);
@@ -526,7 +531,7 @@ public class IRBuilder implements ASTVistor {
                 curBB.addNextInst(new Move(curBB, new Memory(addr, size, Config.getRegSize()), pointer));
             }
             curBB.addNextInst(new UnaryOperation(curBB, UnaryOperation.UnaryOp.DEC, size));
-            condBB.addNextInst(new Jump(curBB, condBB));
+            condBB.addNextJumpInst(new Jump(curBB, condBB));
             curBB = afterBB;
             return addr;
         }
@@ -853,22 +858,16 @@ public class IRBuilder implements ASTVistor {
             VirtualRegister src = new VirtualRegister("");
             curBB.addNextInst(new Call(curBB, vrax, program.getFunction("string.compare"), src1, src2));
             curBB.addNextInst(new Move(curBB, src, vrax));
-            curBB.addNextInst(new CJump(curBB, src, cop, new IntImmediate(0), trueBB, falseBB));
+            curBB.addNextJumpInst(new CJump(curBB, src, cop, new IntImmediate(0), trueBB, falseBB));
         } else {
             if(src1 instanceof Memory && src2 instanceof Memory) {
                 VirtualRegister vr = new VirtualRegister("");
                 curBB.addNextInst(new Move(curBB, vr, src1));
-                curBB.addNextInst(new CJump(curBB, vr, cop, src2, trueBB, falseBB));
-            } else if(src1 instanceof Memory && src2 instanceof Constant){
-                VirtualRegister vr = new VirtualRegister("");
-                curBB.addNextInst(new Move(curBB, vr, src1));
-                curBB.addNextInst(new CJump(curBB, vr, cop, src2, trueBB, falseBB));
-            } else if(src1 instanceof Constant && src2 instanceof Memory) {
-                VirtualRegister vr = new VirtualRegister("");
-                curBB.addNextInst(new Move(curBB, vr, src2));
-                curBB.addNextInst(new CJump(curBB, src1, cop, vr, trueBB, falseBB));
+                curBB.addNextJumpInst(new CJump(curBB, vr, cop, src2, trueBB, falseBB));
+            } else if(src1 instanceof Constant && src2 instanceof Constant) {
+                curBB.addNextJumpInst(new Jump(curBB, doCompare(op, src1, src2, trueBB, falseBB)));
             } else {
-                curBB.addNextInst(new Jump(curBB, doCompare(op, src1, src2, trueBB, falseBB)));
+                curBB.addNextJumpInst(new CJump(curBB, src1, cop, src2, trueBB, falseBB));
             }
         }
     }

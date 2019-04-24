@@ -2,11 +2,9 @@ package IR.Instruction;
 
 import IR.BasicBlock;
 import IR.IRVistor;
-import IR.Operand.IntImmediate;
-import IR.Operand.Memory;
-import IR.Operand.Operand;
-import IR.Operand.Register;
+import IR.Operand.*;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class CJump extends Instruction {
@@ -69,6 +67,32 @@ public class CJump extends Instruction {
     @Override
     public LinkedList<Register> getDefinedRegisters() {
         return new LinkedList<>();
+    }
+
+    @Override
+    public void renameUsedRegisters(HashMap<Register, Register> renameMap) {
+        if(lhs instanceof Memory) {
+            lhs = ((Memory) lhs).copy();
+            ((Memory) lhs).renameUseReg(renameMap);
+        } else if(lhs instanceof Register && renameMap.containsKey(lhs)) {
+            lhs = renameMap.get(lhs);
+        }
+        if(rhs instanceof Memory) {
+            rhs = ((Memory) rhs).copy();
+            ((Memory) rhs).renameUseReg(renameMap);
+        } else if(rhs instanceof Register && renameMap.containsKey(rhs)) {
+            rhs = renameMap.get(rhs);
+        }
+    }
+
+    @Override
+    public void renameDefinedRegisters(HashMap<Register, Register> renameMap) {
+
+    }
+
+    @Override
+    public LinkedList<StackSlot> getStackSlots() {
+        return calcStackSlots(lhs, rhs);
     }
 
     @Override

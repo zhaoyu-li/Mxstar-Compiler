@@ -2,9 +2,12 @@ package IR.Instruction;
 
 import IR.BasicBlock;
 import IR.IRVistor;
+import IR.Operand.Operand;
 import IR.Operand.Register;
 import IR.Operand.StackSlot;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public abstract class Instruction {
@@ -14,6 +17,8 @@ public abstract class Instruction {
     private boolean removed;
 //    private LinkedList<Register> usedRegisters;
 //    private LinkedList<Register> definedRegisters;
+    private HashSet<Register> liveIn;
+    private HashSet<Register> liveOut;
 
     public Instruction(BasicBlock bb) {
         this.bb = bb;
@@ -22,6 +27,8 @@ public abstract class Instruction {
         removed = false;
 //        usedRegisters = new LinkedList<>();
 //        definedRegisters = new LinkedList<>();
+        liveIn = new HashSet<>();
+        liveOut = new HashSet<>();
     }
 
     public BasicBlock getBB() {
@@ -105,7 +112,26 @@ public abstract class Instruction {
 
     public abstract LinkedList<Register> getUsedRegisters();
     public abstract LinkedList<Register> getDefinedRegisters();
+    public abstract void renameUsedRegisters(HashMap<Register, Register> renameMap);
+    public abstract void renameDefinedRegisters(HashMap<Register, Register> renameMap);
+    public abstract LinkedList<StackSlot> getStackSlots();
 
+    LinkedList<StackSlot> calcStackSlots(Operand... operands) {
+        LinkedList<StackSlot> stackSlots = new LinkedList<>();
+        for(Operand operand : operands) {
+            if(operand instanceof StackSlot)
+                stackSlots.add((StackSlot) operand);
+        }
+        return stackSlots;
+    }
+
+    public HashSet<Register> getLiveIn() {
+        return liveIn;
+    }
+
+    public HashSet<Register> getLiveOut() {
+        return liveOut;
+    }
 
     public abstract void accept(IRVistor vistor);
 }

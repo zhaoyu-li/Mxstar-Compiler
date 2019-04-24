@@ -1,10 +1,8 @@
 import AST.Program;
-import BackEnd.LivenessAnalyzer;
-import BackEnd.NASMTransformer;
-import BackEnd.SimpleAlocator;
-import BackEnd.StackBuilder;
+import BackEnd.*;
 import FrontEnd.*;
 import IR.IRProgram;
+import IR.RegisterSet;
 import Parser.MxstarLexer;
 import Parser.MxstarParser;
 import org.antlr.v4.runtime.ANTLRFileStream;
@@ -35,6 +33,7 @@ public class Main {
     }
 
     private static void compile(InputStream sourceCode) throws Exception {
+
         ANTLRInputStream input = new ANTLRInputStream(sourceCode);
         MxstarLexer lexer = new MxstarLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -54,15 +53,20 @@ public class Main {
         scopeBuilder.visit(program);
         SemanticChecker semanticChecker = new SemanticChecker(scopeBuilder.getGlobalScope());
         semanticChecker.visit(program);
+        RegisterSet.init();
 
         IRBuilder irBuilder = new IRBuilder(scopeBuilder.getGlobalScope());
         irBuilder.visit(program);
 
         IRProgram irProgram = irBuilder.getProgram();
 
-        LivenessAnalyzer livenessAnalyzer = new LivenessAnalyzer(irProgram);
-        livenessAnalyzer.analysis();
+//        IRPrinter irPrinter = new IRPrinter();
+//        irPrinter.visit(irProgram);
+//        irPrinter.print();
 
+//        LivenessAnalyzer livenessAnalyzer = new LivenessAnalyzer(irProgram);
+//        livenessAnalyzer.analysis();
+//
         NASMTransformer nasmTransformer = new NASMTransformer();
         nasmTransformer.visit(irProgram);
 
@@ -71,5 +75,9 @@ public class Main {
 
         StackBuilder stackBuilder = new StackBuilder(irProgram);
         stackBuilder.build();
+
+        CodeGenerator codeGenerator = new CodeGenerator();
+        codeGenerator.visit(irProgram);
+        codeGenerator.print(new PrintStream("program.asm"));
     }
 }

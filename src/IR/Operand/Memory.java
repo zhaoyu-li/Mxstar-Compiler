@@ -2,13 +2,14 @@ package IR.Operand;
 
 import IR.IRVistor;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Memory extends Address {
-    protected Register base;
+    private Register base;
     private Register index;
     private int scale;
-    protected Constant offset;
+    private Constant offset;
 
     public Memory() {
         this.base = null;
@@ -58,9 +59,43 @@ public class Memory extends Address {
         return registers;
     }
 
-    public LinkedList<Register> getDefinedRegisters() {
-        LinkedList<Register> registers = new LinkedList<>();
-        return registers;
+    public void setBase(Register base) {
+        this.base = base;
+    }
+
+    public void setOffset(Constant offset) {
+        this.offset = offset;
+    }
+
+    public Memory copy() {
+        if(this instanceof StackSlot) {
+            return this;
+        } else {
+            return new Memory(base, index, scale, offset);
+        }
+    }
+
+    public Register getBase() {
+        return base;
+    }
+
+    public Register getIndex() {
+        return index;
+    }
+
+    public int getScale() {
+        return scale;
+    }
+
+    public Constant getOffset() {
+        return offset;
+    }
+
+    public void renameUseReg(HashMap<Register, Register> renameMap) {
+        if(renameMap.containsKey(base))
+            base = renameMap.get(base);
+        if(renameMap.containsKey(index))
+            index = renameMap.get(index);
     }
 
     @Override

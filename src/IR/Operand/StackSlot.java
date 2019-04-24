@@ -7,6 +7,10 @@ public class StackSlot extends Memory {
     private Function function;
     private String name;
 
+    public StackSlot() {
+
+    }
+
     public StackSlot(String name, Function function) {
         this.name = name;
         this.function = function;
@@ -21,11 +25,11 @@ public class StackSlot extends Memory {
     }
 
     public void setBase(PhysicalRegister vr) {
-        this.base = vr;
+        super.setBase(vr);
     }
 
     public void setOffset(IntImmediate offset) {
-        this.offset = offset;
+        super.setOffset(offset);
     }
 
     @Override

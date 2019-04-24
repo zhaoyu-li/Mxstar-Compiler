@@ -2,12 +2,12 @@ package IR.Instruction;
 
 import IR.BasicBlock;
 import IR.IRVistor;
-import IR.Operand.Address;
-import IR.Operand.Operand;
-import IR.Operand.Register;
-import IR.Operand.StackSlot;
+import IR.Operand.*;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+
+import static IR.RegisterSet.*;
 
 public class BinaryOperation extends Instruction {
     public enum BinaryOp {
@@ -38,12 +38,75 @@ public class BinaryOperation extends Instruction {
 
     @Override
     public LinkedList<Register> getUsedRegisters(){
-        return new LinkedList<>();
+        LinkedList<Register> registers = new LinkedList<>();
+        if(src instanceof Memory) {
+            registers.addAll(((Memory) src).getUsedRegisters());
+        } else if(src instanceof Register) {
+            registers.add((Register) src);
+        }
+        if(dst instanceof Memory) {
+            registers.addAll(((Memory) dst).getUsedRegisters());
+        } else if(dst instanceof Register) {
+            registers.add((Register) dst);
+        }
+        if(op == BinaryOp.MUL) {
+            if (!registers.contains(vrax)) {
+                registers.add(vrax);
+            }
+        } else if(op == BinaryOp.DIV || op == BinaryOp.MOD) {
+            if(!registers.contains(vrax)) {
+                registers.add(vrax);
+            }
+            if(!registers.contains(vrdx)) {
+                registers.add(vrdx);
+            }
+        }
+        return registers;
     }
 
     @Override
     public LinkedList<Register> getDefinedRegisters() {
-        return new LinkedList<>();
+        LinkedList<Register> registers = new LinkedList<>();
+        if(dst instanceof Register) {
+            registers.add((Register) dst);
+        }
+        if(op == BinaryOp.MUL || op == BinaryOp.DIV || op == BinaryOp.MOD) {
+            if(!registers.contains(vrax)) {
+                registers.add(vrax);
+            }
+            if(!registers.contains(vrdx)) {
+                registers.add(vrdx);
+            }
+        }
+        return registers;
+    }
+
+    @Override
+    public void renameUsedRegisters(HashMap<Register, Register> renameMap) {
+        if(src instanceof Memory) {
+            src = ((Memory) src).copy();
+            ((Memory) src).renameUseReg(renameMap);
+        } else if(src instanceof Register && renameMap.containsKey(src)) {
+            src = renameMap.get(src);
+        }
+        if(dst instanceof Memory) {
+            dst = ((Memory) dst).copy();
+            ((Memory) dst).renameUseReg(renameMap);
+        } else if(dst instanceof Register && renameMap.containsKey(dst)) {
+            dst = renameMap.get(dst);
+        }
+    }
+
+    @Override
+    public void renameDefinedRegisters(HashMap<Register, Register> renameMap) {
+        if(dst instanceof Register && renameMap.containsKey(dst)) {
+            dst = renameMap.get(dst);
+        }
+    }
+
+    @Override
+    public LinkedList<StackSlot> getStackSlots() {
+        return calcStackSlots(dst, src);
     }
 
     @Override

@@ -2,11 +2,9 @@ package IR.Instruction;
 
 import IR.BasicBlock;
 import IR.IRVistor;
-import IR.Operand.Address;
-import IR.Operand.Memory;
-import IR.Operand.Operand;
-import IR.Operand.Register;
+import IR.Operand.*;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Move extends Instruction {
@@ -23,8 +21,17 @@ public class Move extends Instruction {
         return dst;
     }
 
+    public void setDst(Address dst) {
+        this.dst = dst;
+    }
+
+
     public Operand getSrc() {
         return src;
+    }
+
+    public void setSrc(Operand src) {
+        this.src = src;
     }
 
     @Override
@@ -48,6 +55,28 @@ public class Move extends Instruction {
             registers.add((Register) dst);
         }
         return registers;
+    }
+
+    @Override
+    public void renameUsedRegisters(HashMap<Register, Register> renameMap) {
+        if(src instanceof Memory) {
+            src = ((Memory) src).copy();
+            ((Memory) src).renameUseReg(renameMap);
+        } else if(src instanceof Register && renameMap.containsKey(src)) {
+            src = renameMap.get(src);
+        }
+    }
+
+    @Override
+    public void renameDefinedRegisters(HashMap<Register, Register> renameMap) {
+        if(dst instanceof Register && renameMap.containsKey(dst)) {
+            dst = renameMap.get(dst);
+        }
+    }
+
+    @Override
+    public LinkedList<StackSlot> getStackSlots() {
+        return calcStackSlots(dst, src);
     }
 
     @Override

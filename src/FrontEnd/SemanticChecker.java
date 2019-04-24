@@ -45,11 +45,6 @@ public class SemanticChecker implements ASTVistor {
     }
 
     @Override
-    public void visit(Declaration node) {
-
-    }
-
-    @Override
     public void visit(FunctionDeclaration node) {
         curFunctionEntity = node.getFunctionEntity();
         for(Statement statement : node.getBody()) {
@@ -87,10 +82,6 @@ public class SemanticChecker implements ASTVistor {
 
     }
 
-    @Override
-    public void visit(Statement node) {
-
-    }
 
     @Override
     public void visit(IfStatement node) {
@@ -180,11 +171,6 @@ public class SemanticChecker implements ASTVistor {
 
     @Override
     public void visit(EmptyStatement node) {
-
-    }
-
-    @Override
-    public void visit(Expression node) {
 
     }
 

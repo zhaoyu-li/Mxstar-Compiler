@@ -1,14 +1,16 @@
 package IR;
 
+import IR.Instruction.Instruction;
 import IR.Instruction.Return;
 import IR.Operand.PhysicalRegister;
+import IR.Operand.Register;
 import IR.Operand.StackSlot;
 import IR.Operand.VirtualRegister;
 import Scope.VariableEntity;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Stack;
 
 public class Function {
     public enum FuncType {
@@ -23,7 +25,7 @@ public class Function {
     private LinkedList<VirtualRegister> parameters;
     private LinkedList<StackSlot> temporaries;
 
-    private HashSet<Function> callee;
+    private HashSet<Function> callees;
     private HashSet<Function> visitedFunction;
 
     private HashSet<VariableEntity> usedGlobalVariables;
@@ -31,11 +33,11 @@ public class Function {
     private HashSet<PhysicalRegister> usedPhysicalRegisters;
     private LinkedList<Return> returnList;
 
+
     private LinkedList<BasicBlock> basicBlocks;
-
-    private int stackSize;
-
-
+    private LinkedList<BasicBlock> reversePostOrder;
+    private LinkedList<BasicBlock> reversePrevOrder;
+    private HashSet<BasicBlock> visitedBB;
 
     public Function(FuncType type, String name, boolean hasReturnValue) {
         this.type = type;
@@ -43,13 +45,17 @@ public class Function {
         this.hasReturnValue = hasReturnValue;
         parameters = new LinkedList<>();
         temporaries = new LinkedList<>();
-        callee = new HashSet<>();
+        callees = new HashSet<>();
         visitedFunction = new HashSet<>();
         usedGlobalVariables = new HashSet<>();
         usedRecursiveVariables = new HashSet<>();
         usedPhysicalRegisters = new HashSet<>();
         returnList = new LinkedList<>();
+
         basicBlocks = new LinkedList<>();
+        reversePostOrder = new LinkedList<>();
+        reversePrevOrder = new LinkedList<>();
+        visitedBB = new HashSet<>();
     }
 
     public FuncType getType() {
@@ -97,11 +103,11 @@ public class Function {
     }
 
     public void addCallee(Function function) {
-        callee.add(function);
+        callees.add(function);
     }
 
     public HashSet<Function> getCallees() {
-        return callee;
+        return callees;
     }
 
     public void addGlobalVariable(VariableEntity var) {
@@ -115,7 +121,7 @@ public class Function {
     public void addUsedRecursiveVariables(Function function) {
         if(visitedFunction.contains(function)) return;
         visitedFunction.add(function);
-        for(Function func : function.callee) {
+        for(Function func : function.callees) {
             addUsedRecursiveVariables(func);
         }
         usedRecursiveVariables.addAll(function.usedGlobalVariables);
@@ -143,6 +149,42 @@ public class Function {
 
     public LinkedList<BasicBlock> getBasicBlocks() {
         return basicBlocks;
+    }
+
+    private void dfsReversePostOrder(BasicBlock bb) {
+        if(visitedBB.contains(bb)) return;
+        visitedBB.add(bb);
+        for(BasicBlock next : bb.getNextBBs()) {
+            dfsReversePostOrder(next);
+        }
+        reversePostOrder.addFirst(bb);
+    }
+
+    public void calcReversePostOrder() {
+        visitedBB.clear();
+        dfsReversePostOrder(headBB);
+    }
+
+    public LinkedList<BasicBlock> getReversePostOrder() {
+        return reversePostOrder;
+    }
+
+    private void dfsReversePrevOrder(BasicBlock bb) {
+        if(visitedBB.contains(bb)) return;
+        visitedBB.add(bb);
+        for(BasicBlock prev : bb.getPrevBBs()) {
+            dfsReversePrevOrder(prev);
+        }
+        reversePrevOrder.addFirst(bb);
+    }
+
+    public void calcReversePrevOrder() {
+        visitedBB.clear();
+        dfsReversePrevOrder(tailBB);
+    }
+
+    public LinkedList<BasicBlock> getReversePrevOrder() {
+        return reversePrevOrder;
     }
 
     public void accept(IRVistor vistor) {

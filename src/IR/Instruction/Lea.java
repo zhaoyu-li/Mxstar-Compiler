@@ -4,7 +4,9 @@ import IR.BasicBlock;
 import IR.IRVistor;
 import IR.Operand.Memory;
 import IR.Operand.Register;
+import IR.Operand.StackSlot;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Lea extends Instruction {
@@ -37,6 +39,24 @@ public class Lea extends Instruction {
         LinkedList<Register> registers = new LinkedList<>();
         registers.add(dst);
         return registers;
+    }
+
+    @Override
+    public void renameUsedRegisters(HashMap<Register, Register> renameMap) {
+        src = src.copy();
+        src.renameUseReg(renameMap);
+    }
+
+    @Override
+    public void renameDefinedRegisters(HashMap<Register, Register> renameMap) {
+        if(renameMap.containsKey(dst)) {
+            dst = renameMap.get(dst);
+        }
+    }
+
+    @Override
+    public LinkedList<StackSlot> getStackSlots() {
+        return calcStackSlots(src);
     }
 
     @Override

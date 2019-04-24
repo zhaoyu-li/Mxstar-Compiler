@@ -3,28 +3,42 @@ package BackEnd;
 import IR.*;
 import IR.Instruction.*;
 import IR.Operand.*;
-import Scope.VariableEntity;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Formatter;
 import java.util.HashMap;
 
-public class NASMPrinter implements IRVistor {
+public class CodeGenerator implements IRVistor {
     private StringBuilder program;
     private HashMap<BasicBlock, String> bbNames;
     private HashMap<StaticData, String> sdNames;
+    private HashMap<StackSlot,String> ssNames;
+    private HashMap<VirtualRegister,String> varNames;
 
+    private boolean inLeaInst;
     private int bbIndex;
     private int sdIndex;
+    private int varIndex;
+    private int ssIndex;
 
-    public NASMPrinter() {
+    public CodeGenerator() {
         program = new StringBuilder();
         bbNames = new HashMap<>();
         sdNames = new HashMap<>();
+        ssNames = new HashMap<>();
+        varNames = new HashMap<>();
         bbIndex = 0;
         sdIndex = 0;
+        varIndex = 0;
+        ssIndex = 0;
+        inLeaInst = false;
+    }
+
+    public void print(PrintStream printStream) {
+        printStream.print(program.toString());
     }
 
     private void addLine(String line) {
@@ -62,6 +76,17 @@ public class NASMPrinter implements IRVistor {
         return sdNames.get(sd);
     }
 
+    private String getVirtualRegsiterName(VirtualRegister virtualRegister) {
+        if(!varNames.containsKey(virtualRegister))
+            varNames.put(virtualRegister, "v" + String.valueOf(varIndex++));
+        return varNames.get(virtualRegister);
+    }
+    private String getStackSlotName(StackSlot ss) {
+        if(!ssNames.containsKey(ss))
+            ssNames.put(ss, "stack[" + String.valueOf(ssIndex++) + "]");
+        return ssNames.get(ss);
+    }
+
     @Override
     public void visit(IRProgram node) {
         try {
@@ -73,7 +98,8 @@ public class NASMPrinter implements IRVistor {
             e.printStackTrace();
         }
         for(Function function : node.getFunctions().values()) {
-            function.accept(this);
+            if(function.getType() == Function.FuncType.UserDefined)
+                function.accept(this);
         }
         addLine("\tsection .data");
         for(StaticVariable var : node.getStaticVariables()) {
@@ -223,7 +249,7 @@ public class NASMPrinter implements IRVistor {
                 break;
         }
         add("\t" + op + " ");
-        node.getdst().accept(this);
+        node.getDst().accept(this);
         add("\n");
     }
 
@@ -275,17 +301,58 @@ public class NASMPrinter implements IRVistor {
 
     @Override
     public void visit(Memory node) {
-
+        boolean occur = false;
+        if(!inLeaInst)
+            add("qword ");
+        add("[");
+        if(node.getBase() != null) {
+            node.getBase().accept(this);
+            occur = true;
+        }
+        if(node.getIndex() != null) {
+            if(occur)
+                add(" + ");
+            node.getIndex().accept(this);
+            if(node.getScale() != 1)
+                add(" * " + String.valueOf(node.getScale()));
+            occur = true;
+        }
+        if(node.getOffset() != null) {
+            Constant constant = node.getOffset();
+            if(constant instanceof StaticData) {
+                if(occur)
+                    add(" + ");
+                constant.accept(this);
+            } else if(constant instanceof IntImmediate) {
+                int value = ((IntImmediate) constant).getValue();
+                if(occur) {
+                    if(value > 0)
+                        add(" + " + String.valueOf(value));
+                    else if(value < 0)
+                        add(" - " + String.valueOf(-value));
+                } else {
+                    add(String.valueOf(value));
+                }
+            }
+        }
+        add("]");
     }
 
     @Override
     public void visit(StackSlot node) {
-
+        if(node.getBase() != null || node.getIndex() != null || node.getOffset() != null) {
+            visit((Memory) node);
+        } else {
+            add(getStackSlotName(node));
+        }
     }
 
     @Override
     public void visit(VirtualRegister node) {
+        if(node.getAllocatedPhysicalRegister() != null) {
+            visit(node.getAllocatedPhysicalRegister());
 
+        }
     }
 
     @Override
