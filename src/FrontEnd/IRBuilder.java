@@ -902,11 +902,17 @@ public class IRBuilder implements ASTVistor {
             case "<=":
             case "==":
             case "!=":
-                RelationOperation(node.getOp(), node.getLhs(), node.getRhs(), node.getTrueBB(), node.getFalseBB());
+                if(node.getTrueBB() != null) {
+                    RelationOperation(node.getOp(), node.getLhs(), node.getRhs(), node.getTrueBB(), node.getFalseBB());
+                }
+
                 break;
             case "&&":
             case "||":
-                LogicalOperation(node.getOp(), node.getLhs(), node.getRhs(), node.getTrueBB(), node.getFalseBB());
+                if(node.getTrueBB() != null) {
+                    LogicalOperation(node.getOp(), node.getLhs(), node.getRhs(), node.getTrueBB(), node.getFalseBB());
+                }
+
                 break;
         }
     }
