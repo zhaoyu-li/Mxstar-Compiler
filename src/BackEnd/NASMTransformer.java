@@ -15,7 +15,10 @@ public class NASMTransformer implements IRVistor {
     @Override
     public void visit(IRProgram node) {
         for(Function function : node.getFunctions().values()) {
-            function.accept(this);
+            if(function.getType() == Function.FuncType.UserDefined){
+                function.accept(this);
+            }
+
         }
     }
 
@@ -50,7 +53,12 @@ public class NASMTransformer implements IRVistor {
 
     @Override
     public void visit(BinaryOperation node) {
-
+        if((node.getOp() == BinaryOperation.BinaryOp.MUL || node.getOp() == BinaryOperation.BinaryOp.DIV || node.getOp() == BinaryOperation.BinaryOp.MOD)
+                && node.getSrc() instanceof Constant) {
+            VirtualRegister vr = new VirtualRegister("");
+            node.prepend(new Move(node.getBB(), vr, node.getSrc()));
+            node.setSrc(vr);
+        }
     }
 
     @Override
@@ -60,7 +68,23 @@ public class NASMTransformer implements IRVistor {
 
     @Override
     public void visit(Move node) {
-
+        if(node.getDst() instanceof Memory && node.getSrc() instanceof Memory) {
+            VirtualRegister vr = new VirtualRegister("");
+            node.prepend(new Move(node.getBB(), vr, node.getSrc()));
+            node.setSrc(vr);
+        }  else {
+            PhysicalRegister pdest = getPhysical(node.getDst());
+            PhysicalRegister psrc = getPhysical(node.getSrc());
+            if(pdest != null && node.getSrc() instanceof Memory) {
+                VirtualRegister vr = new VirtualRegister("");
+                node.prepend(new Move(node.getBB(), vr, node.getSrc()));
+                node.setSrc(vr);
+            } else if(psrc != null && node.getDst() instanceof Memory) {
+                VirtualRegister vr = new VirtualRegister("");
+                node.prepend(new Move(node.getBB(), vr, node.getDst()));
+                node.setDst(vr);
+            }
+        }
     }
 
     @Override

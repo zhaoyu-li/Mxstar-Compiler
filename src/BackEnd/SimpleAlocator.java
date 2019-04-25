@@ -53,7 +53,10 @@ public class SimpleAlocator {
                 allRegs.addAll(definedRegs);
 
                 for(Register avr : allRegs) {
-                    assert avr instanceof VirtualRegister;
+//                    assert avr instanceof VirtualRegister;
+                    if(avr instanceof PhysicalRegister) {
+                        System.out.println(((PhysicalRegister) avr).getName());
+                    }
                     VirtualRegister vr = (VirtualRegister) avr;
                     if(vr.getAllocatedPhysicalRegister() != null) continue;
                     if(vr.getSpillSpace() == null)

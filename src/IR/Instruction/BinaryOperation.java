@@ -36,6 +36,10 @@ public class BinaryOperation extends Instruction {
         return src;
     }
 
+    public void setSrc(Operand src) {
+        this.src = src;
+    }
+
     @Override
     public LinkedList<Register> getUsedRegisters(){
         LinkedList<Register> registers = new LinkedList<>();

@@ -314,8 +314,12 @@ public class IRBuilder implements ASTVistor {
     @Override
     public void visit(ReturnStatement node) {
         if(node.getRet() != null) {
-            node.getRet().accept(this);
-            curBB.addNextInst(new Move(curBB, vrax, node.getRet().getResult()));
+            if(node.getRet().getType().isBoolType()) {
+                boolAssign(node.getRet(), vrax);
+            } else {
+                node.getRet().accept(this);
+                curBB.addNextInst(new Move(curBB, vrax, node.getRet().getResult()));
+            }
         }
         Return ret = new Return(curBB);
         curBB.addNextInst(ret);
@@ -359,6 +363,7 @@ public class IRBuilder implements ASTVistor {
     public void visit(BoolLiteral node) {
         Operand result = new IntImmediate(node.getValue() ? 1 : 0);
         node.setResult(result);
+//        curBB.addNextJumpInst(new Jump(curBB, node.getValue() ? node.getTrueBB() : node.getFalseBB()));
     }
 
     @Override

@@ -58,7 +58,7 @@ public abstract class Instruction {
             bb.setHead(inst);
         } else {
             prev.next = inst;
-            inst.prev = next;
+            inst.prev = prev;
             inst.next = this;
             this.prev = inst;
         }

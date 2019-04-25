@@ -2,6 +2,7 @@
   <dictionary name="apoll">
     <words>
       <w>alocator</w>
+      <w>buildin</w>
       <w>callees</w>
       <w>liveness</w>
       <w>mxstar</w>

@@ -11,7 +11,7 @@ public class GlobalScope extends Scope {
         classes = new HashMap<String, ClassEntity>();
         putGlobalBuildinFunction();
         putStringBuildinFunction();
-        putArrayBuildinFunciotn();
+        putArrayBuildinFunction();
     }
 
     public void putClassEntity(String name, ClassEntity classEntity) {
@@ -22,7 +22,7 @@ public class GlobalScope extends Scope {
         return classes.get(name);
     }
 
-    private FunctionEntity globalfunction() {
+    private FunctionEntity globalPrintFunction() {
         FunctionEntity function = new FunctionEntity();
         function.setName("print");
         function.setReturnType(new Type("void"));
@@ -119,7 +119,7 @@ public class GlobalScope extends Scope {
     }
 
     private void putGlobalBuildinFunction() {
-        putFunction("print", globalfunction());
+        putFunction("print", globalPrintFunction());
         putFunction("println", globalPrintlnFunction());
         putFunction("getString", globalGetStringFunction());
         putFunction("getInt", globalGetIntFunction());
@@ -135,7 +135,7 @@ public class GlobalScope extends Scope {
         classes.put("string", stringEntity);
     }
 
-    private void putArrayBuildinFunciotn() {
+    private void putArrayBuildinFunction() {
         ClassEntity arrayEntity = new ClassEntity();
         arrayEntity.getScope().putFunction("size", arraySizeFunction());
         classes.put("array", arrayEntity);

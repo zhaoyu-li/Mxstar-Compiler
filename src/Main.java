@@ -67,6 +67,7 @@ public class Main {
 //        LivenessAnalyzer livenessAnalyzer = new LivenessAnalyzer(irProgram);
 //        livenessAnalyzer.analysis();
 //
+
         NASMTransformer nasmTransformer = new NASMTransformer();
         nasmTransformer.visit(irProgram);
 
