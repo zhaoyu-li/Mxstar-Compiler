@@ -360,9 +360,11 @@ public class IRBuilder implements ASTVistor {
 
     @Override
     public void visit(BoolLiteral node) {
-        /*Operand result = new IntImmediate(node.getValue() ? 1 : 0);
-        node.setResult(result);*/
-        curBB.addNextJumpInst(new Jump(curBB, node.getValue() ? node.getTrueBB() : node.getFalseBB()));
+        Operand result = new IntImmediate(node.getValue() ? 1 : 0);
+        node.setResult(result);
+        if(node.getTrueBB() != null) {
+            curBB.addNextJumpInst(new Jump(curBB, node.getValue() ? node.getTrueBB() : node.getFalseBB()));
+        }
     }
 
     @Override
