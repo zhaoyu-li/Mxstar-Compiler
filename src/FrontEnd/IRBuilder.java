@@ -191,13 +191,13 @@ public class IRBuilder implements ASTVistor {
     }
 
     private void boolAssign(Expression expr, Address vr) {
-        if(expr instanceof BoolLiteral) {
+        /*if(expr instanceof BoolLiteral) {
             expr.accept(this);
             Operand result = expr.getResult();
             if(result != vr) {
                 curBB.addNextInst(new Move(curBB, vr, result));
             }
-        } else {
+        } else {*/
             BasicBlock trueBB = new BasicBlock("trueBB", curFunction);
             BasicBlock falseBB = new BasicBlock("falseBB", curFunction);
             BasicBlock mergeBB = new BasicBlock("mergeBB", curFunction);
@@ -209,7 +209,6 @@ public class IRBuilder implements ASTVistor {
             trueBB.addNextJumpInst(new Jump(trueBB, mergeBB));
             falseBB.addNextJumpInst(new Jump(falseBB, mergeBB));
             curBB = mergeBB;
-        }
     }
 
     @Override
@@ -361,9 +360,9 @@ public class IRBuilder implements ASTVistor {
 
     @Override
     public void visit(BoolLiteral node) {
-        Operand result = new IntImmediate(node.getValue() ? 1 : 0);
-        node.setResult(result);
-//        curBB.addNextJumpInst(new Jump(curBB, node.getValue() ? node.getTrueBB() : node.getFalseBB()));
+        /*Operand result = new IntImmediate(node.getValue() ? 1 : 0);
+        node.setResult(result);*/
+        curBB.addNextJumpInst(new Jump(curBB, node.getValue() ? node.getTrueBB() : node.getFalseBB()));
     }
 
     @Override
