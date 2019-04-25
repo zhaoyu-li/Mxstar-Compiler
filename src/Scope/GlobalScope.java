@@ -72,7 +72,7 @@ public class GlobalScope extends Scope {
 
     private FunctionEntity stringLengthFunction() {
         FunctionEntity function = new FunctionEntity();
-        function.setName("length");
+        function.setName("string.length");
         function.setReturnType(new Type("int"));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
         function.setParameters(parameters);
@@ -81,7 +81,7 @@ public class GlobalScope extends Scope {
 
     private FunctionEntity stringSubstringFunction() {
         FunctionEntity function = new FunctionEntity();
-        function.setName("substring");
+        function.setName("string.substring");
         function.setReturnType(new Type("string"));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
         parameters.add(new VariableEntity(new Type("int"), "left"));
@@ -92,7 +92,7 @@ public class GlobalScope extends Scope {
 
     private FunctionEntity stringParseIntFunction() {
         FunctionEntity function = new FunctionEntity();
-        function.setName("parseInt");
+        function.setName("string.parseInt");
         function.setReturnType(new Type("int"));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
         function.setParameters(parameters);
@@ -101,7 +101,7 @@ public class GlobalScope extends Scope {
 
     private FunctionEntity stringOrdFunction() {
         FunctionEntity function = new FunctionEntity();
-        function.setName("ord");
+        function.setName("string.ord");
         function.setReturnType(new Type("int"));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
         parameters.add(new VariableEntity(new Type("int"), "pos"));
@@ -111,7 +111,7 @@ public class GlobalScope extends Scope {
 
     private FunctionEntity arraySizeFunction() {
         FunctionEntity function = new FunctionEntity();
-        function.setName("size");
+        function.setName("array.size");
         function.setReturnType(new Type("int"));
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
         function.setParameters(parameters);
@@ -127,17 +127,13 @@ public class GlobalScope extends Scope {
     }
 
     private void putStringBuildinFunction() {
-        ClassEntity stringEntity = new ClassEntity();
-        stringEntity.getScope().putFunction("length", stringLengthFunction());
-        stringEntity.getScope().putFunction("substring", stringSubstringFunction());
-        stringEntity.getScope().putFunction("parseInt", stringParseIntFunction());
-        stringEntity.getScope().putFunction("ord", stringOrdFunction());
-        classes.put("string", stringEntity);
+        putFunction("string.length", stringLengthFunction());
+        putFunction("string.substring", stringSubstringFunction());
+        putFunction("string.parseInt", stringParseIntFunction());
+        putFunction("string.ord", stringOrdFunction());
     }
 
     private void putArrayBuildinFunction() {
-        ClassEntity arrayEntity = new ClassEntity();
-        arrayEntity.getScope().putFunction("size", arraySizeFunction());
-        classes.put("array", arrayEntity);
+        putFunction("array.size", arraySizeFunction());
     }
 }

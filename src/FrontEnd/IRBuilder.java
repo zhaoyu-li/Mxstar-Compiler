@@ -422,7 +422,7 @@ public class IRBuilder implements ASTVistor {
                     arguments.add(argument);
                 }
                 curBB.addNextInst(new Call(curBB, vrax, function, arguments));
-                if (node.getFuncCall().getFunctionEntity().getReturnType().getType() != Type.types.VOID) {
+                if (!node.getFuncCall().getFunctionEntity().getReturnType().isVoidType()) {
                     VirtualRegister ret = new VirtualRegister("");
                     curBB.addNextInst(new Move(curBB, ret, vrax));
                     result = ret;
@@ -435,6 +435,38 @@ public class IRBuilder implements ASTVistor {
             } else {
                 node.setResult(result);
             }
+        } else if(node.getExpr().getType().isStringType()) {
+            Operand result;
+            Function function = program.getFunction(node.getFuncCall().getFunctionEntity().getName());
+            LinkedList<Operand> arguments = new LinkedList<>();
+            arguments.add(base);
+            for (Expression expression : node.getFuncCall().getArguments()) {
+                expression.accept(this);
+                Operand argument = expression.getResult();
+                arguments.add(argument);
+            }
+            curBB.addNextInst(new Call(curBB, vrax, function, arguments));
+            if (!node.getFuncCall().getFunctionEntity().getReturnType().isVoidType()) {
+                VirtualRegister ret = new VirtualRegister("");
+                curBB.addNextInst(new Move(curBB, ret, vrax));
+                result = ret;
+            } else {
+                result = null;
+            }
+            if(node.getTrueBB() != null) {
+                curBB.addNextJumpInst(new CJump(curBB, result, CJump.CompareOp.EQ, new IntImmediate(1), node.getTrueBB(), node.getFalseBB()));
+            } else {
+                node.setResult(result);
+            }
+        } else if(node.getExpr().getType() instanceof ArrayType) {
+            Function function = program.getFunction(node.getFuncCall().getFunctionEntity().getName());
+            LinkedList<Operand> arguments = new LinkedList<>();
+            arguments.add(base);
+            curBB.addNextInst(new Call(curBB, vrax, function, arguments));
+            VirtualRegister ret = new VirtualRegister("");
+            curBB.addNextInst(new Move(curBB, ret, vrax));
+            node.setResult(ret);
+
         }
     }
 
@@ -905,14 +937,12 @@ public class IRBuilder implements ASTVistor {
                 if(node.getTrueBB() != null) {
                     RelationOperation(node.getOp(), node.getLhs(), node.getRhs(), node.getTrueBB(), node.getFalseBB());
                 }
-
                 break;
             case "&&":
             case "||":
                 if(node.getTrueBB() != null) {
                     LogicalOperation(node.getOp(), node.getLhs(), node.getRhs(), node.getTrueBB(), node.getFalseBB());
                 }
-
                 break;
         }
     }

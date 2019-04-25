@@ -391,12 +391,12 @@ public class ScopeBuilder implements ASTVistor {
                 }
                 node.setType(node.getFuncCall().getType());
             }
-        } else if (node.getExpr().getType().getType() == Type.types.STRING) {
+        } else if (node.getExpr().getType().isStringType()) {
             if(node.getFuncCall() != null) {
-                if(globalScope.getClassEntity("string").getScope().getFunction(node.getFuncCall().getName().getName()) == null) {
+                if(globalScope.getFunction("string." + node.getFuncCall().getName().getName()) == null) {
                     throw new SemanticError(node.getLocation(), "Cannot find function");
                 } else {
-                    node.getFuncCall().setFunctionEntity(globalScope.getClassEntity("string").getScope().getFunction(node.getFuncCall().getName().getName()));
+                    node.getFuncCall().setFunctionEntity(globalScope.getFunction("string." + node.getFuncCall().getName().getName()));
                     for(Expression expression : node.getFuncCall().getArguments()) {
                         expression.accept(this);
                     }
@@ -406,10 +406,10 @@ public class ScopeBuilder implements ASTVistor {
             }
         } else if (node.getExpr().getType() instanceof ArrayType) {
             if(node.getFuncCall() != null) {
-                if(globalScope.getClassEntity("array").getScope().getFunction(node.getFuncCall().getName().getName()) == null) {
+                if(globalScope.getFunction("array." + node.getFuncCall().getName().getName()) == null) {
                     throw new SemanticError(node.getLocation(), "Cannot find function");
                 } else {
-                    node.getFuncCall().setFunctionEntity(globalScope.getClassEntity("array").getScope().getFunction(node.getFuncCall().getName().getName()));
+                    node.getFuncCall().setFunctionEntity(globalScope.getFunction("array." + node.getFuncCall().getName().getName()));
                     for(Expression expression : node.getFuncCall().getArguments()) {
                         expression.accept(this);
                     }
