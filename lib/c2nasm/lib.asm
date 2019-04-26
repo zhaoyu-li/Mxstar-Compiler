@@ -1,11 +1,3 @@
-
-
-
-
-
-
-default rel
-
 global __print
 global __println
 global __getString
@@ -29,11 +21,11 @@ extern __printf_chk
 extern _GLOBAL_OFFSET_TABLE_
 
 
-SECTION .text   6
+SECTION .text
 
 __print:
         lea     rdx, [rdi+8H]
-        lea     rsi, [rel .LC0]
+        mov     rsi, L_011
         mov     edi, 1
         xor     eax, eax
         jmp     __printf_chk
@@ -60,12 +52,12 @@ ALIGN   8
 __getString:
         push    rbp
         push    rbx
-        lea     rsi, [rel __buffer.3337]
-        lea     rdi, [rel .LC0]
+        mov     rsi, __buffer.3337
+        mov     rdi, L_011
         xor     eax, eax
         sub     rsp, 8
         call    __isoc99_scanf
-        lea     rcx, [rel __buffer.3337]
+        mov     rcx, __buffer.3337
         mov     rbx, rcx
 L_001:  mov     edx, dword [rbx]
         add     rbx, 4
@@ -91,7 +83,7 @@ L_001:  mov     edx, dword [rbx]
         lea     rdx, [rbx+1H]
         movsxd  rax, ebx
         lea     rdi, [rbp+8H]
-        lea     rsi, [rel __buffer.3337]
+        mov     rsi, __buffer.3337
         mov     qword [rbp], rax
         call    memcpy
         add     rsp, 8
@@ -103,7 +95,7 @@ L_001:  mov     edx, dword [rbx]
 
 __getInt:
         sub     rsp, 24
-        lea     rdi, [rel .LC1]
+        mov     rdi, L_012
 
 
         mov     rax, qword [fs:abs 28H]
@@ -135,7 +127,7 @@ __toString:
         mov     edi, 32
         sub     rsp, 8
         call    malloc
-        lea     rcx, [rel .LC1]
+        mov     rcx, L_012
         lea     rdi, [rax+8H]
         mov     rbx, rax
         mov     r8, rbp
@@ -363,10 +355,10 @@ __buffer.3337:
 
 SECTION .rodata.str1.1 
 
-.LC0:
+L_011:
         db 25H, 73H, 00H
 
-.LC1:
+L_012:
         db 25H, 6CH, 64H, 00H
 
 
