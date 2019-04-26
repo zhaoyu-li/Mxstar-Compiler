@@ -1,3 +1,11 @@
+
+
+
+
+
+
+default rel
+
 global __print
 global __println
 global __getString
@@ -9,6 +17,7 @@ global __string_parseInt
 global __string_ord
 global __string_concat
 global __string_compare
+global main
 
 extern strcmp
 extern __sprintf_chk
@@ -18,10 +27,11 @@ extern malloc
 extern __isoc99_scanf
 extern puts
 extern __printf_chk
+extern _init
 extern _GLOBAL_OFFSET_TABLE_
 
 
-SECTION .text
+SECTION .text   6
 
 __print:
         lea     rdx, [rdi+8H]
@@ -52,12 +62,12 @@ ALIGN   8
 __getString:
         push    rbp
         push    rbx
-        mov     rsi, __buffer.3337
+        lea     rsi, [rel __buffer.3340]
         mov     rdi, L_011
         xor     eax, eax
         sub     rsp, 8
         call    __isoc99_scanf
-        mov     rcx, __buffer.3337
+        lea     rcx, [rel __buffer.3340]
         mov     rbx, rcx
 L_001:  mov     edx, dword [rbx]
         add     rbx, 4
@@ -83,7 +93,7 @@ L_001:  mov     edx, dword [rbx]
         lea     rdx, [rbx+1H]
         movsxd  rax, ebx
         lea     rdi, [rbp+8H]
-        mov     rsi, __buffer.3337
+        lea     rsi, [rel __buffer.3340]
         mov     qword [rbp], rax
         call    memcpy
         add     rsp, 8
@@ -344,16 +354,28 @@ __string_compare:
 
 
 
-SECTION .data   
+SECTION .data
 
 
 SECTION .bss    align=32
 
-__buffer.3337:
+__buffer.3340:
         resb    1048576
 
 
-SECTION .rodata.str1.1 
+SECTION .text.startup 6
+
+main:
+        sub     rsp, 8
+        xor     eax, eax
+        call    _init
+        xor     eax, eax
+        add     rsp, 8
+        ret
+
+
+
+SECTION .rodata.str1.1
 
 L_011:
         db 25H, 73H, 00H

@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+extern void _init();
+
+int main() {
+    _init();
+    return 0;
+}
+
 void __print(char* str) {
 	printf("%s", str + 8);
 }
