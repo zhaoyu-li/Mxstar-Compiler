@@ -27,7 +27,6 @@ extern malloc
 extern __isoc99_scanf
 extern puts
 extern __printf_chk
-extern _init
 extern _GLOBAL_OFFSET_TABLE_
 
 
