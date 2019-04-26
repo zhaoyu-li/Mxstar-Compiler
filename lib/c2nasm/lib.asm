@@ -352,7 +352,7 @@ __string_compare:
 
 
 
-SECTION .data
+SECTION .data   
 
 
 SECTION .bss    align=32
@@ -361,7 +361,7 @@ __buffer.3337:
         resb    1048576
 
 
-SECTION .rodata.str1.1
+SECTION .rodata.str1.1 
 
 .LC0:
         db 25H, 73H, 00H

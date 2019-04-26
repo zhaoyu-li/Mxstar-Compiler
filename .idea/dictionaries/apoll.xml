@@ -9,6 +9,7 @@
       <w>nasm</w>
       <w>noexecute</w>
       <w>qword</w>
+      <w>rodata</w>
       <w>strcmp</w>
       <w>vistor</w>
     </words>

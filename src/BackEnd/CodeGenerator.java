@@ -124,7 +124,7 @@ public class CodeGenerator implements IRVistor {
 
     @Override
     public void visit(Function node) {
-        add(getNASMFunctionName(node) + ":");
+        addLine(getNASMFunctionName(node) + ":");
         for(BasicBlock bb : node.getBasicBlocks()) {
             bb.accept(this);
         }

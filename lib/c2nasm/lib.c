@@ -15,7 +15,7 @@ char* __getString() {
 	scanf("%s", __buffer);
 	int len = strlen(__buffer);
 	char* res = malloc(len + 8);
-	*((int64_t*)res) = len;
+	*((long*)res) = len;
 	strcpy(res + 8, __buffer);
 	return res;
 }
