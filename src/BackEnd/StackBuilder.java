@@ -62,9 +62,9 @@ public class StackBuilder {
             temporaryOffset -= Config.getRegSize();
         }
 
-        System.out.println(function.getName() + ": ");
-        System.out.println(restParameters.size());
-        System.out.println(function.getTemporaries().size());
+//        System.out.println(function.getName() + ": ");
+//        System.out.println(restParameters.size());
+//        System.out.println(function.getTemporaries().size());
         int stackSize = Config.getRegSize() * (restParameters.size() + function.getTemporaries().size() + 1);
 
         BasicBlock headBB = function.getHeadBB();
