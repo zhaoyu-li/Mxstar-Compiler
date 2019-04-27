@@ -28,12 +28,52 @@ public class CJump extends Instruction {
         this.elseBB = elseBB;
     }
 
+    public BasicBlock doCompare() {
+        int v1 = ((IntImmediate) lhs).getValue();
+        int v2 = ((IntImmediate) rhs).getValue();
+        boolean r;
+        switch(op) {
+            case NE: r = v1 != v2; break;
+            case LE: r = v1 <= v2; break;
+            case GE: r = v1 >= v2; break;
+            case LT: r = v1 < v2; break;
+            case GT: r = v1 > v2; break;
+            case EQ: r = v1 == v2; break;
+            default: r = false; assert false;
+        }
+        return r ? thenBB : elseBB;
+    }
+
+    public CompareOp getReverseCompareOp() {
+        switch(op) {
+            case EQ: return CompareOp.EQ;
+            case GT: return CompareOp.LE;
+            case LT: return CompareOp.GE;
+            case GE: return CompareOp.LT;
+            case LE: return CompareOp.GT;
+            case NE: return CompareOp.NE;
+            default: return null;
+        }
+    }
+
+    public void setOp(CompareOp op) {
+        this.op = op;
+    }
+
     public CompareOp getOp() {
         return op;
     }
 
+    public void setLhs(Operand lhs) {
+        this.lhs = lhs;
+    }
+
     public Operand getLhs() {
         return lhs;
+    }
+
+    public void setRhs(Operand rhs) {
+        this.rhs = rhs;
     }
 
     public Operand getRhs() {

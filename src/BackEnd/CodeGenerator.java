@@ -311,6 +311,11 @@ public class CodeGenerator implements IRVistor {
     }
 
     @Override
+    public void visit(Cdq node) {
+        addLine("\tcdq");
+    }
+
+    @Override
     public void visit(Memory node) {
         boolean occur = false;
         if(!inLeaInst)

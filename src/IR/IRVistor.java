@@ -20,6 +20,7 @@ public interface IRVistor {
     void visit(Push node);
     void visit(Pop node);
     void visit(Leave node);
+    void visit(Cdq node);
 
     void visit(Memory node);
     void visit(StackSlot node);

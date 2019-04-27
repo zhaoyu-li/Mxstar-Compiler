@@ -710,44 +710,31 @@ public class IRBuilder implements ASTVistor {
             case "*":
                 bop = BinaryOperation.BinaryOp.MUL;
                 curBB.addNextInst(new Move(curBB, vrax, src1));
-                if(src2 instanceof Constant) {
-                    VirtualRegister vr = new VirtualRegister("");
-                    curBB.addNextInst(new Move(curBB, vr, src2));
-                    curBB.addNextInst(new BinaryOperation(curBB, null, bop, vr));
-                } else {
-                    curBB.addNextInst(new BinaryOperation(curBB, null, bop, src2));
-                }
+                curBB.addNextInst(new BinaryOperation(curBB, null, bop, src2));
                 curBB.addNextInst(new Move(curBB, result, vrax));
                 break;
             case "/":
                 bop = BinaryOperation.BinaryOp.DIV;
                 curBB.addNextInst(new Move(curBB, vrax, src1));
-                if(src2 instanceof Constant) {
-                    VirtualRegister vr = new VirtualRegister("");
-                    curBB.addNextInst(new Move(curBB, vr, src2));
-                    curBB.addNextInst(new BinaryOperation(curBB, null, bop, vr));
-                } else {
-                    curBB.addNextInst(new BinaryOperation(curBB, null, bop, src2));
-                }
+                curBB.addNextInst(new Cdq(curBB));
+                curBB.addNextInst(new BinaryOperation(curBB, null, bop, src2));
                 curBB.addNextInst(new Move(curBB, result, vrax));
                 break;
             case "%":
                 bop = BinaryOperation.BinaryOp.MOD;
                 curBB.addNextInst(new Move(curBB, vrax, src1));
-                if(src2 instanceof Constant) {
-                    VirtualRegister vr = new VirtualRegister("");
-                    curBB.addNextInst(new Move(curBB, vr, src2));
-                    curBB.addNextInst(new BinaryOperation(curBB, null, bop, vr));
-                } else {
-                    curBB.addNextInst(new BinaryOperation(curBB, null, bop, src2));
-                }
-                curBB.addNextInst(new Move(curBB, result, vrax));
+                curBB.addNextInst(new Cdq(curBB));
+                curBB.addNextInst(new BinaryOperation(curBB, null, bop, src2));
+                curBB.addNextInst(new Move(curBB, result, vrdx));
                 break;
             case "+":
                 bop = BinaryOperation.BinaryOp.ADD;
                 if(src1 == dst) {
                     result = dst;
                     curBB.addNextInst(new BinaryOperation(curBB, result, bop, src2));
+                } else if(src2 == dst) {
+                    result = dst;
+                    curBB.addNextInst(new BinaryOperation(curBB, result, bop, src1));
                 } else {
                     curBB.addNextInst(new Move(curBB, result, src1));
                     curBB.addNextInst(new BinaryOperation(curBB, result, bop, src2));
@@ -772,7 +759,7 @@ public class IRBuilder implements ASTVistor {
                 } else {
                     curBB.addNextInst(new Move(curBB, result, src1));
                     curBB.addNextInst(new Move(curBB, vrcx, src2));
-                    curBB.addNextInst(new BinaryOperation(curBB, result, bop, src2));
+                    curBB.addNextInst(new BinaryOperation(curBB, result, bop, vrcx));
                 }
                 break;
             case "<<":
@@ -784,12 +771,15 @@ public class IRBuilder implements ASTVistor {
                 } else {
                     curBB.addNextInst(new Move(curBB, result, src1));
                     curBB.addNextInst(new Move(curBB, vrcx, src2));
-                    curBB.addNextInst(new BinaryOperation(curBB, result, bop, src2));
+                    curBB.addNextInst(new BinaryOperation(curBB, result, bop, vrcx));
                 }
                 break;
             case "&":
                 bop = BinaryOperation.BinaryOp.AND;
-                if(src2 == dst) {
+                if(src1 == dst) {
+                    result = dst;
+                    curBB.addNextInst(new BinaryOperation(curBB, result, bop, src2));
+                } else if(src2 == dst) {
                     result = dst;
                     curBB.addNextInst(new BinaryOperation(curBB, result, bop, src1));
                 } else {
@@ -799,7 +789,10 @@ public class IRBuilder implements ASTVistor {
                 break;
             case "|":
                 bop = BinaryOperation.BinaryOp.OR;
-                if(src2 == dst) {
+                if(src1 == dst) {
+                    result = dst;
+                    curBB.addNextInst(new BinaryOperation(curBB, result, bop, src2));
+                } else if(src2 == dst) {
                     result = dst;
                     curBB.addNextInst(new BinaryOperation(curBB, result, bop, src1));
                 } else {
@@ -809,7 +802,10 @@ public class IRBuilder implements ASTVistor {
                 break;
             case "^":
                 bop = BinaryOperation.BinaryOp.XOR;
-                if(src2 == dst) {
+                if(src1 == dst) {
+                    result = dst;
+                    curBB.addNextInst(new BinaryOperation(curBB, result, bop, src2));
+                } else if(src2 == dst) {
                     result = dst;
                     curBB.addNextInst(new BinaryOperation(curBB, result, bop, src1));
                 } else {
@@ -907,11 +903,10 @@ public class IRBuilder implements ASTVistor {
                 VirtualRegister vr = new VirtualRegister("");
                 curBB.addNextInst(new Move(curBB, vr, src1));
                 curBB.addNextJumpInst(new CJump(curBB, vr, cop, src2, trueBB, falseBB));
-            } else if(src1 instanceof Constant && src2 instanceof Constant) {
-                curBB.addNextJumpInst(new Jump(curBB, doCompare(op, src1, src2, trueBB, falseBB)));
             } else {
                 curBB.addNextJumpInst(new CJump(curBB, src1, cop, src2, trueBB, falseBB));
             }
+
         }
     }
 

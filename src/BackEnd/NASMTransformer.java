@@ -43,7 +43,16 @@ public class NASMTransformer implements IRVistor {
 
     @Override
     public void visit(CJump node) {
-
+        if(node.getLhs() instanceof Constant) {
+            if(node.getRhs() instanceof Constant) {
+                node.prepend(new Jump(node.getBB(), node.doCompare()));
+            } else {
+                Operand tmp = node.getLhs();
+                node.setLhs(node.getRhs());
+                node.setRhs(tmp);
+                node.setOp(node.getReverseCompareOp());
+            }
+        }
     }
 
     @Override
@@ -137,6 +146,11 @@ public class NASMTransformer implements IRVistor {
 
     @Override
     public void visit(Leave node) {
+
+    }
+
+    @Override
+    public void visit(Cdq node) {
 
     }
 
