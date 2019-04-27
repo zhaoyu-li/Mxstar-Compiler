@@ -228,6 +228,7 @@ public class ScopeBuilder implements ASTVistor {
         }
         if(curScope == globalScope) {
             variableEntity.setGlobal(true);
+            globalScope.putGlobalVariable(variableEntity);
         }
         if(curClassName != null) {
             variableEntity.setInClass(true);

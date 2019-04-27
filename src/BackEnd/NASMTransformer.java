@@ -72,7 +72,7 @@ public class NASMTransformer implements IRVistor {
             VirtualRegister vr = new VirtualRegister("");
             node.prepend(new Move(node.getBB(), vr, node.getSrc()));
             node.setSrc(vr);
-        }  else {
+        } else {
             PhysicalRegister pdest = getPhysical(node.getDst());
             PhysicalRegister psrc = getPhysical(node.getSrc());
             if(pdest != null && node.getSrc() instanceof Memory) {

@@ -6,9 +6,11 @@ import java.util.*;
 
 public class GlobalScope extends Scope {
     private Map<String, ClassEntity> classes;
+    private HashSet<VariableEntity> globalInitVariables;
 
     public GlobalScope() {
         classes = new HashMap<String, ClassEntity>();
+        globalInitVariables = new HashSet<>();
         putGlobalBuildinFunction();
         putStringBuildinFunction();
         putArrayBuildinFunction();
@@ -20,6 +22,14 @@ public class GlobalScope extends Scope {
 
     public ClassEntity getClassEntity(String name) {
         return classes.get(name);
+    }
+
+    public void putGlobalVariable(VariableEntity variableEntity) {
+        globalInitVariables.add(variableEntity);
+    }
+
+    public HashSet<VariableEntity> getGlobalInitVariables() {
+        return globalInitVariables;
     }
 
     private FunctionEntity globalPrintFunction() {

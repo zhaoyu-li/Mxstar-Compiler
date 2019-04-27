@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
 
@@ -17,6 +18,8 @@ public class CodeGenerator implements IRVistor {
     private HashMap<StaticData, String> sdNames;
     private HashMap<StackSlot,String> ssNames;
     private HashMap<VirtualRegister,String> varNames;
+
+    private BasicBlock nextBB;
 
     private boolean inLeaInst;
     private int bbIndex;
@@ -112,10 +115,10 @@ public class CodeGenerator implements IRVistor {
         }
         for(StaticString str : node.getStaticStrings()) {
             addLine("\tdq " + String.valueOf(str.getValue().length()));
-            add("\tdb");
+            add("\tdb ");
             for(int i = 0; i < str.getValue().length(); i++) {
                 Formatter formatter = new Formatter();
-                formatter.format("%02XH ", (int) str.getValue().charAt(i));
+                formatter.format("%02XH, ", (int) str.getValue().charAt(i));
                 add(formatter.toString());
             }
             addLine("00H");
@@ -125,7 +128,10 @@ public class CodeGenerator implements IRVistor {
     @Override
     public void visit(Function node) {
         addLine(getNASMFunctionName(node) + ":");
-        for(BasicBlock bb : node.getBasicBlocks()) {
+        ArrayList<BasicBlock> reversePostOrder = new ArrayList<>(node.getReversePostOrder());
+        for(int i = 0; i < reversePostOrder.size(); i++) {
+            BasicBlock bb = reversePostOrder.get(i);
+            nextBB = (i + 1 == reversePostOrder.size()) ? null : reversePostOrder.get(i + 1);
             bb.accept(this);
         }
     }
@@ -140,7 +146,8 @@ public class CodeGenerator implements IRVistor {
 
     @Override
     public void visit(Jump node) {
-        addLine("\tjmp " + getBasicBlockName(node.getTargetBB()));
+        if(node.getTargetBB() != nextBB)
+            addLine("\tjmp " + getBasicBlockName(node.getTargetBB()));
     }
 
     @Override
@@ -166,13 +173,14 @@ public class CodeGenerator implements IRVistor {
                 op = "jne";
                 break;
         }
-        add("\tcmp");
+        add("\tcmp ");
         node.getLhs().accept(this);
         add(", ");
         node.getRhs().accept(this);
         addLine("");
-        addLine("\t" + op + " " + getBasicBlockName(node.getElseBB()));
-        addLine("\tjmp " + getBasicBlockName(node.getElseBB()));
+        addLine("\t" + op + " " + getBasicBlockName(node.getThenBB()));
+        if(node.getElseBB() != nextBB)
+            addLine("\tjmp " + getBasicBlockName(node.getElseBB()));
     }
 
     @Override
@@ -221,7 +229,7 @@ public class CodeGenerator implements IRVistor {
         if(node.getOp() == BinaryOperation.BinaryOp.SAL || node.getOp() == BinaryOperation.BinaryOp.SAR) {
             add("\t" + op + " ");
             node.getDst().accept(this);
-            add("\n");
+            add(", cl\n");
             return;
         }
         add("\t" + op + " ");
@@ -255,6 +263,8 @@ public class CodeGenerator implements IRVistor {
 
     @Override
     public void visit(Move node) {
+        if(node.getSrc() == node.getDst())
+            return;
         add("\tmov ");
         node.getDst().accept(this);
         add(", ");
@@ -264,20 +274,14 @@ public class CodeGenerator implements IRVistor {
 
     @Override
     public void visit(Lea node) {
+        inLeaInst = true;
         add("\tlea ");
         node.getDst().accept(this);
         add(", ");
         node.getSrc().accept(this);
         add("\n");
+        inLeaInst = false;
     }
-
-    private PhysicalRegister getPhysical(Operand v) {
-        if(v instanceof VirtualRegister)
-            return ((VirtualRegister) v).getAllocatedPhysicalRegister();
-        else
-            return null;
-    }
-
 
     @Override
     public void visit(Call node) {
@@ -356,7 +360,10 @@ public class CodeGenerator implements IRVistor {
     public void visit(VirtualRegister node) {
         if(node.getAllocatedPhysicalRegister() != null) {
             visit(node.getAllocatedPhysicalRegister());
+            varNames.put(node, node.getAllocatedPhysicalRegister().getName());
+        } else {
 
+            add(getVirtualRegsiterName(node));
         }
     }
 

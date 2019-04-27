@@ -53,10 +53,7 @@ public class SimpleAlocator {
                 allRegs.addAll(definedRegs);
 
                 for(Register avr : allRegs) {
-//                    assert avr instanceof VirtualRegister;
-                    if(avr instanceof PhysicalRegister) {
-                        System.out.println(((PhysicalRegister) avr).getName());
-                    }
+                    assert avr instanceof VirtualRegister;
                     VirtualRegister vr = (VirtualRegister) avr;
                     if(vr.getAllocatedPhysicalRegister() != null) continue;
                     if(vr.getSpillSpace() == null)
@@ -85,8 +82,8 @@ public class SimpleAlocator {
                         continue;
                     } else if(psrc != null) {
                         move.setSrc(psrc);
-                        if(move.getSrc() instanceof VirtualRegister) {
-                            move.setSrc(((VirtualRegister) move.getDst()).getSpillSpace());
+                        if(move.getDst() instanceof VirtualRegister) {
+                            move.setDst(((VirtualRegister) move.getDst()).getSpillSpace());
                         } else {
                             assert false;
                         }
@@ -110,7 +107,7 @@ public class SimpleAlocator {
 
                 for (Register reg : usedRegs) {
                     if(((VirtualRegister)reg).getAllocatedPhysicalRegister() == null)
-                        inst.prepend(new Move(bb, renameMap.get(reg),((VirtualRegister) reg).getSpillSpace()));
+                        inst.prepend(new Move(bb, renameMap.get(reg), ((VirtualRegister) reg).getSpillSpace()));
                 }
                 for (Register reg : definedRegs) {
                     if(((VirtualRegister)reg).getAllocatedPhysicalRegister() == null) {

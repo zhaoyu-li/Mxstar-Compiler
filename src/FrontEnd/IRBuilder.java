@@ -57,6 +57,7 @@ public class IRBuilder implements ASTVistor {
 
     private void buildInitFunction(Program node) {
         curFunction = program.getFunction("init");
+        curFunction.setUsedGlobalVariables(globalScope.getGlobalInitVariables());
         curFunction.setHeadBB(new BasicBlock("headBB", curFunction));
         curBB = curFunction.getHeadBB();
         for(VariableDeclaration variableDeclaration : node.getVariables()) {
@@ -67,6 +68,9 @@ public class IRBuilder implements ASTVistor {
         curBB.addNextInst(new Call(curBB, vrax, program.getFunction("main")));
         curBB.addNextInst(new Return(curBB));
         curFunction.setTailBB(curBB);
+        curFunction.addUsedRecursiveVariables(curFunction);
+        curFunction.calcReversePostOrder();
+        curFunction.calcReversePrevOrder();
     }
 
     @Override
@@ -105,6 +109,7 @@ public class IRBuilder implements ASTVistor {
             assign(parameter.getInit(), vr);
         }
         curFunction.addParameter(vr);
+
     }
 
     @Override

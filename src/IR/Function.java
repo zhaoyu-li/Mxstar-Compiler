@@ -114,6 +114,10 @@ public class Function {
         usedGlobalVariables.add(var);
     }
 
+    public void setUsedGlobalVariables(HashSet<VariableEntity> usedGlobalVariables) {
+        this.usedGlobalVariables = usedGlobalVariables;
+    }
+
     public HashSet<VariableEntity> getUsedGlobalVariables() {
         return usedGlobalVariables;
     }
