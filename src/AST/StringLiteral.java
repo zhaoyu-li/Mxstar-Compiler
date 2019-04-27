@@ -11,23 +11,24 @@ public class StringLiteral extends Expression {
         StringBuilder stringBuilder = new StringBuilder();
         for(int i = 0; i < ctx.length(); i++) {
             char c = ctx.charAt(i);
-            if(c == '\\' && i + 1 < ctx.length()) {
+            if(c == '\\') {
                 switch (ctx.charAt(i + 1)) {
                     case '\\':
                         stringBuilder.append('\\');
                         break;
                     case 'n':
-                        stringBuilder.append('n');
+                        stringBuilder.append('\n');
                         break;
                     case '\"':
                         stringBuilder.append('\"');
                         break;
                     case 't':
-                        stringBuilder.append('t');
+                        stringBuilder.append('\t');
                         break;
                 }
+                i++;
             } else {
-                stringBuilder.append(ctx.charAt(i));
+                stringBuilder.append(c);
             }
         }
         this.value = stringBuilder.toString();

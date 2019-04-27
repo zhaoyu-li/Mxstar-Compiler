@@ -380,7 +380,7 @@ public class IRBuilder implements ASTVistor {
 
     @Override
     public void visit(StringLiteral node) {
-        StaticString str = new StaticString(node.getValue());
+        StaticString str = new StaticString(node.getValue().substring(1, node.getValue().length() - 1));
         program.addStaticString(str);
         node.setResult(str);
     }
@@ -694,7 +694,7 @@ public class IRBuilder implements ASTVistor {
             vr = new VirtualRegister("");
             curBB.addNextInst(new Move(curBB, vr, src2));
         }*/
-        curBB.addNextInst(new Call(curBB, vrax, program.getFunction("string.concat"), str1, str2));
+        curBB.addNextInst(new Call(curBB, vrax, program.getFunction("string_concat"), str1, str2));
         curBB.addNextInst(new Move(curBB, result, vrax));
         return result;
     }
@@ -899,7 +899,7 @@ public class IRBuilder implements ASTVistor {
         }
         if(lhs.getType().isStringType()) {
             VirtualRegister src = new VirtualRegister("");
-            curBB.addNextInst(new Call(curBB, vrax, program.getFunction("string.compare"), src1, src2));
+            curBB.addNextInst(new Call(curBB, vrax, program.getFunction("string_compare"), src1, src2));
             curBB.addNextInst(new Move(curBB, src, vrax));
             curBB.addNextJumpInst(new CJump(curBB, src, cop, new IntImmediate(0), trueBB, falseBB));
         } else {

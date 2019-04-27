@@ -84,7 +84,7 @@ public class ScopeBuilder implements ASTVistor {
         if(curClassName == null) {
             functionEntity.setName(node.getName());
         } else {
-            functionEntity.setName(curClassName + '.' + node.getName());
+            functionEntity.setName(curClassName + '_' + node.getName());
         }
         if(resolveType(node.getReturnType()) == null){ //constructor
             if(globalScope.getClassEntity(node.getName()) != null) {
@@ -223,7 +223,7 @@ public class ScopeBuilder implements ASTVistor {
         variableEntity.setType(resolveType(node.getType()));
         node.getType().setType(variableEntity.getType());
         variableEntity.setLocation(node.getLocation());
-        if(node.getType().getType().getType() == Type.types.VOID) {
+        if(node.getType().getType().isVoidType()) {
             throw new SemanticError(node.getLocation(), "VariableDeclaration's type cannot be void");
         }
         if(curScope == globalScope) {
@@ -394,10 +394,10 @@ public class ScopeBuilder implements ASTVistor {
             }
         } else if (node.getExpr().getType().isStringType()) {
             if(node.getFuncCall() != null) {
-                if(globalScope.getFunction("string." + node.getFuncCall().getName().getName()) == null) {
+                if(globalScope.getFunction("string_" + node.getFuncCall().getName().getName()) == null) {
                     throw new SemanticError(node.getLocation(), "Cannot find function");
                 } else {
-                    node.getFuncCall().setFunctionEntity(globalScope.getFunction("string." + node.getFuncCall().getName().getName()));
+                    node.getFuncCall().setFunctionEntity(globalScope.getFunction("string_" + node.getFuncCall().getName().getName()));
                     for(Expression expression : node.getFuncCall().getArguments()) {
                         expression.accept(this);
                     }
@@ -407,10 +407,10 @@ public class ScopeBuilder implements ASTVistor {
             }
         } else if (node.getExpr().getType() instanceof ArrayType) {
             if(node.getFuncCall() != null) {
-                if(globalScope.getFunction("array." + node.getFuncCall().getName().getName()) == null) {
+                if(globalScope.getFunction("array_" + node.getFuncCall().getName().getName()) == null) {
                     throw new SemanticError(node.getLocation(), "Cannot find function");
                 } else {
-                    node.getFuncCall().setFunctionEntity(globalScope.getFunction("array." + node.getFuncCall().getName().getName()));
+                    node.getFuncCall().setFunctionEntity(globalScope.getFunction("array_" + node.getFuncCall().getName().getName()));
                     for(Expression expression : node.getFuncCall().getArguments()) {
                         expression.accept(this);
                     }

@@ -19,13 +19,13 @@ public class IRProgram {
         Function getString = new Function(FuncType.Library, "getString", true);
         Function getInt = new Function(FuncType.Library, "getInt", true);
         Function toString = new Function(FuncType.Library, "toString", true);
-        Function string_length = new Function(FuncType.Library, "string.length", true);
-        Function string_substring = new Function(FuncType.Library, "string.substring", true);
-        Function string_parseInt = new Function(FuncType.Library, "string.parseInt", true);
-        Function string_ord = new Function(FuncType.Library, "string.ord", true);
-        Function array_size = new Function(FuncType.Library, "array.size", true);
-        Function string_concat = new Function(FuncType.Library, "string.concat", true);
-        Function string_compare = new Function(FuncType.Library, "string.compare", true);
+        Function string_length = new Function(FuncType.Library, "string_length", true);
+        Function string_substring = new Function(FuncType.Library, "string_substring", true);
+        Function string_parseInt = new Function(FuncType.Library, "string_parseInt", true);
+        Function string_ord = new Function(FuncType.Library, "string_ord", true);
+        Function array_size = new Function(FuncType.Library, "array_size", true);
+        Function string_concat = new Function(FuncType.Library, "string_concat", true);
+        Function string_compare = new Function(FuncType.Library, "string_compare", true);
         Function malloc = new Function(FuncType.External, "malloc", false);
         Function init = new Function(FuncType.UserDefined, "init", true);
 

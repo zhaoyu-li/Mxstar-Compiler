@@ -106,6 +106,7 @@ public class CodeGenerator implements IRVistor {
         }
         addLine("\tsection .data");
         for(StaticVariable var : node.getStaticVariables()) {
+            addLine(getStaticDataName(var) + ":");
             add("\tdb ");
             for (int i = 0; i < var.getLength(); i++) {
                 if (i != 0) add(", ");
@@ -114,6 +115,7 @@ public class CodeGenerator implements IRVistor {
             add("\n");
         }
         for(StaticString str : node.getStaticStrings()) {
+            addLine(getStaticDataName(str) + ":");
             addLine("\tdq " + String.valueOf(str.getValue().length()));
             add("\tdb ");
             for(int i = 0; i < str.getValue().length(); i++) {
