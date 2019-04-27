@@ -76,6 +76,7 @@ public class StackBuilder {
         for(PhysicalRegister pr : function.getUsedPhysicalRegisters()) {
             tailInst.prepend(new Pop(tailBB, pr));
         }
+        tailInst.prepend(new Leave(tailBB));
     }
 
 }

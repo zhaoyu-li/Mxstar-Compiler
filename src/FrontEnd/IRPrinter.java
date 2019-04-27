@@ -107,6 +107,11 @@ public class IRPrinter implements IRVistor {
     }
 
     @Override
+    public void visit(Leave node) {
+        addLine("leave");
+    }
+
+    @Override
     public void visit(Memory node) {
 
     }

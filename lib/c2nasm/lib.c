@@ -2,11 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern void _init();
+extern int _init();
 
 int main() {
-    _init();
-    return 0;
+    return _init();
 }
 
 void __print(char* str) {
@@ -21,7 +20,7 @@ char* __getString() {
 	static char __buffer[1024 * 1024];	//	1MB buffer
 	scanf("%s", __buffer);
 	int len = strlen(__buffer);
-	char* res = malloc(len + 8);
+	char* res = (char*) malloc(len + 8);
 	*((long*)res) = len;
 	strcpy(res + 8, __buffer);
 	return res;
@@ -34,7 +33,7 @@ long __getInt() {
 }
 
 char* __toString(long num) {
-    char *res = malloc(8 + 24);
+    char *res = (char*) malloc(8 + 24);
     *((long*) res) = sprintf(res + 8, "%ld", num);
     return res;
 }
@@ -43,9 +42,9 @@ long __string_length(char* str) {
     return *((long*) str);
 }
 
-long __string_substring(char* str, long l, long r) {
+char* __string_substring(char* str, long l, long r) {
 	int len = r - l + 1;
-	char* res = malloc(9 + len);
+	char* res = (char*) malloc(9 + len);
 	*((long*) res) = len;
 	str += 8 + l;
 	int i;

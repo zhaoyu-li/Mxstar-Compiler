@@ -132,7 +132,7 @@ public class CodeGenerator implements IRVistor {
 
     @Override
     public void visit(BasicBlock node) {
-        addLine("\t" + getBasicBlockName(node));
+        addLine("\t" + getBasicBlockName(node) + ":");
         for(Instruction inst = node.getHead(); inst != null; inst = inst.getNext()) {
             inst.accept(this);
         }
@@ -140,7 +140,7 @@ public class CodeGenerator implements IRVistor {
 
     @Override
     public void visit(Jump node) {
-        addLine("\tjump" + getBasicBlockName(node.getTargetBB()));
+        addLine("\tjmp " + getBasicBlockName(node.getTargetBB()));
     }
 
     @Override
@@ -297,6 +297,11 @@ public class CodeGenerator implements IRVistor {
         add("\tpop ");
         node.getDst().accept(this);
         add("\n");
+    }
+
+    @Override
+    public void visit(Leave node) {
+        addLine("\tleave");
     }
 
     @Override

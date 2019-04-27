@@ -1,9 +1,3 @@
-
-
-
-
-
-
 default rel
 
 global __print
@@ -30,7 +24,7 @@ extern __printf_chk
 extern _GLOBAL_OFFSET_TABLE_
 
 
-SECTION .text   6
+SECTION .text
 
 __print:
         lea     rdx, [rdi+8H]
@@ -39,35 +33,25 @@ __print:
         xor     eax, eax
         jmp     __printf_chk
 
-
-
-
-
-
-
 ALIGN   16
 
 __println:
         add     rdi, 8
         jmp     puts
 
-
-
-
-
-
 ALIGN   8
 
 __getString:
         push    rbp
         push    rbx
-        lea     rsi, [rel __buffer.3340]
+        mov     rsi, __buffer.3340
         mov     rdi, L_011
         xor     eax, eax
         sub     rsp, 8
         call    __isoc99_scanf
-        lea     rcx, [rel __buffer.3340]
+        mov     rcx, __buffer.3340
         mov     rbx, rcx
+
 L_001:  mov     edx, dword [rbx]
         add     rbx, 4
         lea     eax, [rdx-1010101H]
@@ -92,7 +76,7 @@ L_001:  mov     edx, dword [rbx]
         lea     rdx, [rbx+1H]
         movsxd  rax, ebx
         lea     rdi, [rbp+8H]
-        lea     rsi, [rel __buffer.3340]
+        mov     rsi, __buffer.3340
         mov     qword [rbp], rax
         call    memcpy
         add     rsp, 8
@@ -101,20 +85,15 @@ L_001:  mov     edx, dword [rbx]
         pop     rbp
         ret
 
-
 __getInt:
         sub     rsp, 24
         mov     rdi, L_012
-
-
         mov     rax, qword [fs:abs 28H]
         mov     qword [rsp+8H], rax
         xor     eax, eax
         mov     rsi, rsp
         call    __isoc99_scanf
         mov     rdx, qword [rsp+8H]
-
-
         xor     rdx, qword [fs:abs 28H]
         mov     rax, qword [rsp]
         jnz     L_002
@@ -122,10 +101,6 @@ __getInt:
         ret
 
 L_002:  call    __stack_chk_fail
-
-
-
-
 
 ALIGN   16
 
@@ -136,7 +111,7 @@ __toString:
         mov     edi, 32
         sub     rsp, 8
         call    malloc
-        mov     rcx, L_012
+        lea     rcx, [rel L_012]
         lea     rdi, [rax+8H]
         mov     rbx, rax
         mov     r8, rbp
@@ -152,23 +127,11 @@ __toString:
         pop     rbp
         ret
 
-
-
-
-
-
-
 ALIGN   16
 
 __string_length:
         mov     rax, qword [rdi]
         ret
-
-
-
-
-
-
 
 ALIGN   16
 
@@ -196,6 +159,7 @@ __string_substring:
         lea     rsi, [r12+r14+8H]
         add     rdx, 1
         call    memcpy
+
 L_003:  add     ebp, 8
         mov     rax, r13
         movsxd  rbp, ebp
@@ -206,11 +170,6 @@ L_003:  add     ebp, 8
         pop     r13
         pop     r14
         ret
-
-
-
-
-
 
 ALIGN   8
 
@@ -223,12 +182,11 @@ __string_parseInt:
         ja      L_007
         lea     rcx, [rdi+8H]
         xor     edi, edi
+
 L_004:  xor     edx, edx
 
-
-
-
 ALIGN   16
+
 L_005:  lea     edx, [rdx+rdx*4]
         add     rcx, 1
         lea     edx, [rax+rdx*2-30H]
@@ -243,12 +201,8 @@ L_005:  lea     edx, [rdx+rdx*4]
         cmove   rax, rcx
         ret
 
-
-
-
-
-
 ALIGN   16
+
 L_006:  movsx   eax, byte [rdi+9H]
         lea     rcx, [rdi+9H]
         lea     edx, [rax-30H]
@@ -257,32 +211,16 @@ L_006:  movsx   eax, byte [rdi+9H]
         mov     edi, 1
         jmp     L_004
 
-
-
-
-
-
 ALIGN   16
+
 L_007:  xor     eax, eax
         ret
-
-
-
-
-
-
 
 ALIGN   16
 
 __string_ord:
         movsx   rax, byte [rdi+rsi+8H]
         ret
-
-
-
-
-
-
 
 ALIGN   16
 
@@ -312,6 +250,7 @@ __string_concat:
         add     rdx, 1
         call    memcpy
         movsxd  rax, ebx
+
 L_008:  test    r12d, r12d
         jle     L_009
         lea     edx, [r12-1H]
@@ -322,6 +261,7 @@ L_008:  test    r12d, r12d
         add     rdx, 1
         call    memcpy
         movsxd  rax, ebx
+
 L_009:  mov     byte [rbp+rax+1H], 0
         mov     rax, rbp
         pop     rbx
@@ -335,11 +275,6 @@ L_010:  mov     eax, 8
         mov     ebx, 8
         jmp     L_008
 
-
-
-
-
-
 ALIGN   8
 
 __string_compare:
@@ -351,30 +286,20 @@ __string_compare:
         cdqe
         ret
 
-
-
-SECTION .data
-
+SECTION .data   
 
 SECTION .bss    align=32
 
 __buffer.3340:
         resb    1048576
 
-
-SECTION .text.startup 6
+SECTION .text.startup
 
 main:
-        sub     rsp, 8
         xor     eax, eax
-        call    _init
-        xor     eax, eax
-        add     rsp, 8
-        ret
+        jmp     _init
 
-
-
-SECTION .rodata.str1.1
+SECTION .rodata.str1.1 
 
 L_011:
         db 25H, 73H, 00H

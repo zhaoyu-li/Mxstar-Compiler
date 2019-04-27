@@ -24,10 +24,10 @@ public class IRProgram {
         Function string_parseInt = new Function(FuncType.Library, "string.parseInt", true);
         Function string_ord = new Function(FuncType.Library, "string.ord", true);
         Function array_size = new Function(FuncType.Library, "array.size", true);
-        Function init = new Function(FuncType.UserDefined, "init", true);
         Function string_concat = new Function(FuncType.Library, "string.concat", true);
         Function string_compare = new Function(FuncType.Library, "string.compare", true);
         Function malloc = new Function(FuncType.External, "malloc", false);
+        Function init = new Function(FuncType.UserDefined, "init", true);
 
         addFunction(print);
         addFunction(println);

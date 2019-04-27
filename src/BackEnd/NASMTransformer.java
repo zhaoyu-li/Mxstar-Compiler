@@ -136,6 +136,11 @@ public class NASMTransformer implements IRVistor {
     }
 
     @Override
+    public void visit(Leave node) {
+
+    }
+
+    @Override
     public void visit(Memory node) {
 
     }
