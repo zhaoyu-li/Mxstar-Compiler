@@ -66,7 +66,7 @@ public class Move extends Instruction {
             src = renameMap.get(src);
         }
         if(dst instanceof Memory) {
-            dst = ((Memory) src).copy();
+            dst = ((Memory) dst).copy();
             ((Memory) dst).renameUseReg(renameMap);
         }
     }

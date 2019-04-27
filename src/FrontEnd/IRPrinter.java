@@ -167,8 +167,10 @@ public class IRPrinter implements IRVistor {
         node.getLhs().accept(this);
         add(", ");
         node.getRhs().accept(this);
-        add("\t" + op + " " + getBasicBlockName(node.getThenBB()));
+
+        add(" " + getBasicBlockName(node.getThenBB()));
         add(", " + getBasicBlockName(node.getElseBB()));
+        add("\n");
     }
 
     @Override
