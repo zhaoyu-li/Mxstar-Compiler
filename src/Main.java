@@ -60,16 +60,16 @@ public class Main {
 
         IRProgram irProgram = irBuilder.getProgram();
 
-//        IRPrinter irPrinter = new IRPrinter();
-//        irPrinter.visit(irProgram);
-//        irPrinter.print();
-
 //        LivenessAnalyzer livenessAnalyzer = new LivenessAnalyzer(irProgram);
 //        livenessAnalyzer.analysis();
 //
 
         NASMTransformer nasmTransformer = new NASMTransformer();
         nasmTransformer.visit(irProgram);
+
+        IRPrinter irPrinter = new IRPrinter();
+        irPrinter.visit(irProgram);
+        irPrinter.print();
 
         SimpleAlocator simpleAlocator = new SimpleAlocator(irProgram);
         simpleAlocator.allocateRegisters();

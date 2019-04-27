@@ -125,9 +125,9 @@ public class IRBuilder implements ASTVistor {
         }
         for(int i = 0; i < curFunction.getParameters().size(); i++) {
             if(i < 6) {
-                curBB.addNextInst(new Move(curBB, vargs.get(i), curFunction.getParameters().get(i)));
+                curBB.addNextInst(new Move(curBB, curFunction.getParameters().get(i), vargs.get(i)));
             } else {
-                curBB.addNextInst(new Move(curBB, curFunction.getParameters().get(i).getSpillSpace(), curFunction.getParameters().get(i)));
+                curBB.addNextInst(new Move(curBB, curFunction.getParameters().get(i), curFunction.getParameters().get(i).getSpillSpace()));
             }
         }
         for(VariableEntity var : node.getFunctionEntity().getGlobalVariables()) {

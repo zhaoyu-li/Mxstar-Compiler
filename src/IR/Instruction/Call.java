@@ -27,7 +27,7 @@ public class Call extends Instruction {
         this.args = new LinkedList<>(Arrays.asList(args));
     }
 
-    public Address getdst() {
+    public Address getDst() {
         return dst;
     }
 

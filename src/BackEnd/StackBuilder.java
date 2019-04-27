@@ -7,6 +7,7 @@ import IR.Instruction.*;
 import IR.Operand.IntImmediate;
 import IR.Operand.PhysicalRegister;
 import IR.Operand.StackSlot;
+import IR.RegisterSet;
 import Utility.Config;
 
 import java.util.HashMap;
@@ -38,18 +39,18 @@ public class StackBuilder {
                 restParameters.add((StackSlot) function.getParameters().get(i).getSpillSpace());
             }
         }
-
+        HashSet<StackSlot> slotsSet = new HashSet<>();
         for(BasicBlock bb : function.getBasicBlocks()) {
             for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
                 LinkedList<StackSlot> slots = inst.getStackSlots();
                 for(StackSlot ss : slots) {
                     if(!restParameters.contains(ss)) {
-                        function.addTemporary(ss);
+                        slotsSet.add(ss);
                     }
                 }
             }
         }
-
+        function.getTemporaries().addAll(slotsSet);
         for(StackSlot parameter : restParameters) {
             parameter.setBase(rbp);
             parameter.setOffset(new IntImmediate(parameterOffset));
@@ -61,16 +62,21 @@ public class StackBuilder {
             temporaryOffset -= Config.getRegSize();
         }
 
+        System.out.println(function.getName() + ": ");
+        System.out.println(restParameters.size());
+        System.out.println(function.getTemporaries().size());
         int stackSize = Config.getRegSize() * (restParameters.size() + function.getTemporaries().size() + 1);
 
         BasicBlock headBB = function.getHeadBB();
         Instruction headInst = headBB.getHead();
         headInst.prepend(new Push(headBB, rbp));
         headInst.prepend(new Move(headBB, rbp, rsp));
-        for(PhysicalRegister pr : function.getUsedPhysicalRegisters()) {
-            headInst.prepend(new Push(headBB, pr));
-        }
         headInst.prepend(new BinaryOperation(headBB, rsp, BinaryOperation.BinaryOp.SUB, new IntImmediate(stackSize)));
+        headInst = headInst.getPrev();
+        for(PhysicalRegister pr : function.getUsedPhysicalRegisters()) {
+            headInst.append(new Push(headBB, pr));
+        }
+
         BasicBlock tailBB = function.getTailBB();
         Instruction tailInst = tailBB.getTail();
         for(PhysicalRegister pr : function.getUsedPhysicalRegisters()) {

@@ -65,6 +65,10 @@ public class Move extends Instruction {
         } else if(src instanceof Register && renameMap.containsKey(src)) {
             src = renameMap.get(src);
         }
+        if(dst instanceof Memory) {
+            dst = ((Memory) src).copy();
+            ((Memory) dst).renameUseReg(renameMap);
+        }
     }
 
     @Override

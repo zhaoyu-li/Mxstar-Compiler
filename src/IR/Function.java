@@ -56,6 +56,14 @@ public class Function {
         reversePostOrder = new LinkedList<>();
         reversePrevOrder = new LinkedList<>();
         visitedBB = new HashSet<>();
+
+        if(type != FuncType.UserDefined) {
+            for(PhysicalRegister pr : RegisterSet.allRegs) {
+                if(!pr.getName().equals("rbp") || pr.getName().equals("rsp")) {
+                    usedPhysicalRegisters.add(pr);
+                }
+            }
+        }
     }
 
     public FuncType getType() {
