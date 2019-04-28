@@ -142,7 +142,7 @@ public class IRBuilder implements ASTVistor {
                 curBB.addNextInst(ret);
                 curFunction.addReturn(ret);
             } else {
-                curBB.addNextInst(new Move(curBB, vrax, new IntImmediate(0)));
+                //curBB.addNextInst(new Move(curBB, vrax, new IntImmediate(0)));
                 Return ret = new Return(curBB);
                 curBB.addNextInst(ret);
                 curFunction.addReturn(ret);

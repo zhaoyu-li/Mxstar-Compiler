@@ -71,8 +71,7 @@ public class Call extends Instruction {
 
     @Override
     public LinkedList<StackSlot> getStackSlots() {
-        LinkedList<StackSlot> slots = new LinkedList<>();
-        slots.addAll(calcStackSlots(dst));
+        LinkedList<StackSlot> slots = new LinkedList<>(calcStackSlots(dst));
         for(Operand operand : args) {
             if(operand instanceof StackSlot)
                 slots.add((StackSlot) operand);
