@@ -67,9 +67,9 @@ public class Main {
         NASMTransformer nasmTransformer = new NASMTransformer();
         nasmTransformer.visit(irProgram);
 
-        IRPrinter irPrinter = new IRPrinter();
-        irPrinter.visit(irProgram);
-        irPrinter.print();
+//        IRPrinter irPrinter = new IRPrinter();
+//        irPrinter.visit(irProgram);
+//        irPrinter.print();
 
         SimpleAlocator simpleAlocator = new SimpleAlocator(irProgram);
         simpleAlocator.allocateRegisters();
