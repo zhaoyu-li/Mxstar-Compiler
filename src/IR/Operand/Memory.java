@@ -31,9 +31,8 @@ public class Memory extends Address {
         this.offset = offset;
     }
 
-    public Memory(Register base, int scale, Constant offset) {
-        this.base = base;
-        this.index = null;
+    public Memory(Register index, int scale, Constant offset) {
+        this.index = index;
         this.scale = scale;
         this.offset = offset;
     }
@@ -50,13 +49,6 @@ public class Memory extends Address {
         this.index = index;
         this.scale = scale;
         this.offset = offset;
-    }
-
-    public LinkedList<Register> getUsedRegisters(){
-        LinkedList<Register> registers = new LinkedList<>();
-        if(base != null) registers.add(base);
-        if(index != null) registers.add(index);
-        return registers;
     }
 
     public void setBase(Register base) {
@@ -89,6 +81,13 @@ public class Memory extends Address {
 
     public Constant getOffset() {
         return offset;
+    }
+
+    public LinkedList<Register> getUsedRegisters(){
+        LinkedList<Register> registers = new LinkedList<>();
+        if(base != null) registers.add(base);
+        if(index != null) registers.add(index);
+        return registers;
     }
 
     public void renameUseReg(HashMap<Register, Register> renameMap) {

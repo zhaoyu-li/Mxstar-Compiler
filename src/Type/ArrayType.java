@@ -1,5 +1,7 @@
 package Type;
 
+import Utility.Config;
+
 public class ArrayType extends Type {
     private Type baseType;
 
@@ -21,5 +23,10 @@ public class ArrayType extends Type {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public int getBytes() {
+        return Config.getRegSize();
     }
 }

@@ -75,6 +75,10 @@ public class Scope {
         }
     }
 
+    public Map<String, VariableEntity> getVariables() {
+        return variables;
+    }
+
     public int getVariableOffset(String name) {
         return offsets.get(name);
     }

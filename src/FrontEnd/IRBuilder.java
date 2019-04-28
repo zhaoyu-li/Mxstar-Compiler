@@ -585,7 +585,7 @@ public class IRBuilder implements ASTVistor {
         //new int [3][]
         //new a;
         Function constructor = null;
-        if(node.getNumDimension() == 0 && node.getDimensions().size() == 0) {
+        if(node.getNumDimension() == 0) {
             if(node.getType() instanceof ClassType) {
                 Scope curClassScope = ((ClassType) node.getType()).getClassEntity().getScope();
                 String constructorName = ((ClassType) node.getType()).getClassEntity().getName();
@@ -594,12 +594,13 @@ public class IRBuilder implements ASTVistor {
                 }
             }
         }
+
         LinkedList<Operand> dims = new LinkedList<>();
         for(Expression expression : node.getDimensions()) {
             expression.accept(this);
             dims.add(expression.getResult());
         }
-        if(node.getNumDimension() > 0 || !(node.getType() instanceof ClassType)) {
+        if(node.getNumDimension() > 0 || (!(node.getType() instanceof ClassType) && !(node.getType() instanceof ArrayType))) {
             Operand pointer = allocateArray(dims, 0, null);
             node.setResult(pointer);
         } else {
@@ -607,7 +608,7 @@ public class IRBuilder implements ASTVistor {
             if(node.getType().isStringType()) {
                 bytes = Config.getRegSize() * 2;
             } else {
-                bytes = Config.getRegSize();
+                bytes = node.getType().getBytes();
             }
             Operand pointer = allocateArray(dims, bytes, constructor);
             node.setResult(pointer);

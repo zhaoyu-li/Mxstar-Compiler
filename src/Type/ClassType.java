@@ -1,6 +1,7 @@
 package Type;
 
 import Scope.ClassEntity;
+import Utility.Config;
 
 public class ClassType extends Type {
     private ClassEntity classEntity;
@@ -26,5 +27,10 @@ public class ClassType extends Type {
         } else if(other.getType() == types.NULL) {
             return true;
         } else return false;
+    }
+
+    @Override
+    public int getBytes() {
+        return classEntity.getScope().getVariables().values().size() * Config.getRegSize();
     }
 }

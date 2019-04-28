@@ -18,9 +18,21 @@ import static IR.RegisterSet.*;
 
 public class StackBuilder {
     private IRProgram program;
+    private HashMap<Function, Frame> framesMap;
+
+    class Frame {
+        public LinkedList<StackSlot> parameters = new LinkedList<>();
+        public LinkedList<StackSlot> temporaries = new LinkedList<>();
+        public int getFrameSize() {
+            int bytes = Config.getRegSize() * (parameters.size() + temporaries.size());
+            bytes = (bytes + 16 - 1) / 16 * 16; //  round up to a multiply of 16
+            return bytes;
+        }
+    }
 
     public StackBuilder(IRProgram program) {
         this.program = program;
+        this.framesMap = new HashMap<>();
     }
 
     public void build() {
@@ -31,12 +43,11 @@ public class StackBuilder {
     }
 
     private void buildStack(Function function) {
-        int parameterOffset = Config.getRegSize() * 2;
-        int temporaryOffset = -Config.getRegSize();
-        LinkedList<StackSlot> restParameters = new LinkedList<>();
+        Frame frame = new Frame();
+        framesMap.put(function, frame);
         if(function.getParameters().size() > 6) {
             for(int i = 6; i < function.getParameters().size(); i++) {
-                restParameters.add((StackSlot) function.getParameters().get(i).getSpillSpace());
+                frame.parameters.add((StackSlot) function.getParameters().get(i).getSpillSpace());
             }
         }
         HashSet<StackSlot> slotsSet = new HashSet<>();
@@ -44,35 +55,31 @@ public class StackBuilder {
             for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
                 LinkedList<StackSlot> slots = inst.getStackSlots();
                 for(StackSlot ss : slots) {
-                    if(!restParameters.contains(ss)) {
+                    if(!frame.parameters.contains(ss)) {
                         slotsSet.add(ss);
                     }
                 }
             }
         }
-        function.getTemporaries().addAll(slotsSet);
-        for(StackSlot parameter : restParameters) {
-            parameter.setBase(rbp);
-            parameter.setOffset(new IntImmediate(parameterOffset));
-            parameterOffset += Config.getRegSize();
+        frame.temporaries.addAll(slotsSet);
+        for(int i = 0; i < frame.parameters.size(); i++) {
+            StackSlot ss = frame.parameters.get(i);
+            ss.setBase(rbp);
+            ss.setOffset(new IntImmediate(16 + 8 * i));
         }
-        for(StackSlot temporary : function.getTemporaries()) {
-            temporary.setBase(rbp);
-            temporary.setOffset(new IntImmediate(temporaryOffset));
-            temporaryOffset -= Config.getRegSize();
+        for(int i = 0; i < frame.temporaries.size(); i++) {
+            StackSlot ss = frame.temporaries.get(i);
+            ss.setBase(rbp);
+            ss.setOffset(new IntImmediate(-8 - 8 * i));
         }
-
-//        System.out.println(function.getName() + ": ");
-//        System.out.println(restParameters.size());
-//        System.out.println(function.getTemporaries().size());
-        int stackSize = Config.getRegSize() * (restParameters.size() + function.getTemporaries().size() + 1);
 
         BasicBlock headBB = function.getHeadBB();
         Instruction headInst = headBB.getHead();
         headInst.prepend(new Push(headBB, rbp));
         headInst.prepend(new Move(headBB, rbp, rsp));
-        headInst.prepend(new BinaryOperation(headBB, rsp, BinaryOperation.BinaryOp.SUB, new IntImmediate(stackSize)));
+        headInst.prepend(new BinaryOperation(headBB, rsp, BinaryOperation.BinaryOp.SUB, new IntImmediate(frame.getFrameSize())));
         headInst = headInst.getPrev();
+
         for(PhysicalRegister pr : function.getUsedPhysicalRegisters()) {
             headInst.append(new Push(headBB, pr));
         }

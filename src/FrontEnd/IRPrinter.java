@@ -326,6 +326,7 @@ public class IRPrinter implements IRVistor {
             node.getIndex().accept(this);
             if(node.getScale() != 1)
                 add(" * " + String.valueOf(node.getScale()));
+
             occur = true;
         }
         if(node.getOffset() != null) {

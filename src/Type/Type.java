@@ -1,5 +1,7 @@
 package Type;
 
+import Utility.Config;
+
 public class Type {
     public enum types {
         VOID, INT, BOOL, STRING, CLASS, ARRAY, NULL
@@ -97,5 +99,9 @@ public class Type {
 
     public boolean isVoidType() {
         return type == types.VOID;
+    }
+
+    public int getBytes() {
+        return Config.getRegSize();
     }
 }
