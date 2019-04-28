@@ -91,10 +91,10 @@ public class IRBuilder implements ASTVistor {
             }
         }
         for(FunctionDeclaration functionDeclaration : node.getFunctions()) {
-            functionDeclaration.accept(this);
+            visit(functionDeclaration);
         }
         for(ClassDeclaration classDeclaration : node.getClasses()) {
-            classDeclaration.accept(this);
+            visit(classDeclaration);
         }
         buildInitFunction(node);
     }
@@ -398,7 +398,7 @@ public class IRBuilder implements ASTVistor {
             result = node.getVariableEntity().getVirtualRegister();
         }
         if(node.getTrueBB() != null) {
-            curBB.addNextJumpInst(new CJump(curBB, result, CJump.CompareOp.EQ, new IntImmediate(1), node.getTrueBB(), node.getFalseBB()));
+            curBB.addNextJumpInst(new CJump(curBB, result, CJump.CompareOp.NE, new IntImmediate(0), node.getTrueBB(), node.getFalseBB()));
         } else {
             node.setResult(result);
         }
@@ -437,7 +437,7 @@ public class IRBuilder implements ASTVistor {
                 }
             }
             if(node.getTrueBB() != null) {
-                curBB.addNextJumpInst(new CJump(curBB, result, CJump.CompareOp.EQ, new IntImmediate(1), node.getTrueBB(), node.getFalseBB()));
+                curBB.addNextJumpInst(new CJump(curBB, result, CJump.CompareOp.NE, new IntImmediate(0), node.getTrueBB(), node.getFalseBB()));
             } else {
                 node.setResult(result);
             }
@@ -460,7 +460,7 @@ public class IRBuilder implements ASTVistor {
                 result = null;
             }
             if(node.getTrueBB() != null) {
-                curBB.addNextJumpInst(new CJump(curBB, result, CJump.CompareOp.EQ, new IntImmediate(1), node.getTrueBB(), node.getFalseBB()));
+                curBB.addNextJumpInst(new CJump(curBB, result, CJump.CompareOp.NE, new IntImmediate(0), node.getTrueBB(), node.getFalseBB()));
             } else {
                 node.setResult(result);
             }
@@ -518,7 +518,7 @@ public class IRBuilder implements ASTVistor {
         }
         curBB.addNextInst(new Call(curBB, vrax, program.getFunction(node.getFunctionEntity().getName()), arguments));
         if(node.getTrueBB() != null) {
-            curBB.addNextJumpInst(new CJump(curBB, vrax, CJump.CompareOp.EQ, new IntImmediate(1), node.getTrueBB(), node.getFalseBB()));
+            curBB.addNextJumpInst(new CJump(curBB, vrax, CJump.CompareOp.NE, new IntImmediate(0), node.getTrueBB(), node.getFalseBB()));
         } else if(!node.getFunctionEntity().getReturnType().isVoidType()) {
             VirtualRegister ret = new VirtualRegister("");
             curBB.addNextInst(new Move(curBB, ret, vrax));
@@ -600,7 +600,7 @@ public class IRBuilder implements ASTVistor {
             expression.accept(this);
             dims.add(expression.getResult());
         }
-        if(node.getNumDimension() > 0 || (!(node.getType() instanceof ClassType) && !(node.getType() instanceof ArrayType))) {
+        if(node.getNumDimension() > 0 || (!(node.getType() instanceof ClassType))) {
             Operand pointer = allocateArray(dims, 0, null);
             node.setResult(pointer);
         } else {

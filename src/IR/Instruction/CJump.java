@@ -80,8 +80,16 @@ public class CJump extends Instruction {
         return rhs;
     }
 
+    public void setElseBB(BasicBlock elseBB) {
+        this.elseBB = elseBB;
+    }
+
     public BasicBlock getElseBB() {
         return elseBB;
+    }
+
+    public void setThenBB(BasicBlock thenBB) {
+        this.thenBB = thenBB;
     }
 
     public BasicBlock getThenBB() {

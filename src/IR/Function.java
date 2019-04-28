@@ -1,5 +1,6 @@
 package IR;
 
+import IR.Instruction.CJump;
 import IR.Instruction.Instruction;
 import IR.Instruction.Return;
 import IR.Operand.PhysicalRegister;
@@ -198,6 +199,20 @@ public class Function {
     public LinkedList<BasicBlock> getReversePrevOrder() {
         return reversePrevOrder;
     }
+
+    /*public void finish() {
+        for(BasicBlock bb : basicBlocks) {
+            if(bb.getTail() instanceof CJump) {
+                CJump inst = (CJump) bb.getTail();
+                if(inst.getThenBB().getPrevBBs().size() < inst.getElseBB().getPrevBBs().size()) {
+                    inst.setOp(inst.getReverseCompareOp());
+                    BasicBlock tmp = inst.getThenBB();
+                    inst.setThenBB(inst.getElseBB());
+                    inst.setElseBB(tmp);
+                }
+            }
+        }
+    }*/
 
     public void accept(IRVistor vistor) {
         vistor.visit(this);

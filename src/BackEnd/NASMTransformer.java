@@ -123,6 +123,7 @@ public class NASMTransformer implements IRVistor {
         while(node.getArgs().size() > 6) {
             node.prepend(new Push(node.getBB(), node.getArgs().removeLast()));
         }
+
         for(int i = node.getArgs().size() - 1; i >= 0; i--) {
             node.prepend(new Move(node.getBB(), RegisterSet.vargs.get(i), node.getArgs().get(i)));
             node.getPrev().accept(this);
