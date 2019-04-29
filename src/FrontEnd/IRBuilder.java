@@ -56,7 +56,7 @@ public class IRBuilder implements ASTVistor {
     }
 
     private void buildInitFunction(Program node) {
-        curFunction = program.getFunction("init");
+        curFunction = program.getFunction("global_init");
         curFunction.setUsedGlobalVariables(globalScope.getGlobalInitVariables());
         curFunction.setHeadBB(new BasicBlock("headBB", curFunction));
         curBB = curFunction.getHeadBB();

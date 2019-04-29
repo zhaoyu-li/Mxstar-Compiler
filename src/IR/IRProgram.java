@@ -27,7 +27,7 @@ public class IRProgram {
         Function string_concat = new Function(FuncType.Library, "string_concat", true);
         Function string_compare = new Function(FuncType.Library, "string_compare", true);
         Function malloc = new Function(FuncType.External, "malloc", false);
-        Function init = new Function(FuncType.UserDefined, "init", true);
+        Function global_init = new Function(FuncType.UserDefined, "global_init", true);
 
         addFunction(print);
         addFunction(println);
@@ -39,7 +39,7 @@ public class IRProgram {
         addFunction(string_parseInt);
         addFunction(string_ord);
         addFunction(array_size);
-        addFunction(init);
+        addFunction(global_init);
         addFunction(string_concat);
         addFunction(string_compare);
         addFunction(malloc);

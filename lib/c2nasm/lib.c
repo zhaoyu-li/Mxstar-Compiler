@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern int _init();
+extern int _global_init();
 
 int main() {
-    return _init();
+    return _global_init();
 }
 
 void __print(char* str) {

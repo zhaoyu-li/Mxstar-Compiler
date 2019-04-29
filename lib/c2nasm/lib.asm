@@ -297,7 +297,7 @@ SECTION .text.startup
 
 main:
         xor     eax, eax
-        jmp     _init
+        jmp     _global_init
 
 SECTION .rodata.str1.1 
 
