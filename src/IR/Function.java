@@ -200,7 +200,7 @@ public class Function {
         return reversePrevOrder;
     }
 
-    /*public void finish() {
+    public void finish() {
         for(BasicBlock bb : basicBlocks) {
             if(bb.getTail() instanceof CJump) {
                 CJump inst = (CJump) bb.getTail();
@@ -212,7 +212,7 @@ public class Function {
                 }
             }
         }
-    }*/
+    }
 
     public void accept(IRVistor vistor) {
         vistor.visit(this);

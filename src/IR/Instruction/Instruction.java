@@ -62,6 +62,15 @@ public abstract class Instruction {
             inst.next = this;
             this.prev = inst;
         }
+        if(inst instanceof Jump) {
+            bb.getNextBBs().add(((Jump) inst).getTargetBB());
+            ((Jump) inst).getTargetBB().getPrevBBs().add(bb);
+        } else if(inst instanceof CJump) {
+            bb.getNextBBs().add(((CJump) inst).getElseBB());
+            ((CJump) inst).getElseBB().getPrevBBs().add(bb);
+            bb.getNextBBs().add(((CJump) inst).getThenBB());
+            ((CJump) inst).getThenBB().getPrevBBs().add(bb);
+        }
     }
 
     public void append(Instruction inst) {

@@ -93,6 +93,9 @@ public class IRBuilder implements ASTVistor {
         for(FunctionDeclaration functionDeclaration : node.getFunctions()) {
             visit(functionDeclaration);
         }
+        /*for(Function function : program.getFunctions().values()) {
+            function.finish();
+        }*/
         for(ClassDeclaration classDeclaration : node.getClasses()) {
             visit(classDeclaration);
         }
@@ -151,9 +154,9 @@ public class IRBuilder implements ASTVistor {
         BasicBlock tailBB = new BasicBlock("tailBB", curFunction);
         for(Return ret : curFunction.getReturnList()) {
             assert ret == ret.getBB().getTail();
-            BasicBlock bb = ret.getBB();
-            bb.addNextJumpInst(new Jump(ret.getBB(), tailBB));
-//            ret.prepend(new Jump(ret.getBB(), tailBB));
+            /*BasicBlock bb = ret.getBB();
+            bb.addNextJumpInst(new Jump(ret.getBB(), tailBB));*/
+            ret.prepend(new Jump(ret.getBB(), tailBB));
             ret.remove();
         }
         tailBB.addNextInst(new Return(tailBB));
