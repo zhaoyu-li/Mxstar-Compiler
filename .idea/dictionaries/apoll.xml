@@ -4,6 +4,7 @@
       <w>alocator</w>
       <w>buildin</w>
       <w>callees</w>
+      <w>declarators</w>
       <w>liveness</w>
       <w>mxstar</w>
       <w>nasm</w>
