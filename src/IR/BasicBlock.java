@@ -49,7 +49,14 @@ public class BasicBlock {
     }
 
     public void addPrevInst(Instruction inst) {
-        head.prepend(inst);
+        if(head == null) {
+            inst.setPrev(null);
+            inst.setNext(null);
+            head = inst;
+            tail = inst;
+        } else {
+            head.prepend(inst);
+        }
     }
 
     public void addNextInst(Instruction inst) {

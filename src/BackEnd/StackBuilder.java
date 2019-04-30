@@ -72,13 +72,11 @@ public class StackBuilder {
             ss.setBase(rbp);
             ss.setOffset(new IntImmediate(-8 - 8 * i));
         }
-
         BasicBlock headBB = function.getHeadBB();
+        headBB.addPrevInst(new BinaryOperation(headBB, rsp, BinaryOperation.BinaryOp.SUB, new IntImmediate(frame.getFrameSize())));
         Instruction headInst = headBB.getHead();
         headInst.prepend(new Push(headBB, rbp));
         headInst.prepend(new Move(headBB, rbp, rsp));
-        headInst.prepend(new BinaryOperation(headBB, rsp, BinaryOperation.BinaryOp.SUB, new IntImmediate(frame.getFrameSize())));
-        headInst = headInst.getPrev();
 
         for(PhysicalRegister pr : function.getUsedPhysicalRegisters()) {
             headInst.append(new Push(headBB, pr));

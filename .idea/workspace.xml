@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5b70593b-d050-4773-9af7-d0e2532db099" name="Default Changelist" comment="">
+    <list default="true" id="5b70593b-d050-4773-9af7-d0e2532db099" name="Default Changelist" comment="ADD BasicBlockOptimizer + FIX BuildinFunction">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/c2nasm/lib.asm" beforeDir="false" afterPath="$PROJECT_DIR$/lib/c2nasm/lib.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/c2nasm/lib.c" beforeDir="false" afterPath="$PROJECT_DIR$/lib/c2nasm/lib.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BackEnd/StackBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BackEnd/StackBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/BasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/BasicBlock.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,12 +19,28 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/BackEnd/NASMTransformer.java">
+        <entry file="file://$PROJECT_DIR$/src/BackEnd/StackBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="118" column="26" selection-start-line="118" selection-start-column="26" selection-end-line="118" selection-end-column="26" />
+            <state relative-caret-position="135">
+              <caret line="74" column="49" selection-start-line="74" selection-start-column="49" selection-end-line="74" selection-end-column="49" />
               <folding>
                 <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/IR/BasicBlock.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="50" column="17" lean-forward="true" selection-start-line="50" selection-start-column="17" selection-end-line="50" selection-end-column="17" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2164#2165#0" expanded="true" />
+                <element signature="e#2244#2245#0" expanded="true" />
+                <element signature="e#2324#2325#0" expanded="true" />
+                <element signature="e#2401#2402#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -52,8 +67,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/program.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
+            <state relative-caret-position="252">
+              <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -61,8 +76,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/BackEnd/BasicBlockOptimizer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="41" column="20" selection-start-line="41" selection-start-column="20" selection-end-line="41" selection-end-column="20" />
+            <state relative-caret-position="352">
+              <caret line="48" column="13" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -90,20 +105,6 @@
                 <element signature="e#2522#2523#0" expanded="true" />
                 <element signature="e#2643#2644#0" expanded="true" />
                 <element signature="e#2672#2673#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/BackEnd/CodeGenerator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="828">
-              <caret line="181" column="71" selection-start-line="181" selection-start-column="71" selection-end-line="181" selection-end-column="71" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#4716#4717#0" expanded="true" />
-                <element signature="e#4789#4790#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -230,12 +231,10 @@
         <option value="$PROJECT_DIR$/src/IR/Instruction/Call.java" />
         <option value="$PROJECT_DIR$/src/IR/Instruction/CJump.java" />
         <option value="$PROJECT_DIR$/src/IR/Instruction/BinaryOperation.java" />
-        <option value="$PROJECT_DIR$/src/IR/BasicBlock.java" />
         <option value="$PROJECT_DIR$/src/IR/Instruction/Instruction.java" />
         <option value="$PROJECT_DIR$/src/IR/Function.java" />
         <option value="$PROJECT_DIR$/src/IR/IRProgram.java" />
         <option value="$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java" />
-        <option value="$PROJECT_DIR$/src/BackEnd/StackBuilder.java" />
         <option value="$PROJECT_DIR$/src/Type/ClassType.java" />
         <option value="$PROJECT_DIR$/src/Scope/Scope.java" />
         <option value="$PROJECT_DIR$/src/Scope/FunctionEntity.java" />
@@ -246,18 +245,20 @@
         <option value="$PROJECT_DIR$/src/IR/Instruction/Push.java" />
         <option value="$PROJECT_DIR$/src/IR/Instruction/Pop.java" />
         <option value="$PROJECT_DIR$/optim.bash" />
-        <option value="$PROJECT_DIR$/src/BackEnd/BasicBlockOptimizer.java" />
         <option value="$PROJECT_DIR$/src/BackEnd/CodeGenerator.java" />
-        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/program.asm" />
         <option value="$PROJECT_DIR$/lib/c2nasm/lib.asm" />
         <option value="$PROJECT_DIR$/lib/c2nasm/lib.c" />
+        <option value="$PROJECT_DIR$/src/BackEnd/BasicBlockOptimizer.java" />
+        <option value="$PROJECT_DIR$/src/IR/BasicBlock.java" />
+        <option value="$PROJECT_DIR$/src/BackEnd/StackBuilder.java" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/program.cpp" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="952" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-8" />
     <option name="width" value="977" />
     <option name="height" value="1038" />
   </component>
@@ -377,7 +378,7 @@
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-listener" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-visitor" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/output-dir" value="C:\Users\apoll\Desktop\Mxstar-Compiler\src" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556639933348" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556642902882" />
     <property name="last_opened_file_path" value="D:/课程学习/编译原理/complier_from_idy002/mstar-compiler-master" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -425,20 +426,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1551923439238</updated>
-    </task>
-    <task id="LOCAL-00054" summary="Start IR">
-      <created>1554194405008</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1554194405009</updated>
-    </task>
-    <task id="LOCAL-00055" summary="Start IR">
-      <created>1554201634282</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1554201634282</updated>
     </task>
     <task id="LOCAL-00056" summary="Start IR">
       <created>1554201950435</created>
@@ -769,7 +756,21 @@
       <option name="project" value="LOCAL" />
       <updated>1556612992077</updated>
     </task>
-    <option name="localTasksCounter" value="103" />
+    <task id="LOCAL-00103" summary="ADD BasicBlockOptimizer + FIX BuildinFunction">
+      <created>1556639959328</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1556639959328</updated>
+    </task>
+    <task id="LOCAL-00104" summary="ADD BasicBlockOptimizer + FIX BuildinFunction">
+      <created>1556639979368</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1556639979368</updated>
+    </task>
+    <option name="localTasksCounter" value="105" />
     <servers />
   </component>
   <component name="TodoView">
@@ -782,7 +783,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="762" y="0" width="781" height="830" extended-state="0" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
@@ -791,11 +792,11 @@
       <window_info id="UI Designer" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="Favorites" order="5" sideWeight="0.5014245" side_tool="true" weight="0.2937931" />
-      <window_info content_ui="combo" id="Project" order="6" sideWeight="0.4985755" weight="0.3034483" />
-      <window_info anchor="bottom" id="Messages" order="0" weight="0.3140845" />
+      <window_info content_ui="combo" id="Project" order="6" sideWeight="0.4985755" visible="true" weight="0.2248996" />
+      <window_info anchor="bottom" id="Messages" order="0" weight="0.3112676" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3253521" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.36609685" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.36197183" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.4169014" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -849,7 +850,6 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.cpp" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Finish AST" />
     <MESSAGE value="TOEFL cold cold" />
     <MESSAGE value="SCOPE TOO DIFFICULT" />
     <MESSAGE value="CHEER UP" />
@@ -874,7 +874,8 @@
     <MESSAGE value="FIX IR" />
     <MESSAGE value="FIX Codegen" />
     <MESSAGE value="ADD BasicBlockOptimizer" />
-    <option name="LAST_COMMIT_MESSAGE" value="ADD BasicBlockOptimizer" />
+    <MESSAGE value="ADD BasicBlockOptimizer + FIX BuildinFunction" />
+    <option name="LAST_COMMIT_MESSAGE" value="ADD BasicBlockOptimizer + FIX BuildinFunction" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -972,20 +973,6 @@
           <folding>
             <element signature="e#871#872#0" expanded="true" />
             <element signature="e#898#899#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/IR/BasicBlock.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="398">
-          <caret line="75" column="9" lean-forward="true" selection-start-line="67" selection-start-column="8" selection-end-line="75" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1961#1962#0" expanded="true" />
-            <element signature="e#1992#1993#0" expanded="true" />
-            <element signature="e#2195#2196#0" expanded="true" />
-            <element signature="e#2229#2230#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1254,16 +1241,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/BackEnd/StackBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="54" column="87" selection-start-line="54" selection-start-column="87" selection-end-line="54" selection-end-column="87" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/IR/Instruction/Push.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="169">
@@ -1327,16 +1304,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/BackEnd/BasicBlockOptimizer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="41" column="20" selection-start-line="41" selection-start-column="20" selection-end-line="41" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/FrontEnd/IRBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-6083">
@@ -1366,27 +1333,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/IR/Function.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1122">
-          <caret line="60" column="39" selection-start-line="60" selection-start-column="39" selection-end-line="60" selection-end-column="39" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2493#2494#0" expanded="true" />
-            <element signature="e#2522#2523#0" expanded="true" />
-            <element signature="e#2643#2644#0" expanded="true" />
-            <element signature="e#2672#2673#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/program.asm">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-563">
@@ -1408,10 +1354,65 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/BackEnd/BasicBlockOptimizer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="48" column="13" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/IR/Function.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1122">
+          <caret line="60" column="39" selection-start-line="60" selection-start-column="39" selection-end-line="60" selection-end-column="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2493#2494#0" expanded="true" />
+            <element signature="e#2522#2523#0" expanded="true" />
+            <element signature="e#2643#2644#0" expanded="true" />
+            <element signature="e#2672#2673#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/IR/BasicBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="50" column="17" lean-forward="true" selection-start-line="50" selection-start-column="17" selection-end-line="50" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2164#2165#0" expanded="true" />
+            <element signature="e#2244#2245#0" expanded="true" />
+            <element signature="e#2324#2325#0" expanded="true" />
+            <element signature="e#2401#2402#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BackEnd/StackBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="74" column="49" selection-start-line="74" selection-start-column="49" selection-end-line="74" selection-end-column="49" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/program.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
+        <state relative-caret-position="252">
+          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
         </state>
       </provider>
     </entry>
