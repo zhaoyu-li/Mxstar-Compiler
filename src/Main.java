@@ -60,6 +60,9 @@ public class Main {
 
         IRProgram irProgram = irBuilder.getProgram();
 
+        BasicBlockOptimizer basicBlockOptimizer = new BasicBlockOptimizer(irProgram);
+        basicBlockOptimizer.run();
+
 //        LivenessAnalyzer livenessAnalyzer = new LivenessAnalyzer(irProgram);
 //        livenessAnalyzer.analysis();
 //
