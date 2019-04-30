@@ -34,15 +34,18 @@ public class Push extends Instruction {
     @Override
     public LinkedList<Register> getDefinedRegisters() {
         LinkedList<Register> registers = new LinkedList<>();
-        if(src instanceof Memory) {
-            registers.addAll(((Memory) src).getUsedRegisters());
+        if(src instanceof Register) {
+            registers.add((Register) src);
         }
         return registers;
     }
 
     @Override
     public void renameUsedRegisters(HashMap<Register, Register> renameMap) {
-
+        if(src instanceof Memory) {
+            src = ((Memory) src).copy();
+            ((Memory) src).renameUseReg(renameMap);
+        }
     }
 
     @Override

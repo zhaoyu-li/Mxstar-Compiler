@@ -34,15 +34,18 @@ public class Pop extends Instruction {
     @Override
     public LinkedList<Register> getDefinedRegisters() {
         LinkedList<Register> registers = new LinkedList<>();
-        if(dst instanceof Memory) {
-            registers.addAll(((Memory) dst).getUsedRegisters());
+        if(dst instanceof Register) {
+            registers.add((Register) dst);
         }
         return registers;
     }
 
     @Override
     public void renameUsedRegisters(HashMap<Register, Register> renameMap) {
-
+        if(dst instanceof Memory) {
+            dst = ((Memory) dst).copy();
+            ((Memory) dst).renameUseReg(renameMap);
+        }
     }
 
     @Override
