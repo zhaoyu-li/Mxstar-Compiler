@@ -102,6 +102,14 @@ public class ScopeBuilder implements ASTVistor {
             functionEntity.setReturnType(resolveType(node.getReturnType()));
         }
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
+        if(curClassName != null) {
+            VariableEntity thisVariable = new VariableEntity();
+            thisVariable.setName("this");
+            ClassType thisType = new ClassType(curClassName);
+            thisType.setClassEntity(globalScope.getClassEntity(curClassName));
+            thisVariable.setType(thisType);
+            parameters.add(thisVariable);
+        }
         for(VariableDeclaration parameter : node.getParameters()) {
             parameters.add(getVariableEntity(parameter));
         }
@@ -120,16 +128,6 @@ public class ScopeBuilder implements ASTVistor {
         ClassEntity classEntity = new ClassEntity();
         classEntity.setName(node.getName());
         classEntity.setScope(new Scope(globalScope));
-
-        enterScope(classEntity.getScope());
-        VariableEntity thisVariable = new VariableEntity();
-        thisVariable.setName("this");
-        ClassType thisType = new ClassType(node.getName());
-        thisType.setClassEntity(globalScope.getClassEntity(curClassName));
-        thisVariable.setType(thisType);
-        curScope.putVariable(thisVariable.getName(), thisVariable);
-        exitScope();
-
         node.setClassEntity(classEntity);
         globalScope.putClassEntity(classEntity.getName(), classEntity);
     }
@@ -152,6 +150,14 @@ public class ScopeBuilder implements ASTVistor {
         ClassEntity classEntity = globalScope.getClassEntity(node.getName());
         curClassName = classEntity.getName();
         enterScope(classEntity.getScope());
+
+        /*VariableEntity thisVariable = new VariableEntity();
+        thisVariable.setName("this");
+        ClassType thisType = new ClassType(curClassName);
+        thisType.setClassEntity(globalScope.getClassEntity(curClassName));
+        thisVariable.setType(thisType);
+        curScope.putVariable(thisVariable.getName(), thisVariable);*/
+
         for(VariableDeclaration variableDeclaration : node.getFields()) {
             visit(variableDeclaration);
         }
@@ -190,6 +196,14 @@ public class ScopeBuilder implements ASTVistor {
         functionEntity.setScope(new Scope(curScope));
         curFunction = functionEntity;
         enterScope(functionEntity.getScope());
+        if(curClassName != null) {
+            VariableEntity thisVariable = new VariableEntity();
+            thisVariable.setName("this");
+            ClassType thisType = new ClassType(curClassName);
+            thisType.setClassEntity(globalScope.getClassEntity(curClassName));
+            thisVariable.setType(thisType);
+            curScope.putVariable(thisVariable.getName(), thisVariable);
+        }
         for(VariableDeclaration variableDeclaration : node.getParameters()) {
             visit(variableDeclaration);
         }
@@ -204,6 +218,7 @@ public class ScopeBuilder implements ASTVistor {
     public void visit(ClassDeclaration node) {
         ClassEntity classEntity = globalScope.getClassEntity(node.getName());
         enterScope(classEntity.getScope());
+        curClassName = node.getName();
         if(node.getConstructor() != null) {
             visit(node.getConstructor());
         }
@@ -211,6 +226,7 @@ public class ScopeBuilder implements ASTVistor {
             visit(functionDeclaration);
         }
         exitScope();
+        curClassName = null;
     }
 
     @Override
@@ -231,8 +247,11 @@ public class ScopeBuilder implements ASTVistor {
             globalScope.putGlobalVariable(variableEntity);
         }
         if(curClassName != null) {
-            variableEntity.setInClass(true);
+            if(curScope == globalScope.getClassEntity(curClassName).getScope()) {
+                variableEntity.setInClass(true);
+            }
         }
+
         if(curScope.getVariable(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "Duplicate VariableDeclaration");
         } else {

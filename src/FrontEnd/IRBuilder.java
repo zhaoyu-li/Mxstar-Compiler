@@ -121,7 +121,9 @@ public class IRBuilder implements ASTVistor {
         curFunction.setHeadBB(new BasicBlock("headBB", curFunction));
         curBB = curFunction.getHeadBB();
         if(curClassName != null) {
-            curFunction.addParameter(curThis);
+            VirtualRegister vthis = new VirtualRegister("");
+            curFunction.addParameter(vthis);
+            curThis = vthis;
         }
         for(int i = 0; i < node.getParameters().size(); i++) {
             visitParameter(node.getParameters().get(i), i);
@@ -174,7 +176,6 @@ public class IRBuilder implements ASTVistor {
     @Override
     public void visit(ClassDeclaration node) {
         curClassName = node.getName();
-        curThis = new VirtualRegister("this");
         if(node.getConstructor() != null) {
             visit(node.getConstructor());
         }
@@ -182,7 +183,6 @@ public class IRBuilder implements ASTVistor {
             visit(functionDeclaration);
         }
         curClassName = null;
-        curThis = null;
     }
 
     private void assign(Expression expr, Address vr) {
@@ -842,7 +842,7 @@ public class IRBuilder implements ASTVistor {
         rhs.accept(this);
     }
 
-    private BasicBlock doCompare(String op, Operand lhs, Operand rhs, BasicBlock TrueBB, BasicBlock FalseBB) {
+    /*private BasicBlock doCompare(String op, Operand lhs, Operand rhs, BasicBlock TrueBB, BasicBlock FalseBB) {
         int lvalue = ((IntImmediate) lhs).getValue();
         int rvalue = ((IntImmediate) rhs).getValue();
         switch(op) {
@@ -866,7 +866,7 @@ public class IRBuilder implements ASTVistor {
                 else return FalseBB;
         }
         return null;
-    }
+    }*/
 
     private void RelationOperation(String op, Expression lhs, Expression rhs, BasicBlock trueBB, BasicBlock falseBB) {
         lhs.accept(this);
