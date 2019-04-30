@@ -47,8 +47,7 @@ char* __string_substring(char* str, long l, long r) {
 	char* res = (char*) malloc(9 + len);
 	*((long*) res) = len;
 	str += 8 + l;
-	int i;
-	for(i = 0; i < len; i++)
+	for(int i = 0; i < len; i++)
 		res[8 + i] = str[i];
 	res[8 + len] = 0;
 	return res;
@@ -74,18 +73,16 @@ long __string_ord(char* str, long idx) {
 }
 
 char* __string_concat(char* str1, char* str2) {
-    int len1 = *((long*) str1);
-    int len2 = *((long*) str2);
+    long len1 = *((long*) str1);
+    long len2 = *((long*) str2);
     char *res = (char*) malloc(9 + len1 + len2);
     *((long*) res) = len1 + len2;
-    str1 += 8;
-    str2 += 8;
     int now = 8;
     for(int i = 0; i < len1; ++i)
-        res[now++] = str1[i];
+        res[now++] = str1[i + 8];
     for(int i = 0; i < len2; ++i)
-        res[now++] = str2[i];
-    res[now + 1] = 0;
+        res[now++] = str2[i + 8];
+    res[now++] = 0;
     return res;
 }
 

@@ -234,35 +234,29 @@ __string_concat:
         push    rbx
         mov     rbx, qword [rdi]
         mov     r12, qword [rsi]
-        lea     edi, [rbx+r12+9H]
-        movsxd  rdi, edi
+        lea     rdi, [rbx+r12+9H]
         call    malloc
         mov     rbp, rax
-        lea     eax, [r12+rbx]
-        test    ebx, ebx
-        cdqe
+        lea     rax, [rbx+r12]
+        test    rbx, rbx
         mov     qword [rbp], rax
         jle     L_010
-        lea     edx, [rbx-1H]
         lea     rdi, [rbp+8H]
         lea     rsi, [r14+8H]
+        mov     rdx, rbx
         add     ebx, 8
-        add     rdx, 1
         call    memcpy
         movsxd  rax, ebx
-
-L_008:  test    r12d, r12d
+L_008:  test    r12, r12
         jle     L_009
-        lea     edx, [r12-1H]
         movsxd  rdi, ebx
         lea     rsi, [r13+8H]
+        mov     rdx, r12
         add     rdi, rbp
-        add     ebx, r12d
-        add     rdx, 1
         call    memcpy
-        movsxd  rax, ebx
-
-L_009:  mov     byte [rbp+rax+1H], 0
+        lea     eax, [rbx+r12]
+        cdqe
+L_009:  mov     byte [rbp+rax], 0
         mov     rax, rbp
         pop     rbx
         pop     rbp
@@ -286,7 +280,7 @@ __string_compare:
         cdqe
         ret
 
-SECTION .data   
+SECTION .data
 
 SECTION .bss    align=32
 
@@ -299,7 +293,7 @@ main:
         xor     eax, eax
         jmp     _global_init
 
-SECTION .rodata.str1.1 
+SECTION .rodata.str1.1
 
 L_011:
         db 25H, 73H, 00H
