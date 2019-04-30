@@ -102,14 +102,14 @@ public class ScopeBuilder implements ASTVistor {
             functionEntity.setReturnType(resolveType(node.getReturnType()));
         }
         List<VariableEntity> parameters = new LinkedList<VariableEntity>();
-        if(curClassName != null) {
+        /*if(curClassName != null) {
             VariableEntity thisVariable = new VariableEntity();
             thisVariable.setName("this");
             ClassType thisType = new ClassType(curClassName);
             thisType.setClassEntity(globalScope.getClassEntity(curClassName));
             thisVariable.setType(thisType);
             parameters.add(thisVariable);
-        }
+        }*/
         for(VariableDeclaration parameter : node.getParameters()) {
             parameters.add(getVariableEntity(parameter));
         }
@@ -151,12 +151,12 @@ public class ScopeBuilder implements ASTVistor {
         curClassName = classEntity.getName();
         enterScope(classEntity.getScope());
 
-        /*VariableEntity thisVariable = new VariableEntity();
+        VariableEntity thisVariable = new VariableEntity();
         thisVariable.setName("this");
         ClassType thisType = new ClassType(curClassName);
         thisType.setClassEntity(globalScope.getClassEntity(curClassName));
         thisVariable.setType(thisType);
-        curScope.putVariable(thisVariable.getName(), thisVariable);*/
+        curScope.putVariable(thisVariable.getName(), thisVariable);
 
         for(VariableDeclaration variableDeclaration : node.getFields()) {
             visit(variableDeclaration);
@@ -196,14 +196,14 @@ public class ScopeBuilder implements ASTVistor {
         functionEntity.setScope(new Scope(curScope));
         curFunction = functionEntity;
         enterScope(functionEntity.getScope());
-        if(curClassName != null) {
+        /*if(curClassName != null) {
             VariableEntity thisVariable = new VariableEntity();
             thisVariable.setName("this");
             ClassType thisType = new ClassType(curClassName);
             thisType.setClassEntity(globalScope.getClassEntity(curClassName));
             thisVariable.setType(thisType);
             curScope.putVariable(thisVariable.getName(), thisVariable);
-        }
+        }*/
         for(VariableDeclaration variableDeclaration : node.getParameters()) {
             visit(variableDeclaration);
         }
