@@ -85,6 +85,7 @@ public class ScopeBuilder implements ASTVistor {
             functionEntity.setName(node.getName());
         } else {
             functionEntity.setName(curClassName + '_' + node.getName());
+            functionEntity.setGlobal(false);
         }
         if(resolveType(node.getReturnType()) == null){ //constructor
             if(globalScope.getClassEntity(node.getName()) != null) {

@@ -136,8 +136,8 @@ public class IRPrinter implements IRVistor {
 
     @Override
     public void visit(Jump node) {
-        if(nextBB != node.getTargetBB())
-            addLine("\tjmp " + getBasicBlockName(node.getTargetBB()));
+        //if(nextBB != node.getTargetBB())
+        addLine("\tjmp " + getBasicBlockName(node.getTargetBB()));
     }
 
     @Override

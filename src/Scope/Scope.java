@@ -33,8 +33,10 @@ public class Scope {
 
     public void putVariable(String name, VariableEntity variable) {
         variables.put(name, variable);
-        offsets.put(name, curOffset);
-        curOffset += Config.getRegSize();
+        if(!name.equals("this")) {
+            offsets.put(name, curOffset);
+            curOffset += Config.getRegSize();
+        }
     }
 
     public VariableEntity getVariable(String name) {

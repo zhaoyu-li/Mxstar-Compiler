@@ -512,7 +512,7 @@ public class IRBuilder implements ASTVistor {
     @Override
     public void visit(FuncCallExpression node) {
         LinkedList<Operand> arguments = new LinkedList<>();
-        if(curClassName != null) {
+        if(!node.getFunctionEntity().isGlobal()) {
             arguments.add(curThis);
         }
         for(Expression expression : node.getArguments()) {
@@ -577,7 +577,7 @@ public class IRBuilder implements ASTVistor {
                 curBB.addNextInst(new Move(curBB, new Memory(addr, size, Config.getRegSize()), pointer));
             }
             curBB.addNextInst(new UnaryOperation(curBB, UnaryOperation.UnaryOp.DEC, size));
-            condBB.addNextJumpInst(new Jump(curBB, condBB));
+            curBB.addNextJumpInst(new Jump(curBB, condBB));
             curBB = afterBB;
             return addr;
         }

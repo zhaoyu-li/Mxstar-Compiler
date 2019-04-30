@@ -11,6 +11,7 @@ public class FunctionEntity extends Entity {
     private Map<String, VariableEntity> variables;
     private HashSet<VariableEntity> globalVariables;
     private Scope scope;
+    private boolean isGlobal;
 
     public FunctionEntity() {
         returnType = new Type();
@@ -18,6 +19,7 @@ public class FunctionEntity extends Entity {
         variables = new HashMap<>();
         globalVariables = new HashSet<>();
         scope = new Scope();
+        isGlobal = true;
     }
 
     public void setReturnType(Type returnType) {
@@ -58,5 +60,13 @@ public class FunctionEntity extends Entity {
 
     public Scope getScope() {
         return scope;
+    }
+
+    public void setGlobal(boolean global) {
+        isGlobal = global;
+    }
+
+    public boolean isGlobal() {
+        return isGlobal;
     }
 }
