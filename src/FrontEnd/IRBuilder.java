@@ -148,16 +148,13 @@ public class IRBuilder implements ASTVistor {
                 curFunction.addReturn(ret);
             } else {
                 //curBB.addNextInst(new Move(curBB, vrax, new IntImmediate(0)));
-                Return ret = new Return(curBB);
+                /*Return ret = new Return(curBB);
                 curBB.addNextInst(ret);
-                curFunction.addReturn(ret);
+                curFunction.addReturn(ret);*/
             }
         }
         BasicBlock tailBB = new BasicBlock("tailBB", curFunction);
         for(Return ret : curFunction.getReturnList()) {
-            assert ret == ret.getBB().getTail();
-            /*BasicBlock bb = ret.getBB();
-            bb.addNextJumpInst(new Jump(ret.getBB(), tailBB));*/
             ret.prepend(new Jump(ret.getBB(), tailBB));
             ret.remove();
         }
@@ -199,24 +196,17 @@ public class IRBuilder implements ASTVistor {
     }
 
     private void boolAssign(Expression expr, Address vr) {
-        /*if(expr instanceof BoolLiteral) {
-            expr.accept(this);
-            Operand result = expr.getResult();
-            if(result != vr) {
-                curBB.addNextInst(new Move(curBB, vr, result));
-            }
-        } else {*/
-            BasicBlock trueBB = new BasicBlock("trueBB", curFunction);
-            BasicBlock falseBB = new BasicBlock("falseBB", curFunction);
-            BasicBlock mergeBB = new BasicBlock("mergeBB", curFunction);
-            expr.setTrueBB(trueBB);
-            expr.setFalseBB(falseBB);
-            expr.accept(this);
-            trueBB.addNextInst(new Move(trueBB, vr, new IntImmediate(1)));
-            falseBB.addNextInst(new Move(falseBB, vr, new IntImmediate(0)));
-            trueBB.addNextJumpInst(new Jump(trueBB, mergeBB));
-            falseBB.addNextJumpInst(new Jump(falseBB, mergeBB));
-            curBB = mergeBB;
+        BasicBlock trueBB = new BasicBlock("trueBB", curFunction);
+        BasicBlock falseBB = new BasicBlock("falseBB", curFunction);
+        BasicBlock mergeBB = new BasicBlock("mergeBB", curFunction);
+        expr.setTrueBB(trueBB);
+        expr.setFalseBB(falseBB);
+        expr.accept(this);
+        trueBB.addNextInst(new Move(trueBB, vr, new IntImmediate(1)));
+        falseBB.addNextInst(new Move(falseBB, vr, new IntImmediate(0)));
+        trueBB.addNextJumpInst(new Jump(trueBB, mergeBB));
+        falseBB.addNextJumpInst(new Jump(falseBB, mergeBB));
+        curBB = mergeBB;
     }
 
     @Override
@@ -585,8 +575,6 @@ public class IRBuilder implements ASTVistor {
 
     @Override
     public void visit(NewExpression node) {
-        //new int [3][]
-        //new a;
         Function constructor = null;
         if(node.getNumDimension() == 0) {
             if(node.getType() instanceof ClassType) {

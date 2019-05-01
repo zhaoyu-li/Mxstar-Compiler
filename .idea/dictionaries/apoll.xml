@@ -5,6 +5,7 @@
       <w>buildin</w>
       <w>callees</w>
       <w>declarators</w>
+      <w>inliner</w>
       <w>liveness</w>
       <w>mxstar</w>
       <w>nasm</w>

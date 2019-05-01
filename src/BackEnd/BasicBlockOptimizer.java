@@ -21,12 +21,12 @@ public class BasicBlockOptimizer {
     public void run() {
         for(Function function : program.getFunctions().values()) {
             if(function.getType() == Function.FuncType.UserDefined) {
-                optimize(function);
+                process(function);
             }
         }
     }
 
-    private void optimize(Function function) {
+    private void process(Function function) {
         ArrayList<BasicBlock> reversePostOrder = new ArrayList<>(function.getReversePostOrder());
         for(int i = 0; i < reversePostOrder.size(); i++) {
             BasicBlock bb = reversePostOrder.get(i);
@@ -48,6 +48,5 @@ public class BasicBlockOptimizer {
                 }
             }
         }
-
     }
 }

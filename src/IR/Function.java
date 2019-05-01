@@ -34,11 +34,12 @@ public class Function {
     private HashSet<PhysicalRegister> usedPhysicalRegisters;
     private LinkedList<Return> returnList;
 
-
     private LinkedList<BasicBlock> basicBlocks;
     private LinkedList<BasicBlock> reversePostOrder;
     private LinkedList<BasicBlock> reversePrevOrder;
     private HashSet<BasicBlock> visitedBB;
+
+    private boolean isGlobal;
 
     public Function(FuncType type, String name, boolean hasReturnValue) {
         this.type = type;
@@ -57,6 +58,7 @@ public class Function {
         reversePostOrder = new LinkedList<>();
         reversePrevOrder = new LinkedList<>();
         visitedBB = new HashSet<>();
+        isGlobal = true;
 
         if(type != FuncType.UserDefined) {
             for(PhysicalRegister pr : RegisterSet.allRegs) {
@@ -200,18 +202,12 @@ public class Function {
         return reversePrevOrder;
     }
 
-    public void finish() {
-        for(BasicBlock bb : basicBlocks) {
-            if(bb.getTail() instanceof CJump) {
-                CJump inst = (CJump) bb.getTail();
-                if(inst.getThenBB().getPrevBBs().size() < inst.getElseBB().getPrevBBs().size()) {
-                    inst.setOp(inst.getReverseCompareOp());
-                    BasicBlock tmp = inst.getThenBB();
-                    inst.setThenBB(inst.getElseBB());
-                    inst.setElseBB(tmp);
-                }
-            }
-        }
+    public void setGlobal(boolean global) {
+        isGlobal = global;
+    }
+
+    public boolean isGlobal() {
+        return isGlobal;
     }
 
     public void accept(IRVistor vistor) {

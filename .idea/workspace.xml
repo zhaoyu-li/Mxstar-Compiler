@@ -2,9 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b70593b-d050-4773-9af7-d0e2532db099" name="Default Changelist" comment="ADD BasicBlockOptimizer + FIX BuildinFunction">
+      <change afterPath="$PROJECT_DIR$/src/BackEnd/FunctionInliner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/apoll.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/apoll.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BackEnd/BasicBlockOptimizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BackEnd/BasicBlockOptimizer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BackEnd/LivenessAnalyzer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BackEnd/LivenessAnalyzer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BackEnd/StackBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BackEnd/StackBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/IR/BasicBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/BasicBlock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FrontEnd/IRBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FrontEnd/IRBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/IR/Function.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/IR/Function.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Utility/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Utility/Config.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,77 +26,39 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/BackEnd/StackBuilder.java">
+        <entry file="file://$PROJECT_DIR$/src/BackEnd/NASMTransformer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="74" column="49" selection-start-line="74" selection-start-column="49" selection-end-line="74" selection-end-column="49" />
+            <state relative-caret-position="-1656">
+              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/IR/BasicBlock.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="50" column="17" lean-forward="true" selection-start-line="50" selection-start-column="17" selection-end-line="50" selection-end-column="17" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2164#2165#0" expanded="true" />
-                <element signature="e#2244#2245#0" expanded="true" />
-                <element signature="e#2324#2325#0" expanded="true" />
-                <element signature="e#2401#2402#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/program.asm">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-563">
-              <caret line="232" column="24" lean-forward="true" selection-start-line="232" selection-start-column="24" selection-end-line="232" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/program.cpp">
+        <entry file="file://$PROJECT_DIR$/src/FrontEnd/IRBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/BackEnd/BasicBlockOptimizer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="48" column="13" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
+            <state relative-caret-position="270">
+              <caret line="156" column="55" selection-start-line="156" selection-start-column="55" selection-end-line="156" selection-end-column="55" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#949#950#0" expanded="true" />
+                <element signature="e#979#980#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/c2nasm/lib.asm">
+        <entry file="file://$PROJECT_DIR$/src/BackEnd/FunctionInliner.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="129">
-              <caret line="265" column="11" selection-start-line="265" selection-start-column="11" selection-end-line="265" selection-end-column="11" />
+            <state relative-caret-position="29">
+              <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -97,33 +66,42 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/IR/Function.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1122">
-              <caret line="60" column="39" selection-start-line="60" selection-start-column="39" selection-end-line="60" selection-end-column="39" />
+            <state relative-caret-position="501">
+              <caret line="211" selection-start-line="211" selection-end-line="211" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2493#2494#0" expanded="true" />
                 <element signature="e#2522#2523#0" expanded="true" />
                 <element signature="e#2643#2644#0" expanded="true" />
                 <element signature="e#2672#2673#0" expanded="true" />
+                <element signature="e#5520#5521#0" expanded="true" />
+                <element signature="e#5553#5554#0" expanded="true" />
+                <element signature="e#5499#5500#0" expanded="true" />
+                <element signature="e#5529#5530#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/c2nasm/lib.c">
+        <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="685">
-              <caret line="48" column="17" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="17" />
+            <state relative-caret-position="882">
+              <caret line="63" column="38" lean-forward="true" selection-start-line="63" selection-start-column="38" selection-end-line="63" selection-end-column="38" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/optim.bash">
+        <entry file="file://$PROJECT_DIR$/src/BackEnd/CodeGenerator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+            <state relative-caret-position="1152">
+              <caret line="181" column="71" selection-start-line="181" selection-start-column="71" selection-end-line="181" selection-end-column="71" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#4716#4717#0" expanded="true" />
+                <element signature="e#4789#4790#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -203,10 +181,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/IR/Instruction/Load.java" />
-        <option value="$PROJECT_DIR$/src/IR/Instruction/Store.java" />
-        <option value="$PROJECT_DIR$/src/AST/Expression.java" />
-        <option value="$PROJECT_DIR$/src/BackEnd/LivenessAnalyzer.java" />
         <option value="$PROJECT_DIR$/src/BackEnd/NASMPrinter.java" />
         <option value="$PROJECT_DIR$/src/IR/Operand/StackSlot.java" />
         <option value="$PROJECT_DIR$/src/IR/Instruction/Jump.java" />
@@ -232,7 +206,6 @@
         <option value="$PROJECT_DIR$/src/IR/Instruction/CJump.java" />
         <option value="$PROJECT_DIR$/src/IR/Instruction/BinaryOperation.java" />
         <option value="$PROJECT_DIR$/src/IR/Instruction/Instruction.java" />
-        <option value="$PROJECT_DIR$/src/IR/Function.java" />
         <option value="$PROJECT_DIR$/src/IR/IRProgram.java" />
         <option value="$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java" />
         <option value="$PROJECT_DIR$/src/Type/ClassType.java" />
@@ -241,7 +214,6 @@
         <option value="$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java" />
         <option value="$PROJECT_DIR$/src/BackEnd/NASMTransformer.java" />
         <option value="$PROJECT_DIR$/src/FrontEnd/IRPrinter.java" />
-        <option value="$PROJECT_DIR$/src/FrontEnd/IRBuilder.java" />
         <option value="$PROJECT_DIR$/src/IR/Instruction/Push.java" />
         <option value="$PROJECT_DIR$/src/IR/Instruction/Pop.java" />
         <option value="$PROJECT_DIR$/optim.bash" />
@@ -249,16 +221,22 @@
         <option value="$PROJECT_DIR$/program.asm" />
         <option value="$PROJECT_DIR$/lib/c2nasm/lib.asm" />
         <option value="$PROJECT_DIR$/lib/c2nasm/lib.c" />
-        <option value="$PROJECT_DIR$/src/BackEnd/BasicBlockOptimizer.java" />
         <option value="$PROJECT_DIR$/src/IR/BasicBlock.java" />
+        <option value="$PROJECT_DIR$/program.cpp" />
+        <option value="$PROJECT_DIR$/src/BackEnd/BasicBlockOptimizer.java" />
+        <option value="$PROJECT_DIR$/src/BackEnd/LivenessAnalyzer.java" />
+        <option value="$PROJECT_DIR$/src/Utility/Config.java" />
+        <option value="$PROJECT_DIR$/src/BackEnd/FunctionInlineProcessor.java" />
         <option value="$PROJECT_DIR$/src/BackEnd/StackBuilder.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
-        <option value="$PROJECT_DIR$/program.cpp" />
+        <option value="$PROJECT_DIR$/src/BackEnd/FunctionInliner.java" />
+        <option value="$PROJECT_DIR$/src/IR/Function.java" />
+        <option value="$PROJECT_DIR$/src/FrontEnd/IRBuilder.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
+    <option name="x" value="952" />
     <option name="width" value="977" />
     <option name="height" value="1038" />
   </component>
@@ -291,24 +269,7 @@
             <path>
               <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
               <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="c2nasm" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="AST" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
@@ -332,38 +293,6 @@
               <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
               <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="IR" type="462c0819:PsiDirectoryNode" />
-              <item name="Instruction" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="IR" type="462c0819:PsiDirectoryNode" />
-              <item name="Operand" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Parser" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Scope" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Type" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Mxstar-Compiler" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Mxstar-Compiler" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Utility" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -378,7 +307,7 @@
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-listener" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-visitor" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/output-dir" value="C:\Users\apoll\Desktop\Mxstar-Compiler\src" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556642902882" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556678420028" />
     <property name="last_opened_file_path" value="D:/课程学习/编译原理/complier_from_idy002/mstar-compiler-master" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -426,13 +355,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1551923439238</updated>
-    </task>
-    <task id="LOCAL-00056" summary="Start IR">
-      <created>1554201950435</created>
-      <option name="number" value="00056" />
-      <option name="presentableId" value="LOCAL-00056" />
-      <option name="project" value="LOCAL" />
-      <updated>1554201950435</updated>
     </task>
     <task id="LOCAL-00057" summary="Start IR">
       <created>1554202065823</created>
@@ -770,7 +692,14 @@
       <option name="project" value="LOCAL" />
       <updated>1556639979368</updated>
     </task>
-    <option name="localTasksCounter" value="105" />
+    <task id="LOCAL-00105" summary="ADD BasicBlockOptimizer + FIX BuildinFunction">
+      <created>1556642928448</created>
+      <option name="number" value="00105" />
+      <option name="presentableId" value="LOCAL-00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1556642928448</updated>
+    </task>
+    <option name="localTasksCounter" value="106" />
     <servers />
   </component>
   <component name="TodoView">
@@ -792,11 +721,11 @@
       <window_info id="UI Designer" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="Favorites" order="5" sideWeight="0.5014245" side_tool="true" weight="0.2937931" />
-      <window_info content_ui="combo" id="Project" order="6" sideWeight="0.4985755" visible="true" weight="0.2248996" />
+      <window_info content_ui="combo" id="Project" order="6" sideWeight="0.4985755" weight="0.4631861" />
       <window_info anchor="bottom" id="Messages" order="0" weight="0.3112676" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3253521" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.36197183" />
+      <window_info anchor="bottom" id="Run" order="3" weight="0.36197183" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.4169014" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -882,27 +811,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/IR/Instruction/Lea.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="31" column="82" selection-start-line="31" selection-start-column="82" selection-end-line="31" selection-end-column="82" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Type/ArrayType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="479">
-          <caret line="29" column="35" selection-start-line="29" selection-start-column="35" selection-end-line="29" selection-end-column="35" />
-          <folding>
-            <element signature="e#620#621#0" expanded="true" />
-            <element signature="e#661#662#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/IR/Operand/Memory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
@@ -1270,16 +1178,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/BackEnd/LivenessAnalyzer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="15" column="30" lean-forward="true" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/IR/Instruction/Instruction.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -1288,40 +1186,6 @@
             <element signature="imports" expanded="true" />
             <element signature="e#1035#1036#0" expanded="true" />
             <element signature="e#1062#1063#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/BackEnd/CodeGenerator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="828">
-          <caret line="181" column="71" selection-start-line="181" selection-start-column="71" selection-end-line="181" selection-end-column="71" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4716#4717#0" expanded="true" />
-            <element signature="e#4789#4790#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/FrontEnd/IRBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6083">
-          <caret line="569" column="33" lean-forward="true" selection-start-line="569" selection-start-column="33" selection-end-line="569" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#949#950#0" expanded="true" />
-            <element signature="e#979#980#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/BackEnd/NASMTransformer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="118" column="26" selection-start-line="118" selection-start-column="26" selection-end-line="118" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1347,33 +1211,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/program.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3834">
+          <caret line="213" lean-forward="true" selection-start-line="213" selection-end-line="213" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/c2nasm/lib.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="685">
+        <state relative-caret-position="54">
           <caret line="48" column="17" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/BackEnd/BasicBlockOptimizer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="48" column="13" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
+        <state relative-caret-position="576">
+          <caret line="32" column="86" selection-start-line="32" selection-start-column="86" selection-end-line="32" selection-end-column="86" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/IR/Function.java">
+    <entry file="file://$PROJECT_DIR$/src/BackEnd/LivenessAnalyzer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1122">
-          <caret line="60" column="39" selection-start-line="60" selection-start-column="39" selection-end-line="60" selection-end-column="39" />
+        <state relative-caret-position="270">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2493#2494#0" expanded="true" />
-            <element signature="e#2522#2523#0" expanded="true" />
-            <element signature="e#2643#2644#0" expanded="true" />
-            <element signature="e#2672#2673#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1392,27 +1259,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/Utility/Config.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
+        <state relative-caret-position="90">
+          <caret line="5" column="10" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/BackEnd/StackBuilder.java">
+    <entry file="file://$PROJECT_DIR$/src/BackEnd/CodeGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="74" column="49" selection-start-line="74" selection-start-column="49" selection-end-line="74" selection-end-column="49" />
+        <state relative-caret-position="1152">
+          <caret line="181" column="71" selection-start-line="181" selection-start-column="71" selection-end-line="181" selection-end-column="71" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4716#4717#0" expanded="true" />
+            <element signature="e#4789#4790#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="882">
+          <caret line="63" column="38" lean-forward="true" selection-start-line="63" selection-start-column="38" selection-end-line="63" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BackEnd/FunctionInliner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="29">
+          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/program.cpp">
+    <entry file="file://$PROJECT_DIR$/src/BackEnd/StackBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+        <state relative-caret-position="72">
+          <caret line="4" column="20" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BackEnd/NASMTransformer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1656">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/IR/Function.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="501">
+          <caret line="211" selection-start-line="211" selection-end-line="211" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2493#2494#0" expanded="true" />
+            <element signature="e#2522#2523#0" expanded="true" />
+            <element signature="e#2643#2644#0" expanded="true" />
+            <element signature="e#2672#2673#0" expanded="true" />
+            <element signature="e#5520#5521#0" expanded="true" />
+            <element signature="e#5553#5554#0" expanded="true" />
+            <element signature="e#5499#5500#0" expanded="true" />
+            <element signature="e#5529#5530#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/FrontEnd/IRBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="156" column="55" selection-start-line="156" selection-start-column="55" selection-end-line="156" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#949#950#0" expanded="true" />
+            <element signature="e#979#980#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

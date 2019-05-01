@@ -21,13 +21,13 @@ public class LivenessAnalyzer {
         this.liveOuts = new HashMap<>();
     }
 
-    public void analysis() {
+    public void run() {
         for(Function function : program.getFunctions().values()) {
-            analysis(function);
+            process(function);
         }
     }
 
-    private void analysis(Function function) {
+    private void process(Function function) {
         LinkedList<BasicBlock> reversePreOrder = function.getReversePrevOrder();
         HashSet<Register> liveIn = new HashSet<>();
         HashSet<Register> liveOut = new HashSet<>();

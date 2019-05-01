@@ -20,10 +20,10 @@ public class StackBuilder {
     private IRProgram program;
     private HashMap<Function, Frame> framesMap;
 
-    class Frame {
-        public LinkedList<StackSlot> parameters = new LinkedList<>();
-        public LinkedList<StackSlot> temporaries = new LinkedList<>();
-        public int getFrameSize() {
+    private class Frame {
+        private LinkedList<StackSlot> parameters = new LinkedList<>();
+        private LinkedList<StackSlot> temporaries = new LinkedList<>();
+        private int getFrameSize() {
             int bytes = Config.getRegSize() * (parameters.size() + temporaries.size());
             bytes = (bytes + 16 - 1) / 16 * 16; //  round up to a multiply of 16
             return bytes;
