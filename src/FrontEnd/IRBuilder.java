@@ -45,9 +45,9 @@ public class IRBuilder implements ASTVistor {
         loopConditionBB = new Stack<>();
         loopAfterBB = new Stack<>();
         functionDeclarationMap = new HashMap<>();
-        /*inlineVariableRegisterStack = new LinkedList<>();
+        inlineVariableRegisterStack = new LinkedList<>();
         inlineFuncAfterBBStack = new LinkedList<>();
-        operationsCountMap = new HashMap<FunctionEntity, Integer>();*/
+        operationsCountMap = new HashMap<FunctionEntity, Integer>();
     }
 
     public IRProgram getProgram() {
