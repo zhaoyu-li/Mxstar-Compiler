@@ -503,8 +503,6 @@ public class IRBuilder implements ASTVistor {
             return false;
         if(!functionDeclaration.getFunctionEntity().isGlobal())    //  is a method
             return false;
-        if(program.getFunction(name).getCallees().contains(program.getFunction(name)))
-            return false;
         List<Statement> body = functionDeclaration.getBody();
         if(!operationsCountMap.containsKey(functionDeclaration.getFunctionEntity()))
             operationsCountMap.put(functionDeclaration.getFunctionEntity(), countOperations(body));
@@ -571,7 +569,7 @@ public class IRBuilder implements ASTVistor {
                     Operand argument = expression.getResult();
                     arguments.add(argument);
                 }
-                if(deserveInline(node.getFuncCall().getFunctionEntity().getName())) {
+                if(deserveInline(node.getFuncCall().getFunctionEntity().getName()) && !curFunction.getName().equals(node.getFuncCall().getName().getName())) {
                     doInline(node.getFuncCall().getFunctionEntity().getName(), arguments);
                 } else {
                     curBB.addNextInst(new Call(curBB, vrax, function, arguments));
@@ -664,7 +662,7 @@ public class IRBuilder implements ASTVistor {
             expression.accept(this);
             arguments.add(expression.getResult());
         }
-        if(deserveInline(node.getFunctionEntity().getName())) {
+        if(deserveInline(node.getFunctionEntity().getName()) && !node.getFunctionEntity().getName().equals(curFunction.getName())) {
             doInline(node.getFunctionEntity().getName(), arguments);
         } else {
             curBB.addNextInst(new Call(curBB, vrax, program.getFunction(node.getFunctionEntity().getName()), arguments));
