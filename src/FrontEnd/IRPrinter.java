@@ -93,8 +93,10 @@ public class IRPrinter implements IRVistor {
     @Override
     public void visit(IRProgram node) {
         for(Function function : node.getFunctions().values()) {
-            if(function.getType() == Function.FuncType.UserDefined)
+            if(function.getType() == Function.FuncType.UserDefined) {
+                System.out.println();
                 function.accept(this);
+            }
         }
         for(StaticVariable var : node.getStaticVariables()) {
             addLine(getStaticDataName(var));

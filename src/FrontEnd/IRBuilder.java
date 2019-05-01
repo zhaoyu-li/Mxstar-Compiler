@@ -339,9 +339,13 @@ public class IRBuilder implements ASTVistor {
                 curBB.addNextInst(new Move(curBB, vrax, node.getRet().getResult()));
             }
         }
-        Return ret = new Return(curBB);
-        curBB.addNextInst(ret);
-        curFunction.addReturn(ret);
+        if(isInInline) {
+            curBB.addNextJumpInst(new Jump(curBB, inlineFuncAfterBBStack.getLast()));
+        } else {
+            Return ret = new Return(curBB);
+            curBB.addNextInst(ret);
+            curFunction.addReturn(ret);
+        }
     }
 
     @Override
@@ -409,7 +413,11 @@ public class IRBuilder implements ASTVistor {
             int offset = globalScope.getClassEntity(curClassName).getScope().getVariableOffset(node.getName());
             result = new Memory(curThis, new IntImmediate(offset));
         } else {
-            result = node.getVariableEntity().getVirtualRegister();
+            if(isInInline) {
+                result = inlineVariableRegisterStack.getLast().get(node.getVariableEntity());
+            } else {
+                result = node.getVariableEntity().getVirtualRegister();
+            }
         }
         if(node.getTrueBB() != null) {
             curBB.addNextJumpInst(new CJump(curBB, result, CJump.CompareOp.NE, new IntImmediate(0), node.getTrueBB(), node.getFalseBB()));
