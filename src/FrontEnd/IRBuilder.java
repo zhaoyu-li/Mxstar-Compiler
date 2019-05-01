@@ -9,7 +9,9 @@ import IR.*;
 import Type.*;
 import Utility.Config;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 import static IR.RegisterSet.*;
@@ -23,8 +25,15 @@ public class IRBuilder implements ASTVistor {
     private String curClassName;
     private VirtualRegister curThis;
 
+    private HashMap<String, FunctionDeclaration> functionDeclarationMap;
+
     private Stack<BasicBlock> loopConditionBB;
     private Stack<BasicBlock> loopAfterBB;
+
+    private boolean isInInline;
+    private LinkedList<HashMap<VariableEntity, VirtualRegister>> inlineVariableRegisterStack;
+    private LinkedList<BasicBlock> inlineFuncAfterBBStack;
+    private HashMap<FunctionEntity,Integer> operationsCountMap;
 
     public IRBuilder(GlobalScope globalScope) {
         this.globalScope = globalScope;
@@ -35,6 +44,10 @@ public class IRBuilder implements ASTVistor {
         program = new IRProgram();
         loopConditionBB = new Stack<>();
         loopAfterBB = new Stack<>();
+        functionDeclarationMap = new HashMap<>();
+        inlineVariableRegisterStack = new LinkedList<>();
+        inlineFuncAfterBBStack = new LinkedList<>();
+        operationsCountMap = new HashMap<FunctionEntity, Integer>();
     }
 
     public IRProgram getProgram() {
@@ -51,7 +64,7 @@ public class IRBuilder implements ASTVistor {
 
     private void registerFunction(FunctionDeclaration functionDeclaration) {
         FunctionEntity func = functionDeclaration.getFunctionEntity();
-        Function function = new Function(FuncType.UserDefined, func.getName(), !func.getReturnType().isVoidType());
+        Function function = new Function(FuncType.UserDefined, func.getName(), !func.getReturnType().isVoidType(), func.isGlobal());
         program.addFunction(function);
     }
 
@@ -79,6 +92,7 @@ public class IRBuilder implements ASTVistor {
             registerVariable(variableDeclaration);
         }
         for(FunctionDeclaration functionDeclaration : node.getFunctions()) {
+            functionDeclarationMap.put(functionDeclaration.getName(), functionDeclaration);
             registerFunction(functionDeclaration);
         }
         for(ClassDeclaration classDeclaration : node.getClasses()) {
@@ -146,12 +160,12 @@ public class IRBuilder implements ASTVistor {
                 Return ret = new Return(curBB);
                 curBB.addNextInst(ret);
                 curFunction.addReturn(ret);
-            } else {
+            } /*else {
                 //curBB.addNextInst(new Move(curBB, vrax, new IntImmediate(0)));
-                /*Return ret = new Return(curBB);
+                Return ret = new Return(curBB);
                 curBB.addNextInst(ret);
-                curFunction.addReturn(ret);*/
-            }
+                curFunction.addReturn(ret);
+            }*/
         }
         BasicBlock tailBB = new BasicBlock("tailBB", curFunction);
         for(Return ret : curFunction.getReturnList()) {
@@ -212,9 +226,16 @@ public class IRBuilder implements ASTVistor {
     @Override
     public void visit(VariableDeclaration node) {
         VirtualRegister vr = new VirtualRegister(node.getName());
-        node.getVariableEntity().setVirtualRegister(vr);
-        if(node.getInit() != null) {
-            assign(node.getInit(), vr);
+        if(isInInline) {
+            inlineVariableRegisterStack.getLast().put(node.getVariableEntity(), vr);
+            if(node.getInit() != null) {
+                assign(node.getInit(), vr);
+            }
+        } else {
+            node.getVariableEntity().setVirtualRegister(vr);
+            if(node.getInit() != null) {
+                assign(node.getInit(), vr);
+            }
         }
     }
 
@@ -397,6 +418,130 @@ public class IRBuilder implements ASTVistor {
         }
     }
 
+    private int countOperationsLE(List<Expression> expressions) {
+        int count = 0;
+        for(Expression expression : expressions)
+            count += countOperations(expression);
+        return count;
+    }
+    private int countOperations(Expression expression) {
+        if(expression == null) return 0;
+        int count = 0;
+        if (expression instanceof ArrayExpression) {
+            count += countOperations(((ArrayExpression) expression).getArr());
+            count += countOperations(((ArrayExpression) expression).getIdx());
+        } else if (expression instanceof FuncCallExpression) {
+            count += countOperationsLE(((FuncCallExpression) expression).getArguments());
+        } else if (expression instanceof NewExpression) {
+            count += countOperationsLE(((NewExpression) expression).getDimensions());
+        } else if (expression instanceof PrefixExpression) {
+            count += countOperations(((PrefixExpression) expression).getExpr());
+            count += 1;
+        } else if (expression instanceof SuffixExpression) {
+            count += countOperations(((SuffixExpression) expression).getExpr());
+            count += 1;
+        } else if (expression instanceof MemberExpression) {
+            if(((MemberExpression) expression).getMember() != null)
+                count += 1;
+            else
+                count += countOperations(((MemberExpression) expression).getFuncCall());
+        } else if (expression instanceof BinaryExpression) {
+            count += countOperations(((BinaryExpression) expression).getLhs());
+            count += countOperations(((BinaryExpression) expression).getRhs());
+        } else if (expression instanceof AssignExpression) {
+            count += countOperations(((AssignExpression) expression).getLhs());
+            count += countOperations(((AssignExpression) expression).getRhs());
+        } else {
+            count += 1;
+        }
+        return count;
+    }
+
+    private int countOperations(Statement statement) {
+        if(statement == null) return 0;
+        int count = 0;
+        if(statement instanceof IfStatement) {
+            count += countOperations(((IfStatement) statement).getThenStatement());
+            count += countOperations(((IfStatement) statement).getElseStatement());
+        } else if(statement instanceof WhileStatement) {
+            count += countOperations(((WhileStatement) statement).getCondition());
+            count += countOperations(((WhileStatement) statement).getBody());
+        } else if(statement instanceof ForStatement) {
+            count += countOperations(((ForStatement) statement).getInit());
+            count += countOperations(((ForStatement) statement).getCondition());
+            count += countOperations(((ForStatement) statement).getUpdate());
+            count += countOperations(((ForStatement) statement).getBody());
+        } else if(statement instanceof BlockStatement) {
+            count += countOperations(((BlockStatement) statement).getStatements());
+        } else if(statement instanceof ReturnStatement) {
+            count += countOperations(((ReturnStatement) statement).getRet());
+        } else if(statement instanceof ExprStatement) {
+            count += countOperations(((ExprStatement) statement).getExpr());
+        } else if(statement instanceof VarDeclStatement) {
+            count += countOperations(((VarDeclStatement) statement).getDeclaration().getInit());
+        } else {
+            count += 1;
+        }
+        return count;
+    }
+    private int countOperations(List<Statement> statements) {
+        int count = 0;
+        for(Statement s : statements)
+            count += countOperations(s);
+        return count;
+    }
+
+    private boolean deserveInline(String name) {
+        if(!(functionDeclarationMap.containsKey(name)))   //  library function
+            return false;
+        FunctionDeclaration functionDeclaration = functionDeclarationMap.get(name);
+        if(!functionDeclaration.getFunctionEntity().getGlobalVariables().isEmpty())   //  used global variable
+            return false;
+        if(!functionDeclaration.getFunctionEntity().isGlobal())    //  is a method
+            return false;
+        List<Statement> body = functionDeclaration.getBody();
+        if(!operationsCountMap.containsKey(functionDeclaration.getFunctionEntity()))
+            operationsCountMap.put(functionDeclaration.getFunctionEntity(), countOperations(body));
+        if(operationsCountMap.get(functionDeclaration.getFunctionEntity()) >= 20) return false;
+        if(inlineVariableRegisterStack.size() >= 4)
+            return false;
+        return true;
+    }
+    private void doInline(String name, LinkedList<Operand> arguments) {
+        FunctionDeclaration funcDeclaration = functionDeclarationMap.get(name);
+        inlineVariableRegisterStack.addLast(new HashMap<>());
+        LinkedList<VirtualRegister> vrArguments = new LinkedList<>();
+        for(Operand op : arguments) {
+            VirtualRegister vr = new VirtualRegister("");
+            curBB.addNextInst(new Move(curBB, vr, op));
+            vrArguments.add(vr);
+        }
+        for(int i = 0; i < funcDeclaration.getParameters().size(); i++)
+            inlineVariableRegisterStack.getLast().put(funcDeclaration.getParameters().get(i).getVariableEntity(), vrArguments.get(i));
+        BasicBlock inlineFuncBodyBB = new BasicBlock("inlineFuncBodyBB", curFunction);
+        BasicBlock inlineFuncAfterBB = new BasicBlock("inlineFuncAfterBB", curFunction);
+        inlineFuncAfterBBStack.addLast(inlineFuncAfterBB);
+
+        curBB.addNextJumpInst(new Jump(curBB, inlineFuncBodyBB));
+        curBB = inlineFuncBodyBB;
+        VirtualRegister result = null;
+
+        boolean oldIsInline = isInInline;
+        isInInline = true;
+
+        for(Statement st : funcDeclaration.getBody())
+            st.accept(this);
+
+        if(!(curBB.getTail() instanceof Jump))
+            curBB.addNextJumpInst(new Jump(curBB, inlineFuncAfterBB));
+
+        curBB = inlineFuncAfterBB;
+
+        inlineFuncAfterBBStack.removeLast();
+        inlineVariableRegisterStack.removeLast();
+        isInInline = oldIsInline;
+    }
+
     @Override
     public void visit(MemberExpression node) {
         VirtualRegister base = new VirtualRegister("");
@@ -420,7 +565,11 @@ public class IRBuilder implements ASTVistor {
                     Operand argument = expression.getResult();
                     arguments.add(argument);
                 }
-                curBB.addNextInst(new Call(curBB, vrax, function, arguments));
+                if(deserveInline(node.getFuncCall().getFunctionEntity().getName())) {
+                    doInline(node.getFuncCall().getFunctionEntity().getName(), arguments);
+                } else {
+                    curBB.addNextInst(new Call(curBB, vrax, function, arguments));
+                }
                 if (!node.getFuncCall().getFunctionEntity().getReturnType().isVoidType()) {
                     VirtualRegister ret = new VirtualRegister("");
                     curBB.addNextInst(new Move(curBB, ret, vrax));
@@ -509,7 +658,11 @@ public class IRBuilder implements ASTVistor {
             expression.accept(this);
             arguments.add(expression.getResult());
         }
-        curBB.addNextInst(new Call(curBB, vrax, program.getFunction(node.getFunctionEntity().getName()), arguments));
+        if(deserveInline(node.getFunctionEntity().getName())) {
+            doInline(node.getFunctionEntity().getName(), arguments);
+        } else {
+            curBB.addNextInst(new Call(curBB, vrax, program.getFunction(node.getFunctionEntity().getName()), arguments));
+        }
         if(node.getTrueBB() != null) {
             curBB.addNextJumpInst(new CJump(curBB, vrax, CJump.CompareOp.NE, new IntImmediate(0), node.getTrueBB(), node.getFalseBB()));
         } else if(!node.getFunctionEntity().getReturnType().isVoidType()) {

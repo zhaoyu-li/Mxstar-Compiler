@@ -54,8 +54,8 @@ public class Main {
 
         IRProgram irProgram = irBuilder.getProgram();
 
-        FunctionInliner functionInliner = new FunctionInliner(irProgram);
-        functionInliner.run();
+//        FunctionInliner functionInliner = new FunctionInliner(irProgram);
+//        functionInliner.run();
 
         BasicBlockOptimizer basicBlockOptimizer = new BasicBlockOptimizer(irProgram);
         basicBlockOptimizer.run();

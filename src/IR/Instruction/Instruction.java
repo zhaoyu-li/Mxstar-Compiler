@@ -52,6 +52,8 @@ public abstract class Instruction {
     }
 
     public void prepend(Instruction inst) {
+        inst.prev = null;
+        inst.next = null;
         if(prev == null) {
             inst.next = this;
             this.prev = inst;
@@ -74,6 +76,8 @@ public abstract class Instruction {
     }
 
     public void append(Instruction inst) {
+        inst.prev = null;
+        inst.next = null;
         if(next == null) {
             inst.prev = this;
             this.next = inst;

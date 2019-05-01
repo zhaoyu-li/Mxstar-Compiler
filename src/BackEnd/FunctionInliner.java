@@ -5,9 +5,14 @@ import IR.Function;
 import IR.IRProgram;
 import IR.Instruction.Call;
 import IR.Instruction.Instruction;
+import IR.Instruction.Jump;
+import IR.Instruction.Move;
+import IR.Operand.Operand;
+import IR.Operand.VirtualRegister;
 import Utility.Config;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class FunctionInliner {
@@ -28,8 +33,7 @@ public class FunctionInliner {
     public void run() {
         for(Function function : program.getFunctions().values()) {
             if(function.getType() == Function.FuncType.UserDefined) {
-                FuncInfo funcInfo = new FuncInfo();
-                funcInfoMap.put(function, funcInfo);
+                preprocess(function);
             }
         }
         for(Function function : program.getFunctions().values()) {
@@ -39,27 +43,52 @@ public class FunctionInliner {
         }
     }
 
+    private void preprocess(Function function) {
+        FuncInfo funcInfo = new FuncInfo();
+        for(BasicBlock bb : function.getReversePostOrder()) {
+            for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
+                funcInfo.instNumber++;
+            }
+        }
+        if(funcInfo.instNumber > Config.MAX_INLINE_INST || function.getCallees().contains(function)
+                || !function.isGlobal() || !function.getUsedGlobalVariables().isEmpty()) {
+            funcInfo.deserveInline = false;
+            System.out.println(function.getName());
+            System.out.println("!!!");
+        }
+        funcInfoMap.put(function, funcInfo);
+    }
+
     private void process(Function function) {
-        FuncInfo funcInfo = funcInfoMap.get(function);
+        FuncInfo caller = funcInfoMap.get(function);
         for(BasicBlock bb : function.getReversePostOrder()) {
             for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
-                funcInfo.instNumber++;
+                if(inst instanceof Call) {
+                    FuncInfo callee = funcInfoMap.get(((Call) inst).getFunc());
+                    if(callee != null) {
+                        if(callee.deserveInline) {
+                            System.out.println(((Call) inst).getFunc().getName());
+                            doInline((Call) inst, ((Call) inst).getFunc());
+                        }
+                    }
+                }
             }
         }
-        if(funcInfo.instNumber > Config.MAX_INLINE_INST) {
-            funcInfo.deserveInline = false;
-        }
-        if(function.getCallees().contains(function)) {
-            funcInfo.deserveInline = false;
-        }
-        
+    }
+
+    private void doInline(Call call, Function function) {
         for(BasicBlock bb : function.getReversePostOrder()) {
             for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
-                funcInfo.instNumber++;
+                Instruction newInst = copy(inst);
+                call.prepend(newInst);
             }
         }
+        System.out.println("finish");
+        call.remove();
+    }
 
-
+    private Instruction copy(Instruction inst) {
+        return inst;
     }
 
 }

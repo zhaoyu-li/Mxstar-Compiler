@@ -41,7 +41,7 @@ public class Function {
 
     private boolean isGlobal;
 
-    public Function(FuncType type, String name, boolean hasReturnValue) {
+    public Function(FuncType type, String name, boolean hasReturnValue, boolean isGlobal) {
         this.type = type;
         this.name = name;
         this.hasReturnValue = hasReturnValue;
@@ -58,7 +58,7 @@ public class Function {
         reversePostOrder = new LinkedList<>();
         reversePrevOrder = new LinkedList<>();
         visitedBB = new HashSet<>();
-        isGlobal = true;
+        this.isGlobal = isGlobal;
 
         if(type != FuncType.UserDefined) {
             for(PhysicalRegister pr : RegisterSet.allRegs) {
@@ -200,10 +200,6 @@ public class Function {
 
     public LinkedList<BasicBlock> getReversePrevOrder() {
         return reversePrevOrder;
-    }
-
-    public void setGlobal(boolean global) {
-        isGlobal = global;
     }
 
     public boolean isGlobal() {

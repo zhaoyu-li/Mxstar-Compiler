@@ -14,20 +14,20 @@ public class IRProgram {
     private LinkedList<StaticString> staticStrings;
 
     private void addBuiltinFunctions() {
-        Function print = new Function(FuncType.Library, "print", false);
-        Function println = new Function(FuncType.Library, "println", false);
-        Function getString = new Function(FuncType.Library, "getString", true);
-        Function getInt = new Function(FuncType.Library, "getInt", true);
-        Function toString = new Function(FuncType.Library, "toString", true);
-        Function string_length = new Function(FuncType.Library, "string_length", true);
-        Function string_substring = new Function(FuncType.Library, "string_substring", true);
-        Function string_parseInt = new Function(FuncType.Library, "string_parseInt", true);
-        Function string_ord = new Function(FuncType.Library, "string_ord", true);
-        Function array_size = new Function(FuncType.Library, "array_size", true);
-        Function string_concat = new Function(FuncType.Library, "string_concat", true);
-        Function string_compare = new Function(FuncType.Library, "string_compare", true);
-        Function malloc = new Function(FuncType.External, "malloc", false);
-        Function global_init = new Function(FuncType.UserDefined, "global_init", true);
+        Function print = new Function(FuncType.Library, "print", false, true);
+        Function println = new Function(FuncType.Library, "println", false, true);
+        Function getString = new Function(FuncType.Library, "getString", true, true);
+        Function getInt = new Function(FuncType.Library, "getInt", true, true);
+        Function toString = new Function(FuncType.Library, "toString", true, true);
+        Function string_length = new Function(FuncType.Library, "string_length", true, true);
+        Function string_substring = new Function(FuncType.Library, "string_substring", true, true);
+        Function string_parseInt = new Function(FuncType.Library, "string_parseInt", true, true);
+        Function string_ord = new Function(FuncType.Library, "string_ord", true, true);
+        Function array_size = new Function(FuncType.Library, "array_size", true, true);
+        Function string_concat = new Function(FuncType.Library, "string_concat", true, true);
+        Function string_compare = new Function(FuncType.Library, "string_compare", true, true);
+        Function malloc = new Function(FuncType.External, "malloc", false, true);
+        Function global_init = new Function(FuncType.UserDefined, "global_init", true, true);
 
         addFunction(print);
         addFunction(println);

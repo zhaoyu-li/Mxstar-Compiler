@@ -10,6 +10,7 @@
       <w>mxstar</w>
       <w>nasm</w>
       <w>noexecute</w>
+      <w>preprocess</w>
       <w>qword</w>
       <w>rodata</w>
       <w>strcmp</w>
