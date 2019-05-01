@@ -45,9 +45,9 @@ public class IRBuilder implements ASTVistor {
         loopConditionBB = new Stack<>();
         loopAfterBB = new Stack<>();
         functionDeclarationMap = new HashMap<>();
-        inlineVariableRegisterStack = new LinkedList<>();
+        /*inlineVariableRegisterStack = new LinkedList<>();
         inlineFuncAfterBBStack = new LinkedList<>();
-        operationsCountMap = new HashMap<FunctionEntity, Integer>();
+        operationsCountMap = new HashMap<FunctionEntity, Integer>();*/
     }
 
     public IRProgram getProgram() {
@@ -107,9 +107,6 @@ public class IRBuilder implements ASTVistor {
         for(FunctionDeclaration functionDeclaration : node.getFunctions()) {
             visit(functionDeclaration);
         }
-        /*for(Function function : program.getFunctions().values()) {
-            function.finish();
-        }*/
         for(ClassDeclaration classDeclaration : node.getClasses()) {
             visit(classDeclaration);
         }
@@ -160,12 +157,11 @@ public class IRBuilder implements ASTVistor {
                 Return ret = new Return(curBB);
                 curBB.addNextInst(ret);
                 curFunction.addReturn(ret);
-            } /*else {
-                //curBB.addNextInst(new Move(curBB, vrax, new IntImmediate(0)));
+            } else {
                 Return ret = new Return(curBB);
                 curBB.addNextInst(ret);
                 curFunction.addReturn(ret);
-            }*/
+            }
         }
         BasicBlock tailBB = new BasicBlock("tailBB", curFunction);
         for(Return ret : curFunction.getReturnList()) {
@@ -506,6 +502,8 @@ public class IRBuilder implements ASTVistor {
         if(!functionDeclaration.getFunctionEntity().getGlobalVariables().isEmpty())   //  used global variable
             return false;
         if(!functionDeclaration.getFunctionEntity().isGlobal())    //  is a method
+            return false;
+        if(program.getFunction(name).getCallees().contains(program.getFunction(name)))
             return false;
         List<Statement> body = functionDeclaration.getBody();
         if(!operationsCountMap.containsKey(functionDeclaration.getFunctionEntity()))
