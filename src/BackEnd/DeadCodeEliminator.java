@@ -53,6 +53,7 @@ public class DeadCodeEliminator {
                     dead = false;
                 for(Register register : definedSet) {
                     VirtualRegister vr = (VirtualRegister)register;
+                    if(!dead) break;
                     if(liveSet.contains(vr) || vr.getSpillSpace() != null) {
                         dead = false;
                         break;
