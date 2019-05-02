@@ -39,10 +39,6 @@ public class Main {
         astBuilder.visit(tree);
         Program program = astBuilder.getProgram();
 
-        //ASTPrinter astPrinter = new ASTPrinter();
-        //astPrinter.visit(program);
-        //astPrinter.print();
-
         ScopeBuilder scopeBuilder = new ScopeBuilder();
         scopeBuilder.visit(program);
         SemanticChecker semanticChecker = new SemanticChecker(scopeBuilder.getGlobalScope());
@@ -54,15 +50,11 @@ public class Main {
 
         IRProgram irProgram = irBuilder.getProgram();
 
-//        FunctionInliner functionInliner = new FunctionInliner(irProgram);
-//        functionInliner.run();
-
         BasicBlockOptimizer basicBlockOptimizer = new BasicBlockOptimizer(irProgram);
         basicBlockOptimizer.run();
 
-//        LivenessAnalyzer livenessAnalyzer = new LivenessAnalyzer(irProgram);
-//        livenessAnalyzer.analysis();
-//
+        DeadCodeEliminator deadCodeEliminator = new DeadCodeEliminator(irProgram);
+        deadCodeEliminator.run();
 
         NASMTransformer nasmTransformer = new NASMTransformer();
         nasmTransformer.visit(irProgram);

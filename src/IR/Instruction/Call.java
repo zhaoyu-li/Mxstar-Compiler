@@ -39,8 +39,7 @@ public class Call extends Instruction {
         return args;
     }
 
-    @Override
-    public LinkedList<Register> getUsedRegisters(){
+    public LinkedList<Register> getCallUsed() {
         LinkedList<Register> registers = new LinkedList<>();
         for(Operand arg : args) {
             if(arg instanceof Memory) {
@@ -50,6 +49,11 @@ public class Call extends Instruction {
             }
         }
         return registers;
+    }
+
+    @Override
+    public LinkedList<Register> getUsedRegisters(){
+        return new LinkedList<>(RegisterSet.vargs.subList(0, Integer.min(6, args.size())));
     }
 
     @Override

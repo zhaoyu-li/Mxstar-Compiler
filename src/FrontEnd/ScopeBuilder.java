@@ -189,14 +189,6 @@ public class ScopeBuilder implements ASTVistor {
         functionEntity.setScope(new Scope(curScope));
         curFunction = functionEntity;
         enterScope(functionEntity.getScope());
-        /*if(curClassName != null) {
-            VariableEntity thisVariable = new VariableEntity();
-            thisVariable.setName("this");
-            ClassType thisType = new ClassType(curClassName);
-            thisType.setClassEntity(globalScope.getClassEntity(curClassName));
-            thisVariable.setType(thisType);
-            curScope.putVariable(thisVariable.getName(), thisVariable);
-        }*/
         for(VariableDeclaration variableDeclaration : node.getParameters()) {
             visit(variableDeclaration);
         }

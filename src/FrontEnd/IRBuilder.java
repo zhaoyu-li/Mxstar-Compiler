@@ -496,7 +496,8 @@ public class IRBuilder implements ASTVistor {
     }
 
     private boolean deserveInline(String name) {
-        if(!(functionDeclarationMap.containsKey(name)))   //  library function
+        return false;
+        /*if(!(functionDeclarationMap.containsKey(name)))   //  library function
             return false;
         FunctionDeclaration functionDeclaration = functionDeclarationMap.get(name);
         if(!functionDeclaration.getFunctionEntity().getGlobalVariables().isEmpty())   //  used global variable
@@ -509,7 +510,7 @@ public class IRBuilder implements ASTVistor {
         if(operationsCountMap.get(functionDeclaration.getFunctionEntity()) >= 20) return false;
         if(inlineVariableRegisterStack.size() >= 4)
             return false;
-        return true;
+        return true;*/
     }
     private void doInline(String name, LinkedList<Operand> arguments) {
         FunctionDeclaration funcDeclaration = functionDeclarationMap.get(name);
