@@ -53,8 +53,12 @@ public class Main {
         BasicBlockOptimizer basicBlockOptimizer = new BasicBlockOptimizer(irProgram);
         basicBlockOptimizer.run();
 
-//        DeadCodeEliminator deadCodeEliminator = new DeadCodeEliminator(irProgram);
-//        deadCodeEliminator.run();
+        DeadCodeEliminator deadCodeEliminator = new DeadCodeEliminator(irProgram);
+        deadCodeEliminator.run();
+
+//        IRPrinter irPrinter = new IRPrinter();
+//        irPrinter.visit(irProgram);
+//        irPrinter.print();
 
         NASMTransformer nasmTransformer = new NASMTransformer();
         nasmTransformer.visit(irProgram);

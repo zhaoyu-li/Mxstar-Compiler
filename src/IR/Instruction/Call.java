@@ -44,7 +44,7 @@ public class Call extends Instruction {
         for(Operand arg : args) {
             if(arg instanceof Memory) {
                 registers.addAll(((Memory) arg).getUsedRegisters());
-            } else if(arg instanceof Register) {
+            } else if(arg instanceof VirtualRegister) {
                 registers.add((Register) arg);
             }
         }

@@ -23,7 +23,8 @@ public class DeadCodeEliminator {
 
     public void run() {
         for(Function function : program.getFunctions().values()) {
-            process(function);
+            if(function.getType() == Function.FuncType.UserDefined)
+                process(function);
         }
     }
 
@@ -42,7 +43,7 @@ public class DeadCodeEliminator {
     }
 
     private void process(Function function) {
-        liveOut = livenessAnalyzer.getLiveOuts(function);
+        liveOut = livenessAnalyzer.getLiveOut(function);
         for(BasicBlock bb : function.getBasicBlocks()) {
             HashSet<VirtualRegister> liveSet = new HashSet<>(liveOut.get(bb));
             for(Instruction inst = bb.getTail(); inst != null; inst = inst.getPrev()) {
