@@ -2,90 +2,81 @@ package BackEnd;
 
 import IR.BasicBlock;
 import IR.Function;
-import IR.IRProgram;
 import IR.Instruction.Call;
 import IR.Instruction.Instruction;
 import IR.Operand.Register;
 import IR.Operand.VirtualRegister;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
 public class LivenessAnalyzer {
-    private IRProgram program;
-    private HashMap<BasicBlock, HashSet<VirtualRegister>> liveOut;
-    private HashMap<BasicBlock, HashSet<VirtualRegister>> usedRegisters;
-    private HashMap<BasicBlock, HashSet<VirtualRegister>> definedRegisters;
+    private HashMap<BasicBlock, HashSet<VirtualRegister>> uses;
+    private HashMap<BasicBlock, HashSet<VirtualRegister>> defs;
+    private HashMap<BasicBlock, HashSet<VirtualRegister>> INs;
+    private HashMap<BasicBlock, HashSet<VirtualRegister>> OUTs;
 
-    public LivenessAnalyzer(IRProgram program) {
-        this.program = program;
-        this.liveOut = new HashMap<>();
-        this.usedRegisters = new HashMap<>();
-        this.definedRegisters = new HashMap<>();
-    }
-
-    public void run() {
-        for(Function function : program.getFunctions().values()) {
-            process(function);
-        }
-    }
-
-    private LinkedList<VirtualRegister> trans(Collection<Register> registers) {
-        LinkedList<VirtualRegister> virtualRegisters = new LinkedList<>();
-        for(Register reg : registers) {
-            virtualRegisters.add((VirtualRegister) reg);
-        }
-        return virtualRegisters;
+    public LivenessAnalyzer() {
+        uses = new HashMap<>();
+        defs = new HashMap<>();
+        INs = new HashMap<>();
+        OUTs = new HashMap<>();
     }
 
     private void process(Function function) {
-        liveOut = new HashMap<>();
-        usedRegisters = new HashMap<>();
-        definedRegisters = new HashMap<>();
+        uses.clear();
+        defs.clear();
+        INs.clear();
+        OUTs.clear();
         for(BasicBlock bb : function.getBasicBlocks()) {
-            liveOut.put(bb, new HashSet<>());
-            usedRegisters.put(bb, new HashSet<>());
-            definedRegisters.put(bb, new HashSet<>());
+            uses.put(bb, new HashSet<>());
+            defs.put(bb, new HashSet<>());
+            INs.put(bb, new HashSet<>());
+            OUTs.put(bb, new HashSet<>());
         }
         for(BasicBlock bb : function.getBasicBlocks()) {
-            HashSet<VirtualRegister> bbUsedRegisters = new HashSet<>();
-            HashSet<VirtualRegister> bbDefinedRegisters = new HashSet<>();
+            HashSet<VirtualRegister> use = new HashSet<>();
+            HashSet<VirtualRegister> def = new HashSet<>();
             for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
-                LinkedList<Register> usedRegs;
-                if(inst instanceof Call)
-                    usedRegs = ((Call) inst).getCallUsed();
-                else
-                    usedRegs = inst.getUsedRegisters();
-                for(VirtualRegister reg : trans(usedRegs))
-                    if(!bbDefinedRegisters.contains(reg))
-                        bbUsedRegisters.add(reg);
-                bbDefinedRegisters.addAll(trans(inst.getDefinedRegisters()));
+                LinkedList<Register> allUse = inst instanceof Call ? ((Call) inst).getAllUsedRegister() : inst.getUsedRegisters();
+                for(Register reg : allUse){
+                    VirtualRegister vr = (VirtualRegister) reg;
+                    if(!def.contains(vr)) {
+                        use.add(vr);
+                    }
+                }
+                for(Register reg : inst.getDefinedRegisters()) {
+                    VirtualRegister vr = (VirtualRegister) reg;
+                    def.add(vr);
+                }
             }
-
-            definedRegisters.put(bb, bbDefinedRegisters);
-            usedRegisters.put(bb, bbUsedRegisters);
+            defs.put(bb, def);
+            uses.put(bb, use);
         }
         boolean changed = true;
         while(changed) {
             changed = false;
-            LinkedList<BasicBlock> basicBlocks = function.getReversePrevOrder();
-            for(BasicBlock bb : basicBlocks) {
-                int oldSize = liveOut.get(bb).size();
+            for(BasicBlock bb : function.getReversePrevOrder()) {
+                int oldSize = INs.get(bb).size();
+                OUTs.get(bb).clear();
+                INs.get(bb).clear();
                 for(BasicBlock succ : bb.getNextBBs()) {
-                    HashSet<VirtualRegister> regs = new HashSet<>(liveOut.get(succ));
-                    regs.removeAll(definedRegisters.get(succ));
-                    regs.addAll(usedRegisters.get(succ));
-                    liveOut.get(bb).addAll(regs);
+                    OUTs.get(bb).addAll(INs.get(succ));
                 }
-                changed = changed || liveOut.get(bb).size() != oldSize;
+                INs.get(bb).addAll(OUTs.get(bb));
+                INs.get(bb).removeAll(defs.get(bb));
+                INs.get(bb).addAll(uses.get(bb));
+                if(INs.get(bb).size() != oldSize) {
+                    changed = true;
+                }
             }
         }
     }
-    public HashMap<BasicBlock,HashSet<VirtualRegister>> getLiveOut(Function function) {
+
+    public HashMap<BasicBlock,HashSet<VirtualRegister>> getOut(Function function) {
         process(function);
-        return liveOut;
+        return OUTs;
     }
 
 }

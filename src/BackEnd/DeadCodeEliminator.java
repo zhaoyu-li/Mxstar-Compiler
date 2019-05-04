@@ -12,13 +12,12 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class DeadCodeEliminator {
-    IRProgram program;
-    LivenessAnalyzer livenessAnalyzer;
-    private HashMap<BasicBlock, HashSet<VirtualRegister>> liveOut;
+    private IRProgram program;
+    private LivenessAnalyzer livenessAnalyzer;
 
     public DeadCodeEliminator(IRProgram program) {
         this.program = program;
-        this.livenessAnalyzer = new LivenessAnalyzer(program);
+        this.livenessAnalyzer = new LivenessAnalyzer();
     }
 
     public void run() {
@@ -43,18 +42,17 @@ public class DeadCodeEliminator {
     }
 
     private void process(Function function) {
-        liveOut = livenessAnalyzer.getLiveOut(function);
+        HashMap<BasicBlock, HashSet<VirtualRegister>> liveOut = livenessAnalyzer.getOut(function);
         for(BasicBlock bb : function.getBasicBlocks()) {
             HashSet<VirtualRegister> liveSet = new HashSet<>(liveOut.get(bb));
             for(Instruction inst = bb.getTail(); inst != null; inst = inst.getPrev()) {
-                LinkedList<Register> usedSet = inst instanceof Call ? ((Call) inst).getCallUsed() : inst.getUsedRegisters();
+                LinkedList<Register> usedSet = inst instanceof Call ? ((Call) inst).getAllUsedRegister() : inst.getUsedRegisters();
                 LinkedList<Register> definedSet = inst.getDefinedRegisters();
                 boolean dead = true;
                 if(definedSet.isEmpty())
                     dead = false;
                 for(Register register : definedSet) {
                     VirtualRegister vr = (VirtualRegister)register;
-                    if(!dead) break;
                     if(liveSet.contains(vr) || vr.getSpillSpace() != null) {
                         dead = false;
                         break;

@@ -111,7 +111,7 @@ public class ScopeBuilder implements ASTVistor {
         curScope.putFunction(node.getName(), functionEntity);
     }
 
-    private void registerClass(ClassDeclaration node) {
+    private void prescanClass(ClassDeclaration node) {
         if(globalScope.getClassEntity(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "Duplicate ClassDeclaration");
         }
@@ -125,7 +125,7 @@ public class ScopeBuilder implements ASTVistor {
         globalScope.putClassEntity(classEntity.getName(), classEntity);
     }
 
-    private void registerClassFunction(ClassDeclaration node) {
+    private void registerClass(ClassDeclaration node) {
         ClassEntity classEntity = globalScope.getClassEntity(node.getName());
         curClassName = classEntity.getName();
         enterScope(classEntity.getScope());
@@ -135,23 +135,18 @@ public class ScopeBuilder implements ASTVistor {
         for(FunctionDeclaration functionDeclaration : node.getMethods()) {
             registerFunction(functionDeclaration);
         }
-        exitScope();
-        curClassName = null;
-    }
 
-    private void registerClassVariable(ClassDeclaration node) {
-        ClassEntity classEntity = globalScope.getClassEntity(node.getName());
-        curClassName = classEntity.getName();
-        enterScope(classEntity.getScope());
         VariableEntity thisVariable = new VariableEntity();
         thisVariable.setName("this");
         ClassType thisType = new ClassType(curClassName);
         thisType.setClassEntity(globalScope.getClassEntity(curClassName));
         thisVariable.setType(thisType);
         curScope.putVariable(thisVariable.getName(), thisVariable);
+
         for(VariableDeclaration variableDeclaration : node.getFields()) {
             visit(variableDeclaration);
         }
+
         exitScope();
         curClassName = null;
     }
@@ -159,13 +154,10 @@ public class ScopeBuilder implements ASTVistor {
     @Override
     public void visit(Program node) {
         for(ClassDeclaration classDeclaration : node.getClasses()) {
+            prescanClass(classDeclaration);
+        }
+        for(ClassDeclaration classDeclaration : node.getClasses()) {
             registerClass(classDeclaration);
-        }
-        for(ClassDeclaration classDeclaration : node.getClasses()) {
-            registerClassFunction(classDeclaration);
-        }
-        for(ClassDeclaration classDeclaration : node.getClasses()) {
-            registerClassVariable(classDeclaration);
         }
         for(FunctionDeclaration functionDeclaration : node.getFunctions()) {
             registerFunction(functionDeclaration);
@@ -234,6 +226,7 @@ public class ScopeBuilder implements ASTVistor {
                 variableEntity.setInClass(true);
             }
         }
+
         if(curScope.getVariable(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "Duplicate VariableDeclaration");
         } else {

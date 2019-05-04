@@ -39,7 +39,7 @@ public class Call extends Instruction {
         return args;
     }
 
-    public LinkedList<Register> getCallUsed() {
+    public LinkedList<Register> getAllUsedRegister() {
         LinkedList<Register> registers = new LinkedList<>();
         for(Operand arg : args) {
             if(arg instanceof Memory) {
