@@ -111,7 +111,7 @@ __toString:
         mov     edi, 32
         sub     rsp, 8
         call    malloc
-        lea     rcx, [rel L_012]
+        mov     rcx, L_012
         lea     rdi, [rax+8H]
         mov     rbx, rax
         mov     r8, rbp

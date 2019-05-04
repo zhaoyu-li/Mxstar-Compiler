@@ -143,14 +143,12 @@ public class ScopeBuilder implements ASTVistor {
         ClassEntity classEntity = globalScope.getClassEntity(node.getName());
         curClassName = classEntity.getName();
         enterScope(classEntity.getScope());
-
         VariableEntity thisVariable = new VariableEntity();
         thisVariable.setName("this");
         ClassType thisType = new ClassType(curClassName);
         thisType.setClassEntity(globalScope.getClassEntity(curClassName));
         thisVariable.setType(thisType);
         curScope.putVariable(thisVariable.getName(), thisVariable);
-
         for(VariableDeclaration variableDeclaration : node.getFields()) {
             visit(variableDeclaration);
         }
@@ -236,7 +234,6 @@ public class ScopeBuilder implements ASTVistor {
                 variableEntity.setInClass(true);
             }
         }
-
         if(curScope.getVariable(node.getName()) != null) {
             throw new SemanticError(node.getLocation(), "Duplicate VariableDeclaration");
         } else {

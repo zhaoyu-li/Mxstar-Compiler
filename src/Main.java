@@ -53,19 +53,18 @@ public class Main {
         BasicBlockOptimizer basicBlockOptimizer = new BasicBlockOptimizer(irProgram);
         basicBlockOptimizer.run();
 
+        LocalValueNumberOptimizer localValueNumberOptimizer = new LocalValueNumberOptimizer(irProgram);
+        localValueNumberOptimizer.run();
+
         DeadCodeEliminator deadCodeEliminator = new DeadCodeEliminator(irProgram);
         deadCodeEliminator.run();
-
-//        IRPrinter irPrinter = new IRPrinter();
-//        irPrinter.visit(irProgram);
-//        irPrinter.print();
 
         NASMTransformer nasmTransformer = new NASMTransformer();
         nasmTransformer.visit(irProgram);
 
-//        IRPrinter irPrinter = new IRPrinter();
-//        irPrinter.visit(irProgram);
-//        irPrinter.print();
+        IRPrinter irPrinter = new IRPrinter();
+        irPrinter.visit(irProgram);
+        irPrinter.print();
 
         SimpleAlocator simpleAlocator = new SimpleAlocator(irProgram);
         simpleAlocator.allocateRegisters();
