@@ -13,6 +13,10 @@ public class VirtualRegister extends Register {
         spillSpace = null;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

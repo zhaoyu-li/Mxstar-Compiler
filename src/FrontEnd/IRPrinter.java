@@ -79,9 +79,12 @@ public class IRPrinter implements IRVistor {
         return sdNames.get(sd);
     }
 
-    private String getVirtualRegsiterName(VirtualRegister virtualRegister) {
-        if(!varNames.containsKey(virtualRegister))
-            varNames.put(virtualRegister, "v" + String.valueOf(varIndex++));
+    private String getVirtualRegisterName(VirtualRegister virtualRegister) {
+        if(!varNames.containsKey(virtualRegister)) {
+            virtualRegister.setName("v" + String.valueOf(varIndex++));
+            varNames.put(virtualRegister, virtualRegister.getName());
+        }
+
         return varNames.get(virtualRegister);
     }
     private String getStackSlotName(StackSlot ss) {
@@ -367,8 +370,7 @@ public class IRPrinter implements IRVistor {
             visit(node.getAllocatedPhysicalRegister());
             varNames.put(node, node.getAllocatedPhysicalRegister().getName());
         } else {
-
-            add(getVirtualRegsiterName(node));
+            add(getVirtualRegisterName(node));
         }
     }
 

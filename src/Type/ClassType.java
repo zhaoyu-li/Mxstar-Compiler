@@ -31,6 +31,6 @@ public class ClassType extends Type {
 
     @Override
     public int getBytes() {
-        return classEntity.getScope().getVariables().values().size() * Config.getRegSize();
+        return (classEntity.getScope().getVariables().values().size() - 1) * Config.getRegSize();
     }
 }

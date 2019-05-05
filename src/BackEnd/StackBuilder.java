@@ -78,7 +78,9 @@ public class StackBuilder {
         headInst.prepend(new Push(headBB, rbp));
         headInst.prepend(new Move(headBB, rbp, rsp));
 
-        for(PhysicalRegister pr : function.getUsedPhysicalRegisters()) {
+        HashSet<PhysicalRegister> needToSave = new HashSet<>(function.getUsedPhysicalRegisters());
+        needToSave.retainAll(calleeSave);
+        for(PhysicalRegister pr : needToSave) {
             headInst.append(new Push(headBB, pr));
         }
 
