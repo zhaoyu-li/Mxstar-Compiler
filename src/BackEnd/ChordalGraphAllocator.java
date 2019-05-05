@@ -71,7 +71,7 @@ public class ChordalGraphAllocator {
     }
 
     private void getInterferenceGraph(Function function) {
-        HashMap<BasicBlock, HashSet<VirtualRegister>> OUTs = livenessAnalyzer.getOUTs(function);
+        HashMap<BasicBlock, HashSet<VirtualRegister>> OUTs = livenessAnalyzer.getOUTs(function, true);
         interferenceGraph.clear();
         for(BasicBlock bb : function.getBasicBlocks()) {
             for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
@@ -92,7 +92,6 @@ public class ChordalGraphAllocator {
                 for(Register reg : inst.getDefinedRegisters()) {
                     VirtualRegister vr1 = (VirtualRegister) reg;
                     for(VirtualRegister vr2 : liveNow) {
-//                        System.out.println("add edge " + vr1.getName() + " " + vr2.getName());
                         addEdge(vr1, vr2);
                     }
                 }
@@ -139,7 +138,6 @@ public class ChordalGraphAllocator {
     }
 
     private void greedyColor(ArrayList<VirtualRegister> vertices) {
-//        System.out.println("start color");
         spillList.clear();
         colors.clear();
         for(VirtualRegister vr : vertices) {
@@ -161,7 +159,6 @@ public class ChordalGraphAllocator {
                     PhysicalRegister pr = null;
                     for(PhysicalRegister reg : RegisterSet.callerSave) {
                         if(canBeUsedColors.contains(reg)) {
-//                            System.out.println("caller");
                             pr = reg;
                             break;
                         }
@@ -177,9 +174,7 @@ public class ChordalGraphAllocator {
     }
 
     private void spillRegisters(Function function) {
-//        System.out.println("start spill");
         for(VirtualRegister vr : spillList) {
-//            System.out.println("spill " + vr.getName());
             if(vr.getSpillSpace() == null) {
                 vr.setSpillSpace(new StackSlot());
             }
@@ -238,7 +233,7 @@ public class ChordalGraphAllocator {
                 spillRegisters(function);
             }
         }
-
+        function.calcUsedPhysicalRegisters();
     }
 
     public void run() {

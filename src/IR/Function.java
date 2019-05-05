@@ -1,17 +1,16 @@
 package IR;
 
-import IR.Instruction.CJump;
-import IR.Instruction.Instruction;
-import IR.Instruction.Return;
+import IR.Instruction.*;
 import IR.Operand.PhysicalRegister;
 import IR.Operand.Register;
 import IR.Operand.StackSlot;
 import IR.Operand.VirtualRegister;
 import Scope.VariableEntity;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+
+import static IR.RegisterSet.*;
 
 public class Function {
     public enum FuncType {
@@ -52,6 +51,7 @@ public class Function {
         usedGlobalVariables = new HashSet<>();
         usedRecursiveVariables = new HashSet<>();
         usedPhysicalRegisters = new HashSet<>();
+        usedRecursiveVariables = new HashSet<>();
         returnList = new LinkedList<>();
 
         basicBlocks = new LinkedList<>();
@@ -146,6 +146,37 @@ public class Function {
         return usedRecursiveVariables;
     }
 
+    public void calcUsedPhysicalRegisters() {
+        for(BasicBlock bb : basicBlocks) {
+            for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
+                if(inst instanceof Return) continue;
+                if(inst instanceof Call) {
+                    usedPhysicalRegisters.addAll(callerSave);
+                } else if(inst instanceof BinaryOperation) {
+                    if(((BinaryOperation) inst).getOp() == BinaryOperation.BinaryOp.MUL ||
+                    ((BinaryOperation) inst).getOp() == BinaryOperation.BinaryOp.DIV ||
+                    ((BinaryOperation) inst).getOp() == BinaryOperation.BinaryOp.MOD) {
+                        if(((BinaryOperation) inst).getSrc() instanceof Register) {
+                            usedPhysicalRegisters.add((PhysicalRegister) ((BinaryOperation) inst).getSrc());
+                        }
+                        usedPhysicalRegisters.add(rax);
+                        usedPhysicalRegisters.add(rdx);
+                    }
+                } else {
+                    for(Register reg : inst.getUsedRegisters()) {
+                        PhysicalRegister pr = (PhysicalRegister) reg;
+                        usedPhysicalRegisters.add(pr);
+                    }
+                    for(Register reg : inst.getDefinedRegisters()) {
+                        PhysicalRegister pr = (PhysicalRegister) reg;
+                        usedPhysicalRegisters.add(pr);
+                    }
+
+                }
+            }
+        }
+    }
+
     public HashSet<PhysicalRegister> getUsedPhysicalRegisters() {
         return usedPhysicalRegisters;
     }
@@ -205,6 +236,8 @@ public class Function {
     public boolean isGlobal() {
         return isGlobal;
     }
+
+
 
     public void accept(IRVistor vistor) {
         vistor.visit(this);

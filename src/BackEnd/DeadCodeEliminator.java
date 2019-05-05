@@ -42,7 +42,7 @@ public class DeadCodeEliminator {
     }
 
     private void process(Function function) {
-        HashMap<BasicBlock, HashSet<VirtualRegister>> liveOut = livenessAnalyzer.getOUTs(function);
+        HashMap<BasicBlock, HashSet<VirtualRegister>> liveOut = livenessAnalyzer.getOUTs(function,false);
         for(BasicBlock bb : function.getBasicBlocks()) {
             HashSet<VirtualRegister> liveSet = new HashSet<>(liveOut.get(bb));
             for(Instruction inst = bb.getTail(); inst != null; inst = inst.getPrev()) {

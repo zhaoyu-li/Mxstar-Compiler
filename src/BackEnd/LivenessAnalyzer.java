@@ -24,7 +24,7 @@ public class LivenessAnalyzer {
         OUTs = new HashMap<>();
     }
 
-    private void process(Function function) {
+    private void process(Function function, boolean afterAllocated) {
         uses.clear();
         defs.clear();
         INs.clear();
@@ -39,7 +39,7 @@ public class LivenessAnalyzer {
             HashSet<VirtualRegister> use = new HashSet<>();
             HashSet<VirtualRegister> def = new HashSet<>();
             for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
-                LinkedList<Register> allUse = inst instanceof Call ? ((Call) inst).getAllUsedRegister() : inst.getUsedRegisters();
+                LinkedList<Register> allUse = (inst instanceof Call && afterAllocated) ? ((Call) inst).getAllUsedRegister() : inst.getUsedRegisters();
                 for(Register reg : allUse){
                     VirtualRegister vr = (VirtualRegister) reg;
                     if(!def.contains(vr)) {
@@ -74,8 +74,8 @@ public class LivenessAnalyzer {
         }
     }
 
-    public HashMap<BasicBlock,HashSet<VirtualRegister>> getOUTs(Function function) {
-        process(function);
+    public HashMap<BasicBlock,HashSet<VirtualRegister>> getOUTs(Function function, boolean afterAllocated) {
+        process(function, afterAllocated);
         return OUTs;
     }
 

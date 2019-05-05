@@ -86,7 +86,7 @@ public class StackBuilder {
 
         BasicBlock tailBB = function.getTailBB();
         Instruction tailInst = tailBB.getTail();
-        for(PhysicalRegister pr : function.getUsedPhysicalRegisters()) {
+        for(PhysicalRegister pr : needToSave) {
             tailInst.prepend(new Pop(tailBB, pr));
         }
         tailInst.prepend(new Leave(tailBB));
