@@ -146,12 +146,7 @@ public class LocalValueNumberOptimizer implements IRVistor {
 
     @Override
     public void visit(CJump node) {
-        Integer lvalue = getOperandValue(node.getLhs());
-        Integer rvalue = getOperandValue(node.getRhs());
-        if(valueImmediateMap.containsKey(lvalue))
-            node.setLhs(new IntImmediate(valueImmediateMap.get(lvalue)));
-        if(valueImmediateMap.containsKey(rvalue))
-            node.setRhs(new IntImmediate(valueImmediateMap.get(rvalue)));
+
     }
 
     @Override

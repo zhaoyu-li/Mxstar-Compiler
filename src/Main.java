@@ -66,8 +66,8 @@ public class Main {
 //        irPrinter.visit(irProgram);
 //        irPrinter.print();
 
-        SimpleAlocator simpleAlocator = new SimpleAlocator(irProgram);
-        simpleAlocator.allocateRegisters();
+        SimpleAllocator simpleAllocator = new SimpleAllocator(irProgram);
+        simpleAllocator.allocateRegisters();
 
         StackBuilder stackBuilder = new StackBuilder(irProgram);
         stackBuilder.build();

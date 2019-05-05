@@ -74,7 +74,7 @@ public class LivenessAnalyzer {
         }
     }
 
-    public HashMap<BasicBlock,HashSet<VirtualRegister>> getOut(Function function) {
+    public HashMap<BasicBlock,HashSet<VirtualRegister>> getOUTs(Function function) {
         process(function);
         return OUTs;
     }

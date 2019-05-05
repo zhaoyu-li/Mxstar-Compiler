@@ -14,11 +14,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-public class SimpleAlocator {
+public class SimpleAllocator {
     private IRProgram program;
     private LinkedList<PhysicalRegister> physicalRegisters;
 
-    public SimpleAlocator(IRProgram program) {
+    public SimpleAllocator(IRProgram program) {
         this.program = program;
         this.physicalRegisters = new LinkedList<>();
         this.physicalRegisters.add(rbx);
@@ -74,18 +74,12 @@ public class SimpleAlocator {
                         move.setDst(pdest);
                         if(move.getSrc() instanceof VirtualRegister) {
                             move.setSrc(((VirtualRegister) move.getSrc()).getSpillSpace());
-                        } else if(move.getSrc() instanceof Constant) {
-
-                        } else {
-                            assert false;
                         }
                         continue;
                     } else if(psrc != null) {
                         move.setSrc(psrc);
                         if(move.getDst() instanceof VirtualRegister) {
                             move.setDst(((VirtualRegister) move.getDst()).getSpillSpace());
-                        } else {
-                            assert false;
                         }
                         continue;
                     }
