@@ -53,8 +53,8 @@ public class Main {
         BasicBlockOptimizer basicBlockOptimizer = new BasicBlockOptimizer(irProgram);
         basicBlockOptimizer.run();
 
-//        LocalValueNumberOptimizer localValueNumberOptimizer = new LocalValueNumberOptimizer(irProgram);
-//        localValueNumberOptimizer.run();
+        LocalValueNumberOptimizer localValueNumberOptimizer = new LocalValueNumberOptimizer(irProgram);
+        localValueNumberOptimizer.run();
 
         DeadCodeEliminator deadCodeEliminator = new DeadCodeEliminator(irProgram);
         deadCodeEliminator.run();
