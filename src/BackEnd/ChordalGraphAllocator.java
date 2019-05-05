@@ -40,7 +40,6 @@ public class ChordalGraphAllocator {
     private void addRegister(VirtualRegister vr) {
         if(!interferenceGraph.containsKey(vr)) {
             interferenceGraph.put(vr, new HashSet<>());
-            System.out.println("add" + vr.getName());
         }
     }
 
@@ -76,7 +75,6 @@ public class ChordalGraphAllocator {
         interferenceGraph.clear();
         for(BasicBlock bb : function.getBasicBlocks()) {
             for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
-                System.out.println("new inst");
                 for(Register reg : inst.getUsedRegisters()) {
                     VirtualRegister vr = (VirtualRegister) reg;
                     addRegister(vr);
@@ -120,7 +118,7 @@ public class ChordalGraphAllocator {
         int maximalWeight;
         VirtualRegister v = V.iterator().next();
         for(int i = 0; i < V.size(); i++) {
-            maximalWeight = 0;
+            maximalWeight = -1;
             for(VirtualRegister vr : W) {
                 if(weight.get(vr) > maximalWeight) {
                     maximalWeight = weight.get(vr);
@@ -141,6 +139,7 @@ public class ChordalGraphAllocator {
 
     private void greedyColor(ArrayList<VirtualRegister> vertices) {
         spillList.clear();
+        colors.clear();
         for(VirtualRegister vr : vertices) {
             if(vr.getAllocatedPhysicalRegister() != null) {
                 colors.put(vr, vr.getAllocatedPhysicalRegister());
@@ -212,10 +211,6 @@ public class ChordalGraphAllocator {
         while(true){
             getInterferenceGraph(function);
             ArrayList<VirtualRegister> vertices = maximumCardinalitySearch();
-            System.out.println("new" + vertices.size());
-            for(VirtualRegister vr : vertices) {
-                System.out.println(vr.getName());
-            }
             greedyColor(vertices);
             if(spillList.isEmpty()) {
                 allocateRegisters(function);
