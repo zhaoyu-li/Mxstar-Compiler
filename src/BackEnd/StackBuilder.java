@@ -77,6 +77,12 @@ public class StackBuilder {
         Instruction headInst = headBB.getHead();
         headInst.prepend(new Push(headBB, rbp));
         headInst.prepend(new Move(headBB, rbp, rsp));
+//        if(((BinaryOperation) headInst).getSrc() instanceof IntImmediate) {
+//            IntImmediate frameSize = (IntImmediate) ((BinaryOperation) headInst).getSrc();
+//            if(frameSize.getValue() == 0) {
+//                headInst.remove();
+//            }
+//        }
 
         HashSet<PhysicalRegister> needToSave = new HashSet<>(function.getUsedPhysicalRegisters());
         needToSave.retainAll(calleeSave);

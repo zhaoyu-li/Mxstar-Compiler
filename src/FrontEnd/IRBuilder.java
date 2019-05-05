@@ -54,7 +54,7 @@ public class IRBuilder implements ASTVistor {
         return program;
     }
 
-    private void registerVariable(VariableDeclaration variableDeclaration) {
+    private void registerStaticVariable(VariableDeclaration variableDeclaration) {
         StaticVariable var = new StaticVariable(variableDeclaration.getName(), Config.getRegSize());
         VirtualRegister vr = new VirtualRegister(variableDeclaration.getName());
         vr.setSpillSpace(new Memory(var));
@@ -73,6 +73,7 @@ public class IRBuilder implements ASTVistor {
         curFunction.setUsedGlobalVariables(globalScope.getGlobalInitVariables());
         curFunction.setHeadBB(new BasicBlock("headBB", curFunction));
         curBB = curFunction.getHeadBB();
+
         for(VariableDeclaration variableDeclaration : node.getVariables()) {
             if(variableDeclaration.getInit() != null) {
                 assign(variableDeclaration.getInit(), variableDeclaration.getVariableEntity().getVirtualRegister());
@@ -81,15 +82,12 @@ public class IRBuilder implements ASTVistor {
         curBB.addNextInst(new Call(curBB, vrax, program.getFunction("main")));
         curBB.addNextInst(new Return(curBB));
         curFunction.setTailBB(curBB);
-        curFunction.addUsedRecursiveVariables(curFunction);
-        curFunction.calcReversePostOrder();
-        curFunction.calcReversePrevOrder();
     }
 
     @Override
     public void visit(Program node) {
         for(VariableDeclaration variableDeclaration : node.getVariables()) {
-            registerVariable(variableDeclaration);
+            registerStaticVariable(variableDeclaration);
         }
         for(FunctionDeclaration functionDeclaration : node.getFunctions()) {
             functionDeclarationMap.put(functionDeclaration.getName(), functionDeclaration);
@@ -111,6 +109,14 @@ public class IRBuilder implements ASTVistor {
             visit(classDeclaration);
         }
         buildInitFunction(node);
+        for(Function function : program.getFunctions().values()) {
+            if(function.getType() == FuncType.UserDefined) {
+                function.addUsedRecursiveVariables(function);
+                function.calcReversePostOrder();
+                function.calcReversePrevOrder();
+            }
+        }
+
     }
 
     private void visitParameter(VariableDeclaration parameter, int index) {
@@ -175,9 +181,6 @@ public class IRBuilder implements ASTVistor {
         for(VariableEntity variableEntity : node.getFunctionEntity().getGlobalVariables()) {
             retInst.prepend(new Move(tailBB, variableEntity.getVirtualRegister().getSpillSpace(), variableEntity.getVirtualRegister()));
         }
-        curFunction.addUsedRecursiveVariables(curFunction);
-        curFunction.calcReversePostOrder();
-        curFunction.calcReversePrevOrder();
     }
 
     @Override

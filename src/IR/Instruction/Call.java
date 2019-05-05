@@ -18,6 +18,8 @@ public class Call extends Instruction {
         this.dst = dst;
         this.func = func;
         this.args = args;
+        Function caller = this.getBB().getFunction();
+        caller.addCallee(func);
     }
 
     public Call(BasicBlock bb, Address dst, Function func, Operand... args) {
@@ -25,6 +27,8 @@ public class Call extends Instruction {
         this.dst = dst;
         this.func = func;
         this.args = new LinkedList<>(Arrays.asList(args));
+        Function caller = this.getBB().getFunction();
+        caller.addCallee(func);
     }
 
     public Address getDst() {

@@ -72,8 +72,8 @@ public class ChordalGraphAllocator {
 
     private void getInterferenceGraph(Function function) {
         System.err.println("================================get interference graph====================================");
-        HashMap<BasicBlock, HashSet<VirtualRegister>> OUTs = livenessAnalyzer.getOUTs(function, true);
         interferenceGraph.clear();
+        HashMap<BasicBlock, HashSet<VirtualRegister>> OUTs = livenessAnalyzer.getOUTs(function, true);
         for(BasicBlock bb : function.getBasicBlocks()) {
             for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
                 for(Register reg : inst.getUsedRegisters()) {
