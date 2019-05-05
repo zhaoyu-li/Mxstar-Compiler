@@ -39,7 +39,7 @@ public class LivenessAnalyzer {
             HashSet<VirtualRegister> use = new HashSet<>();
             HashSet<VirtualRegister> def = new HashSet<>();
             for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
-                LinkedList<Register> allUse = (inst instanceof Call && afterAllocated) ? ((Call) inst).getAllUsedRegister() : inst.getUsedRegisters();
+                LinkedList<Register> allUse = (inst instanceof Call && !afterAllocated) ? ((Call) inst).getAllUsedRegister() : inst.getUsedRegisters();
                 for(Register reg : allUse){
                     VirtualRegister vr = (VirtualRegister) reg;
                     if(!def.contains(vr)) {
