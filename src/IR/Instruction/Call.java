@@ -58,9 +58,7 @@ public class Call extends Instruction {
 
     @Override
     public LinkedList<Register> getDefinedRegisters() {
-        LinkedList<Register> registers = new LinkedList<>();
-        registers.add((Register) dst);
-        return registers;
+        return new LinkedList<>(RegisterSet.vcallerSave);
     }
 
     @Override

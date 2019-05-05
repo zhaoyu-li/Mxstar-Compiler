@@ -53,8 +53,8 @@ public class Main {
         BasicBlockOptimizer basicBlockOptimizer = new BasicBlockOptimizer(irProgram);
         basicBlockOptimizer.run();
 
-        LocalValueNumberOptimizer localValueNumberOptimizer = new LocalValueNumberOptimizer(irProgram);
-        localValueNumberOptimizer.run();
+//        LocalValueNumberOptimizer localValueNumberOptimizer = new LocalValueNumberOptimizer(irProgram);
+//        localValueNumberOptimizer.run();
 
         DeadCodeEliminator deadCodeEliminator = new DeadCodeEliminator(irProgram);
         deadCodeEliminator.run();
@@ -66,10 +66,10 @@ public class Main {
 //        irPrinter.visit(irProgram);
 //        irPrinter.print();
 
-        SimpleAllocator simpleAllocator = new SimpleAllocator(irProgram);
-        simpleAllocator.allocateRegisters();
-//        ChordalGraphAllocator chordalGraphAllocator = new ChordalGraphAllocator(irProgram);
-//        chordalGraphAllocator.run();
+//        SimpleAllocator simpleAllocator = new SimpleAllocator(irProgram);
+//        simpleAllocator.allocateRegisters();
+        ChordalGraphAllocator chordalGraphAllocator = new ChordalGraphAllocator(irProgram);
+        chordalGraphAllocator.run();
 
 
         StackBuilder stackBuilder = new StackBuilder(irProgram);

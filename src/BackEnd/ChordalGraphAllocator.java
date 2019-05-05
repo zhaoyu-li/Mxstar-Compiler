@@ -92,6 +92,7 @@ public class ChordalGraphAllocator {
                 for(Register reg : inst.getDefinedRegisters()) {
                     VirtualRegister vr1 = (VirtualRegister) reg;
                     for(VirtualRegister vr2 : liveNow) {
+//                        System.out.println("add edge " + vr1.getName() + " " + vr2.getName());
                         addEdge(vr1, vr2);
                     }
                 }
@@ -138,12 +139,16 @@ public class ChordalGraphAllocator {
     }
 
     private void greedyColor(ArrayList<VirtualRegister> vertices) {
+//        System.out.println("start color");
         spillList.clear();
         colors.clear();
         for(VirtualRegister vr : vertices) {
             if(vr.getAllocatedPhysicalRegister() != null) {
                 colors.put(vr, vr.getAllocatedPhysicalRegister());
-            } else {
+            }
+        }
+        for(VirtualRegister vr : vertices) {
+            if(vr.getAllocatedPhysicalRegister() == null) {
                 LinkedList<PhysicalRegister> canBeUsedColors = new LinkedList<>(physicalRegisters);
                 for(VirtualRegister neighbor : interferenceGraph.get(vr)) {
                     if(colors.containsKey(neighbor)) {
@@ -153,14 +158,28 @@ public class ChordalGraphAllocator {
                 if(canBeUsedColors.isEmpty()) {
                     spillList.add(vr);
                 } else {
-                    colors.put(vr, canBeUsedColors.getFirst());
+                    PhysicalRegister pr = null;
+                    for(PhysicalRegister reg : RegisterSet.callerSave) {
+                        if(canBeUsedColors.contains(reg)) {
+//                            System.out.println("caller");
+                            pr = reg;
+                            break;
+                        }
+                    }
+                    if(pr == null) {
+                        pr = canBeUsedColors.getFirst();
+                    }
+//                    System.out.println("assign color : vr = " + vr.getName() + " pr = " + pr.getName());
+                    colors.put(vr, pr);
                 }
             }
         }
     }
 
     private void spillRegisters(Function function) {
+//        System.out.println("start spill");
         for(VirtualRegister vr : spillList) {
+//            System.out.println("spill " + vr.getName());
             if(vr.getSpillSpace() == null) {
                 vr.setSpillSpace(new StackSlot());
             }

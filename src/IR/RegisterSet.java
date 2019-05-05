@@ -65,7 +65,7 @@ public class RegisterSet {
                 "rax", "rcx", "rdx", "rbx", "rsp", "rbp", "rsi", "rdi", "r8", "r9", "r10", "r11", "r12", "r13", "r14", "r15",
         };
         Boolean[] isCallerSave = new Boolean[] {
-                true,  true,  true,  false, null,  null, true,  true,  true, true, true,  true,  false, false, false, false
+                true,  true,  true,  false,  null,  null,  true,  true,  true, true, true,  true,  false, false, false, false
         };
         for (int i = 0; i < 16; i++) {
             PhysicalRegister pr = new PhysicalRegister();
