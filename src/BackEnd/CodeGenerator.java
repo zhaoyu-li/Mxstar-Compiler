@@ -182,7 +182,7 @@ public class CodeGenerator implements IRVistor {
         add("\n");
         addLine("\t" + op + " " + getBasicBlockName(node.getThenBB()));
         if(node.getElseBB() != nextBB)
-            addLine("\tjmp" + " " + getBasicBlockName(node.getElseBB()));
+            addLine("\tjmp " + getBasicBlockName(node.getElseBB()));
     }
 
     @Override

@@ -498,7 +498,6 @@ public class SimplifiedGraphAllocator {
                 break;
             }
         }
-
         function.calcUsedPhysicalRegisters();
     }
 

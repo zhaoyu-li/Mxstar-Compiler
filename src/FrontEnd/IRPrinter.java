@@ -4,12 +4,8 @@ import IR.*;
 import IR.Instruction.*;
 import IR.Operand.*;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.HashMap;
 
 public class IRPrinter implements IRVistor {
@@ -41,7 +37,7 @@ public class IRPrinter implements IRVistor {
     }
 
     public void print() {
-        System.out.print(program.toString());
+        System.err.print(program.toString());
     }
 
     private void addLine(String line) {

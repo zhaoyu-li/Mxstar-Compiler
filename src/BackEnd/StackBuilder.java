@@ -78,7 +78,8 @@ public class StackBuilder {
         headInst.prepend(new Push(headBB, rbp));
         headInst.prepend(new Move(headBB, rbp, rsp));
         if(frame.getFrameSize() == 0) {
-            headInst.remove();
+            headInst = headInst.getPrev();
+            headInst.getNext().remove();
         }
 
         HashSet<PhysicalRegister> needToSave = new HashSet<>(function.getUsedPhysicalRegisters());
