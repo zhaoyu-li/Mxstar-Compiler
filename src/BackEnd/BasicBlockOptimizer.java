@@ -53,16 +53,5 @@ public class BasicBlockOptimizer {
                 }
             }
         }
-        for(int i = 0; i < reversePostOrder.size(); i++) {
-            BasicBlock bb = reversePostOrder.get(i);
-            nextBB = (i + 1 == reversePostOrder.size()) ? null : reversePostOrder.get(i + 1);
-            for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
-                if(inst instanceof CJump) {
-                    if(((CJump) inst).getThenBB() == nextBB) {
-
-                    }
-                }
-            }
-        }
     }
 }
