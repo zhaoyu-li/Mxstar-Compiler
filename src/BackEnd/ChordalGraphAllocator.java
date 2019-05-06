@@ -3,7 +3,6 @@ package BackEnd;
 import IR.BasicBlock;
 import IR.Function;
 import IR.IRProgram;
-import IR.Instruction.Call;
 import IR.Instruction.Instruction;
 import IR.Instruction.Move;
 import IR.Operand.PhysicalRegister;
@@ -43,26 +42,10 @@ public class ChordalGraphAllocator {
         }
     }
 
-    private void delRegister(VirtualRegister vr) {
-        if(interferenceGraph.containsKey(vr)) {
-            for(VirtualRegister adj : interferenceGraph.get(vr)) {
-                delEdge(vr, adj);
-            }
-            interferenceGraph.remove(vr);
-        }
-    }
-
     private void addEdge(VirtualRegister a, VirtualRegister b) {
         if(!a.equals(b)) {
             interferenceGraph.get(a).add(b);
             interferenceGraph.get(b).add(a);
-        }
-    }
-
-    private void delEdge(VirtualRegister a, VirtualRegister b) {
-        if(interferenceGraph.containsKey(a) && interferenceGraph.get(a).contains(b)) {
-            interferenceGraph.get(a).remove(b);
-            interferenceGraph.get(b).remove(a);
         }
     }
 
@@ -108,13 +91,23 @@ public class ChordalGraphAllocator {
         }
     }
 
+    private int initialWeight(VirtualRegister vr) {
+        int initialWeight = 0;
+        for(VirtualRegister neighbor : interferenceGraph.get(vr)) {
+            if(neighbor.getAllocatedPhysicalRegister() != null) {
+                initialWeight++;
+            }
+        }
+        return initialWeight;
+    }
+
     private ArrayList<VirtualRegister> maximumCardinalitySearch() {
         System.err.println("================================start search====================================");
         HashMap<VirtualRegister, Integer> weight = new HashMap<>();
         ArrayList<VirtualRegister> V = new ArrayList<>(getAllVertex());
         ArrayList<VirtualRegister> orderedVirtualRegisters = new ArrayList<>();
         for(VirtualRegister vr : V) {
-            weight.put(vr, 0);
+            weight.put(vr, initialWeight(vr));
         }
         HashSet<VirtualRegister> W = new HashSet<>(V);
         int maximalWeight;
