@@ -56,6 +56,19 @@ public class CJump extends Instruction {
         }
     }
 
+    public CompareOp getNegativeCompareOp() {
+        switch (op) {
+            case EQ: return CompareOp.NE;
+            case GT: return CompareOp.LE;
+            case LT: return CompareOp.GE;
+            case GE: return CompareOp.LT;
+            case LE: return CompareOp.GT;
+            case NE: return CompareOp.EQ;
+            default: return null;
+        }
+
+    }
+
     public void setOp(CompareOp op) {
         this.op = op;
     }

@@ -44,7 +44,23 @@ public class BasicBlockOptimizer {
                     for(Instruction extra = inst.getNext(); extra != null; extra = extra.getNext()) {
                         extra.remove();
                     }
+                    if(((CJump) inst).getThenBB() == nextBB) {
+                        ((CJump) inst).setOp(((CJump) inst).getNegativeCompareOp());
+                        ((CJump) inst).setThenBB(((CJump) inst).getElseBB());
+                        ((CJump) inst).setElseBB(nextBB);
+                    }
                     break;
+                }
+            }
+        }
+        for(int i = 0; i < reversePostOrder.size(); i++) {
+            BasicBlock bb = reversePostOrder.get(i);
+            nextBB = (i + 1 == reversePostOrder.size()) ? null : reversePostOrder.get(i + 1);
+            for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
+                if(inst instanceof CJump) {
+                    if(((CJump) inst).getThenBB() == nextBB) {
+
+                    }
                 }
             }
         }

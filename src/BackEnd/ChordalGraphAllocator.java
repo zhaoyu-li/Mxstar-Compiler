@@ -42,10 +42,26 @@ public class ChordalGraphAllocator {
         }
     }
 
+    private void delRegister(VirtualRegister vr) {
+        if(interferenceGraph.containsKey(vr)) {
+            for(VirtualRegister adj : interferenceGraph.get(vr)) {
+                delEdge(vr, adj);
+            }
+            interferenceGraph.remove(vr);
+        }
+    }
+
     private void addEdge(VirtualRegister a, VirtualRegister b) {
         if(!a.equals(b)) {
             interferenceGraph.get(a).add(b);
             interferenceGraph.get(b).add(a);
+        }
+    }
+
+    private void delEdge(VirtualRegister a, VirtualRegister b) {
+        if(interferenceGraph.containsKey(a) && interferenceGraph.get(a).contains(b)) {
+            interferenceGraph.get(a).remove(b);
+            interferenceGraph.get(b).remove(a);
         }
     }
 
@@ -101,7 +117,7 @@ public class ChordalGraphAllocator {
         }
         HashSet<VirtualRegister> W = new HashSet<>(V);
         int maximalWeight;
-        VirtualRegister v = null;
+        VirtualRegister v = V.iterator().next();
         for(int i = 0; i < V.size(); i++) {
             maximalWeight = -1;
             for(VirtualRegister vr : W) {

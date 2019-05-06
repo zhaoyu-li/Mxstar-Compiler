@@ -148,7 +148,8 @@ public class CodeGenerator implements IRVistor {
 
     @Override
     public void visit(Jump node) {
-        addLine("\tjmp " + getBasicBlockName(node.getTargetBB()));
+        if(node.getTargetBB() != nextBB)
+            addLine("\tjmp " + getBasicBlockName(node.getTargetBB()));
     }
 
     @Override
@@ -178,9 +179,10 @@ public class CodeGenerator implements IRVistor {
         node.getLhs().accept(this);
         add(", ");
         node.getRhs().accept(this);
-        addLine("");
+        add("\n");
         addLine("\t" + op + " " + getBasicBlockName(node.getThenBB()));
-        addLine("\tjmp " + getBasicBlockName(node.getElseBB()));
+        if(node.getElseBB() != nextBB)
+            addLine("\tjmp" + " " + getBasicBlockName(node.getElseBB()));
     }
 
     @Override

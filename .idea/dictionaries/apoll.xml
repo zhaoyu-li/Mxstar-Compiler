@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="apoll">
     <words>
+      <w>adjacents</w>
       <w>alocator</w>
       <w>buildin</w>
       <w>callees</w>
@@ -11,6 +12,7 @@
       <w>mxstar</w>
       <w>nasm</w>
       <w>noexecute</w>
+      <w>precolor</w>
       <w>preprocess</w>
       <w>prescan</w>
       <w>qword</w>
