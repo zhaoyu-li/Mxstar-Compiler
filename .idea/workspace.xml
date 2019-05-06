@@ -32,8 +32,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/BackEnd/ChordalGraphAllocator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="109" column="43" selection-start-line="109" selection-start-column="43" selection-end-line="109" selection-end-column="43" />
+            <state relative-caret-position="180">
+              <caret line="99" column="28" selection-start-line="99" selection-start-column="28" selection-end-line="99" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -114,7 +114,7 @@
         <entry file="file://$PROJECT_DIR$/program.asm">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1584">
-              <caret line="403" column="11" selection-start-line="403" selection-start-column="11" selection-end-line="403" selection-end-column="11" />
+              <caret line="402" column="11" selection-start-line="402" selection-start-column="11" selection-end-line="402" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -344,7 +344,7 @@
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-listener" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-visitor" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/output-dir" value="C:\Users\apoll\Desktop\Mxstar-Compiler\src" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557119550654" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557120505002" />
     <property name="last_opened_file_path" value="D:/课程学习/编译原理/complier_from_idy002/mstar-compiler-master" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -392,13 +392,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1551923439238</updated>
-    </task>
-    <task id="LOCAL-00081" summary="FIX Codegen">
-      <created>1556364170170</created>
-      <option name="number" value="00081" />
-      <option name="presentableId" value="LOCAL-00081" />
-      <option name="project" value="LOCAL" />
-      <updated>1556364170170</updated>
     </task>
     <task id="LOCAL-00082" summary="FIX Codegen">
       <created>1556364185596</created>
@@ -736,7 +729,14 @@
       <option name="project" value="LOCAL" />
       <updated>1557078546196</updated>
     </task>
-    <option name="localTasksCounter" value="130" />
+    <task id="LOCAL-00130" summary="change chordal weight">
+      <created>1557119597411</created>
+      <option name="number" value="00130" />
+      <option name="presentableId" value="LOCAL-00130" />
+      <option name="project" value="LOCAL" />
+      <updated>1557119597411</updated>
+    </task>
+    <option name="localTasksCounter" value="131" />
     <servers />
   </component>
   <component name="TodoView">
@@ -826,7 +826,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix bash" />
     <MESSAGE value="bash fix" />
     <MESSAGE value="FIX BUG" />
     <MESSAGE value="GIRLFRIEND IS ANGRY WITH ME" />
@@ -851,7 +850,8 @@
     <MESSAGE value="try ChordalGraph" />
     <MESSAGE value="fix ChordalGraph" />
     <MESSAGE value="go to sleep" />
-    <option name="LAST_COMMIT_MESSAGE" value="go to sleep" />
+    <MESSAGE value="change chordal weight" />
+    <option name="LAST_COMMIT_MESSAGE" value="change chordal weight" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -1308,7 +1308,7 @@
     <entry file="file://$PROJECT_DIR$/program.asm">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1584">
-          <caret line="403" column="11" selection-start-line="403" selection-start-column="11" selection-end-line="403" selection-end-column="11" />
+          <caret line="402" column="11" selection-start-line="402" selection-start-column="11" selection-end-line="402" selection-end-column="11" />
         </state>
       </provider>
     </entry>
@@ -1386,8 +1386,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/BackEnd/ChordalGraphAllocator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="109" column="43" selection-start-line="109" selection-start-column="43" selection-end-line="109" selection-end-column="43" />
+        <state relative-caret-position="180">
+          <caret line="99" column="28" selection-start-line="99" selection-start-column="28" selection-end-line="99" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

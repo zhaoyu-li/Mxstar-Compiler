@@ -91,27 +91,17 @@ public class ChordalGraphAllocator {
         }
     }
 
-    private int initialWeight(VirtualRegister vr) {
-        int initialWeight = 0;
-        for(VirtualRegister neighbor : interferenceGraph.get(vr)) {
-            if(neighbor.getAllocatedPhysicalRegister() != null) {
-                initialWeight++;
-            }
-        }
-        return initialWeight;
-    }
-
     private ArrayList<VirtualRegister> maximumCardinalitySearch() {
         System.err.println("================================start search====================================");
         HashMap<VirtualRegister, Integer> weight = new HashMap<>();
         ArrayList<VirtualRegister> V = new ArrayList<>(getAllVertex());
         ArrayList<VirtualRegister> orderedVirtualRegisters = new ArrayList<>();
         for(VirtualRegister vr : V) {
-            weight.put(vr, initialWeight(vr));
+            weight.put(vr, 0);
         }
         HashSet<VirtualRegister> W = new HashSet<>(V);
         int maximalWeight;
-        VirtualRegister v = V.iterator().next();
+        VirtualRegister v = null;
         for(int i = 0; i < V.size(); i++) {
             maximalWeight = -1;
             for(VirtualRegister vr : W) {
