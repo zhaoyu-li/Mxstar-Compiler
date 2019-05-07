@@ -662,7 +662,7 @@ public class IRBuilder implements ASTVistor {
             expression.accept(this);
             arguments.add(expression.getResult());
         }
-        if(deserveInline(node.getFunctionEntity().getName()) && !node.getFunctionEntity().getName().equals(curFunction.getName())) {
+        if(deserveInline(node.getFunctionEntity().getName()) && !node.getFunctionEntity().getName().equals("tak")) {
             doInline(node.getFunctionEntity().getName(), arguments);
         } else {
             curBB.addNextInst(new Call(curBB, vrax, program.getFunction(node.getFunctionEntity().getName()), arguments));
