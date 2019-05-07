@@ -1,6 +1,7 @@
 import AST.Program;
 import BackEnd.*;
 import FrontEnd.*;
+import FrontEnd.LoopOptimizer;
 import IR.IRProgram;
 import IR.RegisterSet;
 import Parser.MxstarLexer;
@@ -13,6 +14,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -45,6 +47,9 @@ public class Main {
         semanticChecker.visit(program);
         RegisterSet.init();
 
+        LoopOptimizer loopOptimizer = new LoopOptimizer(program);
+        loopOptimizer.run();
+
         IRBuilder irBuilder = new IRBuilder(scopeBuilder.getGlobalScope());
         irBuilder.visit(program);
 
@@ -66,14 +71,14 @@ public class Main {
         irPrinter.visit(irProgram);
         irPrinter.print();
 
-//        SimpleAllocator simpleAllocator = new SimpleAllocator(irProgram);
-//        simpleAllocator.allocateRegisters();
+        SimpleAllocator simpleAllocator = new SimpleAllocator(irProgram);
+        simpleAllocator.allocateRegisters();
 //        ChordalGraphAllocator chordalGraphAllocator = new ChordalGraphAllocator(irProgram);
 //        chordalGraphAllocator.run();
 //        SimpleGraphAllocator simpleGraphAllocator = new SimpleGraphAllocator(irProgram);
 //        simpleGraphAllocator.run();
-        GraphAllocator graphAllocator = new GraphAllocator(irProgram);
-        graphAllocator.run();
+//        GraphAllocator graphAllocator = new GraphAllocator(irProgram);
+//        graphAllocator.run();
 
         StackBuilder stackBuilder = new StackBuilder(irProgram);
         stackBuilder.build();

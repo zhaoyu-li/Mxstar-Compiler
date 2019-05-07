@@ -4,12 +4,12 @@ import IR.BasicBlock;
 import IR.Function;
 import IR.IRProgram;
 
-public class LoopOptimizer {
+public class LoopOpt {
     private IRProgram program;
     private BasicBlock curLoopConditionBB;
     private BasicBlock curIfThenBB;
 
-    public LoopOptimizer(IRProgram program) {
+    public LoopOpt(IRProgram program) {
         this.program = program;
         this.curLoopConditionBB = null;
         this.curIfThenBB = null;
