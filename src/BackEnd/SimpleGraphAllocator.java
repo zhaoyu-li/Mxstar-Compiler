@@ -251,7 +251,7 @@ public class SimpleGraphAllocator {
 
     private void rewriteFunction(Function function) {
         System.err.println("rewrite function");
-        for(VirtualRegister vr : spillWorkList) {
+        for(VirtualRegister vr : spillNodes) {
             if(vr.getSpillSpace() == null) {
                 vr.setSpillSpace(new StackSlot());
             }

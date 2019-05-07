@@ -74,6 +74,9 @@ public class Move extends Instruction {
     @Override
     public void renameDefinedRegisters(HashMap<Register, Register> renameMap) {
         if(dst instanceof Register && renameMap.containsKey(dst)) {
+            if(renameMap.get(dst) == null) {
+                System.err.println("error! " + ((VirtualRegister) dst).getName());
+            }
             dst = renameMap.get(dst);
         }
     }

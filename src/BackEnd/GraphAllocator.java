@@ -409,7 +409,7 @@ public class GraphAllocator {
     }
 
     private void rewriteFunction(Function function) {
-        for(VirtualRegister vr : spillWorkList) {
+        for(VirtualRegister vr : spillNodes) {
             if(vr.getSpillSpace() == null) {
                 vr.setSpillSpace(new StackSlot());
             }
