@@ -112,8 +112,6 @@ public class IRBuilder implements ASTVistor {
         for(Function function : program.getFunctions().values()) {
             if(function.getType() == FuncType.UserDefined) {
                 function.addUsedRecursiveVariables(function);
-                function.calcReversePostOrder();
-                function.calcReversePrevOrder();
             }
         }
 

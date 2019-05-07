@@ -462,7 +462,7 @@ public class GraphAllocator {
         }
     }
 
-    void check() {
+    private void check() {
         for(VirtualRegister u :initial) {
             HashSet<VirtualRegister> rhs = new HashSet<>(union(precolored, initial));
             rhs.retainAll(adjList.get(u));
@@ -491,7 +491,7 @@ public class GraphAllocator {
             build(function);
             preColor();
             makeWorkList();
-            check();
+//            check();
             do{
                 if(!simplifyWorkList.isEmpty()) simplify();
                 else if(!workListMoves.isEmpty()) coalesce();
