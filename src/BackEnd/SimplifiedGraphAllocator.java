@@ -24,9 +24,9 @@ public class SimplifiedGraphAllocator {
     private HashMap<VirtualRegister, Integer> degrees;
     private HashMap<VirtualRegister, HashSet<VirtualRegister>> adjList;
     private HashMap<VirtualRegister,HashSet<Move>> moveList;
-    private HashSet<VirtualRegister> simplifyWorkList;
-    private HashSet<Move> workListMoves;
-    private HashSet<VirtualRegister> freezeWorkList;
+    private LinkedList<VirtualRegister> simplifyWorkList;
+    private LinkedList<Move> workListMoves;
+    private LinkedList<VirtualRegister> freezeWorkList;
     private HashSet<VirtualRegister> spillWorkList;
     private HashSet<VirtualRegister> selectStack;
     private HashSet<VirtualRegister> coalescedNodes;
@@ -37,6 +37,7 @@ public class SimplifiedGraphAllocator {
     private HashSet<Move> frozenMoves;
     private HashSet<VirtualRegister> spillNodes;
     private HashSet<VirtualRegister> coloredNodes;
+    private HashSet<VirtualRegister> precoloredNodes;
 
     public SimplifiedGraphAllocator(IRProgram program) {
         this.program = program;
@@ -58,9 +59,9 @@ public class SimplifiedGraphAllocator {
         this.adjList = new HashMap<>();
         this.degrees = new HashMap<>();
         this.moveList = new HashMap<>();
-        this.simplifyWorkList = new HashSet<>();
-        this.workListMoves = new HashSet<>();
-        this.freezeWorkList = new HashSet<>();
+        this.simplifyWorkList = new LinkedList<>();
+        this.workListMoves = new LinkedList<>();
+        this.freezeWorkList = new LinkedList<>();
         this.spillWorkList = new HashSet<>();
 
         this.selectStack = new HashSet<>();
@@ -72,6 +73,7 @@ public class SimplifiedGraphAllocator {
         this.frozenMoves = new HashSet<>();
         this.spillNodes = new HashSet<>();
         this.coloredNodes = new HashSet<>();
+        this.precoloredNodes = new HashSet<>();
     }
 
     private void addRegister(VirtualRegister vr) {
@@ -79,9 +81,14 @@ public class SimplifiedGraphAllocator {
             System.err.println("add reg " + vr.getName());
             adjSet.put(vr, new HashSet<>());
             adjList.put(vr, new HashSet<>());
-            degrees.put(vr, 0);
             moveList.put(vr, new HashSet<>());
             alias.put(vr, vr);
+            if(vr.getAllocatedPhysicalRegister() != null) {
+                precoloredNodes.add(vr);
+                degrees.put(vr, Integer.MAX_VALUE);
+            } else {
+                degrees.put(vr, 0);
+            }
         }
     }
 
@@ -105,8 +112,7 @@ public class SimplifiedGraphAllocator {
 
     private HashSet<VirtualRegister> adjacent(VirtualRegister n) {
         HashSet<VirtualRegister> adjacent = new HashSet<>(adjList.get(n));
-        adjacent.removeAll(selectStack);
-        adjacent.removeAll(coalescedNodes);
+        adjacent.removeAll(union(selectStack, coalescedNodes));
         return adjacent;
     }
 
@@ -175,14 +181,14 @@ public class SimplifiedGraphAllocator {
     private boolean conservative(HashSet<VirtualRegister> nodes) {
         int k = 0;
         for(VirtualRegister n : nodes) {
-            if(degrees.get(n) >= K) k++;
+            if(degree(n) >= K) k++;
         }
         return k <= K;
     }
 
     private void coalesce() {
         System.err.println("================================ coalesce ====================================");
-        Move m = workListMoves.iterator().next();
+        Move m = workListMoves.getFirst();
         VirtualRegister y = getAlias((VirtualRegister) m.getDst());
         VirtualRegister x = getAlias((VirtualRegister) m.getSrc());
         VirtualRegister u;
@@ -252,7 +258,7 @@ public class SimplifiedGraphAllocator {
 
     private void simplify() {
         System.err.println("================================ simplify ====================================");
-        VirtualRegister n = simplifyWorkList.iterator().next();
+        VirtualRegister n = simplifyWorkList.getFirst();
         simplifyWorkList.remove(n);
         selectStack.add(n);
         for(VirtualRegister m : adjacent(n)) {
@@ -262,7 +268,7 @@ public class SimplifiedGraphAllocator {
 
     private void freeze() {
         System.err.println("================================ freeze ====================================");
-        VirtualRegister u = freezeWorkList.iterator().next();
+        VirtualRegister u = freezeWorkList.getFirst();
         freezeWorkList.remove(u);
         simplifyWorkList.add(u);
         freezeMoves(u);
@@ -304,19 +310,18 @@ public class SimplifiedGraphAllocator {
     }
     
     private void assignColors() {
-        for(VirtualRegister vr : selectStack) {
+        System.err.println("================================ assign colors ====================================");
+        /*for(VirtualRegister vr : selectStack) {
             if(vr.getAllocatedPhysicalRegister() != null) {
                 colors.put(vr, vr.getAllocatedPhysicalRegister());
                 coloredNodes.add(vr);
             }
-        }
-        while(!selectStack.isEmpty()) {
-            VirtualRegister n = selectStack.iterator().next();
-            selectStack.remove(n);
+        }*/
+        for(VirtualRegister n : selectStack) {
             if(n.getAllocatedPhysicalRegister() != null) continue;
             HashSet<PhysicalRegister> okColors = new HashSet<>(physicalRegisters);
             for(VirtualRegister w : adjList.get(n)) {
-                if(coloredNodes.contains(getAlias(w)) || getAlias(w).getAllocatedPhysicalRegister() != null) {
+                if(coloredNodes.contains(getAlias(w)) || precoloredNodes.contains(getAlias(w))) {
                     okColors.remove(colors.get(getAlias(w)));
                 }
             }
@@ -336,7 +341,10 @@ public class SimplifiedGraphAllocator {
                 System.err.println("assign color : vr = " + n.getName() + " pr = " + c.getName());
             }
         }
+        selectStack.clear();
         for(VirtualRegister n : coalescedNodes) {
+            System.err.println("n = " + n.getName() + " " + "alias(n) = " + getAlias(n).getName());
+            coloredNodes.add(n);
             colors.put(n, colors.get(getAlias(n)));
             System.err.println("assign color : vr = " + n.getName() + " pr = " + colors.get(getAlias(n)).getName());
         }
@@ -380,10 +388,7 @@ public class SimplifiedGraphAllocator {
             for(Instruction inst = bb.getTail(); inst != null; inst = inst.getPrev()) {
                 if(isMoveInstruction(inst)) {
                     live.removeAll(trans(inst.getUsedRegisters()));
-                    HashSet<VirtualRegister> registers = new HashSet<>(trans(inst.getDefinedRegisters()));
-                    registers.addAll(trans(inst.getUsedRegisters()));
-                    for(VirtualRegister n : registers) {
-                        if(!moveList.containsKey(n)) moveList.put(n, new HashSet<>());
+                    for(VirtualRegister n : union(trans(inst.getDefinedRegisters()), trans(inst.getUsedRegisters()))) {
                         moveList.get(n).add((Move) inst);
                     }
                     workListMoves.add((Move) inst);
@@ -394,8 +399,8 @@ public class SimplifiedGraphAllocator {
                         addEdge(l, d);
                     }
                 }
-                live.addAll(trans(inst.getUsedRegisters()));
                 live.removeAll(trans(inst.getDefinedRegisters()));
+                live.addAll(trans(inst.getUsedRegisters()));
             }
         }
     }
@@ -403,6 +408,7 @@ public class SimplifiedGraphAllocator {
     private void makeWorkList() {
         System.err.println("================================ makeWorkList ====================================");
         HashSet<VirtualRegister> initial = new HashSet<>(getAllVertex());
+        initial.removeAll(precoloredNodes);
         System.err.println("initial.size() = " + initial.size());
         for(VirtualRegister vr : initial) {
             if(degree(vr) >= K) {
@@ -429,15 +435,13 @@ public class SimplifiedGraphAllocator {
                 HashSet<VirtualRegister> use = new HashSet<>();
                 HashSet<VirtualRegister> def = new HashSet<>();
                 HashMap<Register, Register> renameMap = new HashMap<>();
-                for(Register reg : inst.getUsedRegisters()) {
-                    VirtualRegister vr = (VirtualRegister) reg;
+                for(VirtualRegister vr : trans(inst.getUsedRegisters())) {
                     if(spillWorkList.contains(vr)) {
                         renameMap.put(vr, new VirtualRegister(""));
                         use.add(vr);
                     }
                 }
-                for(Register reg : inst.getDefinedRegisters()) {
-                    VirtualRegister vr = (VirtualRegister) reg;
+                for(VirtualRegister vr : trans(inst.getDefinedRegisters())) {
                     if(spillWorkList.contains(vr)) {
                         renameMap.put(vr, new VirtualRegister(""));
                         def.add(vr);
@@ -469,11 +473,9 @@ public class SimplifiedGraphAllocator {
     
     private void preColor() {
         System.err.println("================================ precolor ====================================");
-        for(VirtualRegister n : getAllVertex()) {
-            if(n.getAllocatedPhysicalRegister() != null) {
-                colors.put(n, n.getAllocatedPhysicalRegister());
-                coloredNodes.add(n);
-            }
+        for(VirtualRegister n : precoloredNodes) {
+            coloredNodes.add(n);
+            colors.put(n, n.getAllocatedPhysicalRegister());
         }
     }
 
@@ -489,9 +491,10 @@ public class SimplifiedGraphAllocator {
                 else if(!freezeWorkList.isEmpty()) freeze();
                 else if(!spillWorkList.isEmpty()) selectSpill();
             } while(!simplifyWorkList.isEmpty() || !workListMoves.isEmpty() || !freezeWorkList.isEmpty() || !spillWorkList.isEmpty());
-//            preColor();
+            preColor();
             assignColors();
             if(!spillNodes.isEmpty()) {
+                System.err.println("SpillNodes.size() = " + spillNodes.size());
                 rewriteFunction(function);
             } else {
                 allocateRegisters(function);
@@ -504,6 +507,7 @@ public class SimplifiedGraphAllocator {
     public void run() {
         for(Function function : program.getFunctions().values()) {
             if(function.getType() == Function.FuncType.UserDefined) {
+                System.err.println("====================== allocate register in " + function.getName() + " =====================");
                 process(function);
             }
         }
