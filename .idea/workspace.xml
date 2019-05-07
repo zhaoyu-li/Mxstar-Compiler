@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5b70593b-d050-4773-9af7-d0e2532db099" name="Default Changelist" comment="try my new precolor in coalesce">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/apoll.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/apoll.xml" afterDir="false" />
+    <list default="true" id="5b70593b-d050-4773-9af7-d0e2532db099" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BackEnd/SimplifiedGraphAllocator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BackEnd/SimplifiedGraphAllocator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -53,15 +51,17 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/BackEnd/SimplifiedGraphAllocator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1833">
-              <caret line="323" column="94" selection-start-line="323" selection-start-column="94" selection-end-line="323" selection-end-column="94" />
+            <state relative-caret-position="-2374">
+              <caret line="287" column="45" selection-start-line="287" selection-start-column="45" selection-end-line="287" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4701#4702#0" expanded="true" />
-                <element signature="e#4783#4784#0" expanded="true" />
+                <element signature="e#4726#4727#0" expanded="true" />
+                <element signature="e#4772#4773#0" expanded="true" />
+                <element signature="e#4817#4818#0" expanded="true" />
+                <element signature="e#4854#4855#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -90,11 +90,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/program.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="486">
+              <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
             </state>
           </provider>
         </entry>
@@ -102,8 +102,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/program.asm">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4248">
-              <caret line="571" column="13" lean-forward="true" selection-start-line="571" selection-start-column="13" selection-end-line="571" selection-end-column="13" />
+            <state relative-caret-position="-250">
+              <caret line="366" column="16" lean-forward="true" selection-start-line="366" selection-start-column="16" selection-end-line="366" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -111,8 +111,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="371">
-              <caret line="74" lean-forward="true" selection-start-line="74" selection-end-line="74" />
+            <state relative-caret-position="126">
+              <caret line="21" selection-start-line="21" selection-end-line="21" />
             </state>
           </provider>
         </entry>
@@ -140,8 +140,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>calcReversePrevOrder();</find>
-      <find>deser</find>
       <find>sys</find>
       <find>instr</find>
       <find>coalescedList</find>
@@ -169,10 +167,11 @@
       <find>//</find>
       <find>v164</find>
       <find>next()</find>
+      <find>precoloredNodes</find>
+      <find>getAl</find>
       <find>main</find>
     </findStrings>
     <replaceStrings>
-      <replace>function</replace>
       <replace>dst</replace>
       <replace>src2</replace>
       <replace>Store</replace>
@@ -201,6 +200,7 @@
       <replace>nodeMoves</replace>
       <replace>degree</replace>
       <replace>adjacent</replace>
+      <replace>precolored</replace>
       <replace>HashSet</replace>
     </replaceStrings>
   </component>
@@ -257,15 +257,15 @@
         <option value="$PROJECT_DIR$/src/BackEnd/BasicBlockOptimizer.java" />
         <option value="$PROJECT_DIR$/src/BackEnd/CodeGenerator.java" />
         <option value="$PROJECT_DIR$/src/BackEnd/StackBuilder.java" />
-        <option value="$PROJECT_DIR$/src/BackEnd/SimplifiedGraphAllocator.java" />
         <option value="$PROJECT_DIR$/program.asm" />
         <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/program.cpp" />
+        <option value="$PROJECT_DIR$/src/BackEnd/SimplifiedGraphAllocator.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="952" />
     <option name="width" value="977" />
     <option name="height" value="1038" />
   </component>
@@ -324,7 +324,7 @@
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-listener" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-visitor" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/output-dir" value="C:\Users\apoll\Desktop\Mxstar-Compiler\src" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557202416055" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557221043489" />
     <property name="last_opened_file_path" value="D:/课程学习/编译原理/complier_from_idy002/mstar-compiler-master" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -372,13 +372,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1551923439238</updated>
-    </task>
-    <task id="LOCAL-00086" summary="FIX Codegen">
-      <created>1556418359181</created>
-      <option name="number" value="00086" />
-      <option name="presentableId" value="LOCAL-00086" />
-      <option name="project" value="LOCAL" />
-      <updated>1556418359181</updated>
     </task>
     <task id="LOCAL-00087" summary="FIX Codegen">
       <created>1556418532380</created>
@@ -716,7 +709,14 @@
       <option name="project" value="LOCAL" />
       <updated>1557166317221</updated>
     </task>
-    <option name="localTasksCounter" value="135" />
+    <task id="LOCAL-00135" summary="try my new precolor in coalesce">
+      <created>1557202555550</created>
+      <option name="number" value="00135" />
+      <option name="presentableId" value="LOCAL-00135" />
+      <option name="project" value="LOCAL" />
+      <updated>1557202555550</updated>
+    </task>
+    <option name="localTasksCounter" value="136" />
     <servers />
   </component>
   <component name="TodoView">
@@ -742,7 +742,7 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.28917378" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3253521" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.35612535" />
+      <window_info anchor="bottom" id="Run" order="3" weight="0.37179488" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.4169014" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -1321,36 +1321,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/BackEnd/SimplifiedGraphAllocator.java">
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1833">
-          <caret line="323" column="94" selection-start-line="323" selection-start-column="94" selection-end-line="323" selection-end-column="94" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4701#4702#0" expanded="true" />
-            <element signature="e#4783#4784#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="126">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/program.asm">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4248">
-          <caret line="571" column="13" lean-forward="true" selection-start-line="571" selection-start-column="13" selection-end-line="571" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="74" lean-forward="true" selection-start-line="74" selection-end-line="74" />
+        <state relative-caret-position="-250">
+          <caret line="366" column="16" lean-forward="true" selection-start-line="366" selection-start-column="16" selection-end-line="366" selection-end-column="16" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/program.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        <state relative-caret-position="486">
+          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BackEnd/SimplifiedGraphAllocator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2374">
+          <caret line="287" column="45" selection-start-line="287" selection-start-column="45" selection-end-line="287" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4726#4727#0" expanded="true" />
+            <element signature="e#4772#4773#0" expanded="true" />
+            <element signature="e#4817#4818#0" expanded="true" />
+            <element signature="e#4854#4855#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
