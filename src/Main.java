@@ -70,10 +70,10 @@ public class Main {
 //        simpleAllocator.allocateRegisters();
 //        ChordalGraphAllocator chordalGraphAllocator = new ChordalGraphAllocator(irProgram);
 //        chordalGraphAllocator.run();
-        SimpleGraphAllocator simpleGraphAllocator = new SimpleGraphAllocator(irProgram);
-        simpleGraphAllocator.run();
-//        GraphAllocator simplifiedGraphAllocator = new GraphAllocator(irProgram);
-//        simplifiedGraphAllocator.run();
+//        SimpleGraphAllocator simpleGraphAllocator = new SimpleGraphAllocator(irProgram);
+//        simpleGraphAllocator.run();
+        GraphAllocator graphAllocator = new GraphAllocator(irProgram);
+        graphAllocator.run();
 
         StackBuilder stackBuilder = new StackBuilder(irProgram);
         stackBuilder.build();
