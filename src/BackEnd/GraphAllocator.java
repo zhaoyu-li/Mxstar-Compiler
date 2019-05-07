@@ -13,7 +13,7 @@ import IR.RegisterSet;
 
 import java.util.*;
 
-public class SimplifiedGraphAllocator {
+public class GraphAllocator {
     private IRProgram program;
     private LivenessAnalyzer livenessAnalyzer;
     private HashSet<PhysicalRegister> physicalRegisters;
@@ -40,7 +40,7 @@ public class SimplifiedGraphAllocator {
     private HashSet<VirtualRegister> precolored;
     private HashSet<VirtualRegister> initial;
 
-    public SimplifiedGraphAllocator(IRProgram program) {
+    public GraphAllocator(IRProgram program) {
         this.program = program;
         this.livenessAnalyzer = new LivenessAnalyzer();
         this.physicalRegisters = new HashSet<>();
@@ -276,12 +276,12 @@ public class SimplifiedGraphAllocator {
     private void freezeMoves(VirtualRegister u) {
         for(Move m : nodeMoves(u)) {
             VirtualRegister v;
-            VirtualRegister x = getAlias((VirtualRegister) m.getDst());
-            VirtualRegister y = getAlias((VirtualRegister) m.getSrc());
-            if(y == getAlias(u)) {
-                v = x;
+            VirtualRegister x = (VirtualRegister) m.getDst();
+            VirtualRegister y = (VirtualRegister) m.getSrc();
+            if(getAlias(y) == getAlias(u)) {
+                v = getAlias(x);
             } else {
-                v = y;
+                v = getAlias(y);
             }
             activeMoves.remove(m);
             frozenMoves.add(m);
@@ -420,13 +420,13 @@ public class SimplifiedGraphAllocator {
                 HashSet<VirtualRegister> def = new HashSet<>();
                 HashMap<Register, Register> renameMap = new HashMap<>();
                 for(VirtualRegister vr : trans(inst.getUsedRegisters())) {
-                    if(spillWorkList.contains(vr)) {
+                    if(spillNodes.contains(vr)) {
                         renameMap.put(vr, new VirtualRegister(""));
                         use.add(vr);
                     }
                 }
                 for(VirtualRegister vr : trans(inst.getDefinedRegisters())) {
-                    if(spillWorkList.contains(vr)) {
+                    if(spillNodes.contains(vr)) {
                         renameMap.put(vr, new VirtualRegister(""));
                         def.add(vr);
                     }
@@ -518,5 +518,4 @@ public class SimplifiedGraphAllocator {
             }
         }
     }
-
 }
