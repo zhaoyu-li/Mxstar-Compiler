@@ -8,9 +8,6 @@ import java.util.*;
 public class LoopOptimizer implements ASTVistor {
     private Program program;
     private HashMap<Statement, HashSet<VariableEntity>> loopToVariables;
-//    private HashMap<VariableEntity, HashSet<VariableEntity>> VaribalesToVariables;
-//    private HashSet<VariableEntity> curLhs;
-//    private HashSet<VariableEntity> curRhs;
     private HashSet<Statement> neededLoops;
     private Stack<Statement> curLoops;
 

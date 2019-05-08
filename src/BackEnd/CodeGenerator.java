@@ -22,6 +22,8 @@ public class CodeGenerator implements IRVistor {
     private BasicBlock nextBB;
 
     private boolean inLeaInst;
+    private boolean inDivInst;
+
     private int bbIndex;
     private int sdIndex;
     private int varIndex;
@@ -38,6 +40,7 @@ public class CodeGenerator implements IRVistor {
         varIndex = 0;
         ssIndex = 0;
         inLeaInst = false;
+        inDivInst = false;
     }
 
     public void print(PrintStream printStream) {
@@ -200,7 +203,9 @@ public class CodeGenerator implements IRVistor {
         }
         if(node.getOp() == BinaryOperation.BinaryOp.DIV || node.getOp() == BinaryOperation.BinaryOp.MOD) {
             add("\tidiv ");
+            inDivInst = true;
             node.getSrc().accept(this);
+            inDivInst = false;
             add("\n");
             return;
         }
@@ -374,9 +379,21 @@ public class CodeGenerator implements IRVistor {
         }
     }
 
+    private String sixteenBitPhysicalRegister(String name) {
+        if(name.charAt(1) > '0' && name.charAt(1) <= '9') {
+            return (name + 'd');
+        } else {
+            return ('e' + name.substring(1));
+        }
+    }
+
     @Override
     public void visit(PhysicalRegister node) {
-        add(node.getName());
+        if (inDivInst) {
+            add(sixteenBitPhysicalRegister(node.getName()));
+        } else {
+            add(node.getName());
+        }
     }
 
     @Override
