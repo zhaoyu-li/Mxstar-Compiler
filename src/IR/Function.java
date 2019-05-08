@@ -18,7 +18,9 @@ public class Function {
     }
     private FuncType type;
     private String name;
-    private Boolean hasReturnValue;
+    private boolean hasReturnValue;
+    private boolean isGlobal;
+    private boolean hasOutput;
 
     private BasicBlock headBB;
     private BasicBlock tailBB;
@@ -38,12 +40,13 @@ public class Function {
     private LinkedList<BasicBlock> reversePrevOrder;
     private HashSet<BasicBlock> visitedBB;
 
-    private boolean isGlobal;
-
     public Function(FuncType type, String name, boolean hasReturnValue, boolean isGlobal) {
         this.type = type;
         this.name = name;
         this.hasReturnValue = hasReturnValue;
+        this.isGlobal = isGlobal;
+
+        hasOutput = false;
         parameters = new LinkedList<>();
         temporaries = new LinkedList<>();
         callees = new HashSet<>();
@@ -58,7 +61,7 @@ public class Function {
         reversePostOrder = new LinkedList<>();
         reversePrevOrder = new LinkedList<>();
         visitedBB = new HashSet<>();
-        this.isGlobal = isGlobal;
+
 
         if(type != FuncType.UserDefined) {
             for(PhysicalRegister pr : RegisterSet.allRegs) {
@@ -237,7 +240,13 @@ public class Function {
         return isGlobal;
     }
 
+    public void setHasOutput(boolean hasOutput) {
+        this.hasOutput = hasOutput;
+    }
 
+    public boolean hasOutput() {
+        return hasOutput;
+    }
 
     public void accept(IRVistor vistor) {
         vistor.visit(this);

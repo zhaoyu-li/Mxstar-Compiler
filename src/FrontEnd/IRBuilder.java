@@ -989,33 +989,25 @@ public class IRBuilder implements ASTVistor {
         rhs.accept(this);
     }
 
-    /*private BasicBlock doCompare(String op, Operand lhs, Operand rhs, BasicBlock TrueBB, BasicBlock FalseBB) {
-        int lvalue = ((IntImmediate) lhs).getValue();
-        int rvalue = ((IntImmediate) rhs).getValue();
+    private Operand LogicalOperation(String op, Expression lhs, Expression rhs) {
+        lhs.accept(this);
+        rhs.accept(this);
+        Operand src1 = lhs.getResult();
+        Operand src2 = lhs.getResult();
+        VirtualRegister dst = new VirtualRegister("");
+        curBB.addNextInst(new Move(curBB, dst, src1));
         switch(op) {
-            case "==":
-                if(lvalue == rvalue) return TrueBB;
-                else return FalseBB;
-            case "!=":
-                if(lvalue != rvalue) return TrueBB;
-                else return FalseBB;
-            case "<":
-                if(lvalue < rvalue) return TrueBB;
-                else return FalseBB;
-            case ">":
-                if(lvalue > rvalue) return TrueBB;
-                else return FalseBB;
-            case "<=":
-                if(lvalue <= rvalue) return TrueBB;
-                else return FalseBB;
-            case ">=":
-                if(lvalue >= rvalue) return TrueBB;
-                else return FalseBB;
+            case "&&":
+                curBB.addNextInst(new BinaryOperation(curBB, dst, BinaryOperation.BinaryOp.AND, src2));
+                break;
+            case "||":
+                curBB.addNextInst(new BinaryOperation(curBB, dst, BinaryOperation.BinaryOp.AND, src2));
+                break;
         }
-        return null;
-    }*/
+        return dst;
+    }
 
-    private Operand RelationOperation(String op, Expression lhs, Expression rhs, BasicBlock trueBB, BasicBlock falseBB) {
+    private void RelationOperation(String op, Expression lhs, Expression rhs, BasicBlock trueBB, BasicBlock falseBB) {
         lhs.accept(this);
         Operand src1 = lhs.getResult();
         rhs.accept(this);
@@ -1048,20 +1040,59 @@ public class IRBuilder implements ASTVistor {
             VirtualRegister src = new VirtualRegister("");
             curBB.addNextInst(new Call(curBB, vrax, program.getFunction("string_compare"), src1, src2));
             curBB.addNextInst(new Move(curBB, src, vrax));
-            if(trueBB != null) {
-                curBB.addNextJumpInst(new CJump(curBB, src, cop, new IntImmediate(0), trueBB, falseBB));
-            }
-            return src;
+            curBB.addNextJumpInst(new CJump(curBB, src, cop, new IntImmediate(0), trueBB, falseBB));
         } else {
             if(src1 instanceof Memory && src2 instanceof Memory) {
                 VirtualRegister vr = new VirtualRegister("");
                 curBB.addNextInst(new Move(curBB, vr, src1));
-                curBB.addNextJumpInst(new CJump(curBB, vr, cop, src2, trueBB, falseBB));
-            } else {
-                curBB.addNextJumpInst(new CJump(curBB, src1, cop, src2, trueBB, falseBB));
+                src1 = vr;
             }
-            return null;
+            curBB.addNextJumpInst(new CJump(curBB, src1, cop, src2, trueBB, falseBB));
         }
+    }
+
+    private Operand RelationOperation(String op, Expression lhs, Expression rhs) {
+        lhs.accept(this);
+        Operand src1 = lhs.getResult();
+        rhs.accept(this);
+        Operand src2 = rhs.getResult();
+        CJump.CompareOp cop;
+        VirtualRegister dst = new VirtualRegister("");
+        switch(op) {
+            case ">":
+                cop = CJump.CompareOp.GT;
+                break;
+            case "<":
+                cop = CJump.CompareOp.LT;
+                break;
+            case ">=":
+                cop = CJump.CompareOp.GE;
+                break;
+            case "<=":
+                cop = CJump.CompareOp.LE;
+                break;
+            case "==":
+                cop = CJump.CompareOp.EQ;
+                break;
+            case "!=":
+                cop = CJump.CompareOp.NE;
+                break;
+            default:
+                cop = null;
+                break;
+        }
+        if(lhs.getType().isStringType()) {
+            curBB.addNextInst(new Call(curBB, vrax, program.getFunction("string_compare"), src1, src2));
+            curBB.addNextInst(new Move(curBB, dst, vrax));
+        } else {
+            if(src1 instanceof Memory && src2 instanceof Memory) {
+                VirtualRegister vr = new VirtualRegister("");
+                curBB.addNextInst(new Move(curBB, vr, src1));
+                src1 = vr;
+            }
+            curBB.addNextInst(new Compare(curBB, dst, src1, cop, src2));
+        }
+        return dst;
     }
 
     @Override
@@ -1089,11 +1120,19 @@ public class IRBuilder implements ASTVistor {
             case "<=":
             case "==":
             case "!=":
-                node.setResult(RelationOperation(node.getOp(), node.getLhs(), node.getRhs(), node.getTrueBB(), node.getFalseBB()));
+                if(node.getTrueBB() != null) {
+                    RelationOperation(node.getOp(), node.getLhs(), node.getRhs(), node.getTrueBB(), node.getFalseBB());
+                } else {
+                    node.setResult(RelationOperation(node.getOp(), node.getLhs(), node.getRhs()));
+                }
                 break;
             case "&&":
             case "||":
-                LogicalOperation(node.getOp(), node.getLhs(), node.getRhs(), node.getTrueBB(), node.getFalseBB());
+                if(node.getTrueBB() != null) {
+                    LogicalOperation(node.getOp(), node.getLhs(), node.getRhs(), node.getTrueBB(), node.getFalseBB());
+                } else {
+                    node.setResult(LogicalOperation(node.getOp(), node.getLhs(), node.getRhs()));
+                }
                 break;
         }
     }

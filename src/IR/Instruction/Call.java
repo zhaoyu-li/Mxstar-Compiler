@@ -6,7 +6,6 @@ import IR.Operand.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Call extends Instruction {
     private Address dst;
@@ -20,6 +19,9 @@ public class Call extends Instruction {
         this.args = args;
         Function caller = this.getBB().getFunction();
         caller.addCallee(func);
+        if(func.getName().equals("println") || func.getName().equals("print")) {
+            caller.setHasOutput(true);
+        }
     }
 
     public Call(BasicBlock bb, Address dst, Function func, Operand... args) {
@@ -29,6 +31,9 @@ public class Call extends Instruction {
         this.args = new LinkedList<>(Arrays.asList(args));
         Function caller = this.getBB().getFunction();
         caller.addCallee(func);
+        if(func.getName().equals("println") || func.getName().equals("print")) {
+            caller.setHasOutput(true);
+        }
     }
 
     public Address getDst() {

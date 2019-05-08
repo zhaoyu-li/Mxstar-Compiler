@@ -253,6 +253,37 @@ public class IRPrinter implements IRVistor {
     }
 
     @Override
+    public void visit(Compare node) {
+        String op = null;
+        switch(node.getOp()) {
+            case EQ:
+                op = "je";
+                break;
+            case LT:
+                op = "jl";
+                break;
+            case GT:
+                op = "jg";
+                break;
+            case LE:
+                op = "jle";
+                break;
+            case GE:
+                op = "jge";
+                break;
+            case NE:
+                op = "jne";
+                break;
+        }
+        add("\t" + op + " ");
+        node.getDst().accept(this);
+        add(" ");
+        node.getLhs().accept(this);
+        add(", ");
+        node.getRhs().accept(this);
+    }
+
+    @Override
     public void visit(Move node) {
         if(node.getSrc() == node.getDst())
             return;

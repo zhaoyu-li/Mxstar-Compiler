@@ -150,6 +150,11 @@ public class LocalValueNumberOptimizer implements IRVistor {
     }
 
     @Override
+    public void visit(Compare node) {
+
+    }
+
+    @Override
     public void visit(Return node) {
 
     }

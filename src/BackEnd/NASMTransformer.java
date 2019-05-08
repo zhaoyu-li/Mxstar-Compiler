@@ -7,6 +7,8 @@ import Scope.VariableEntity;
 
 import java.util.HashSet;
 
+import static IR.RegisterSet.vrax;
+
 
 public class NASMTransformer implements IRVistor {
     public NASMTransformer() {
@@ -73,6 +75,11 @@ public class NASMTransformer implements IRVistor {
     @Override
     public void visit(UnaryOperation node) {
 
+    }
+
+    @Override
+    public void visit(Compare node) {
+        node.append(new Move(node.getBB(), node.getDst(), vrax));
     }
 
     @Override

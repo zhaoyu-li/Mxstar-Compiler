@@ -23,6 +23,7 @@ public class CodeGenerator implements IRVistor {
 
     private boolean inLeaInst;
     private boolean inDivInst;
+    private boolean inMemory;
 
     private int bbIndex;
     private int sdIndex;
@@ -41,6 +42,7 @@ public class CodeGenerator implements IRVistor {
         ssIndex = 0;
         inLeaInst = false;
         inDivInst = false;
+        inMemory = false;
     }
 
     public void print(PrintStream printStream) {
@@ -189,6 +191,37 @@ public class CodeGenerator implements IRVistor {
     }
 
     @Override
+    public void visit(Compare node) {
+        String op = null;
+        switch(node.getOp()) {
+            case EQ:
+                op = "je";
+                break;
+            case LT:
+                op = "jl";
+                break;
+            case GT:
+                op = "jg";
+                break;
+            case LE:
+                op = "jle";
+                break;
+            case GE:
+                op = "jge";
+                break;
+            case NE:
+                op = "jne";
+                break;
+        }
+        add("\tcmp ");
+        node.getLhs().accept(this);
+        add(", ");
+        node.getRhs().accept(this);
+        add("\n");
+        addLine("\t" + op + " ");
+    }
+
+    @Override
     public void visit(Return node) {
         addLine("\tret");
     }
@@ -322,6 +355,7 @@ public class CodeGenerator implements IRVistor {
 
     @Override
     public void visit(Memory node) {
+        inMemory = true;
         boolean occur = false;
         if(!inLeaInst)
             add("qword ");
@@ -357,6 +391,7 @@ public class CodeGenerator implements IRVistor {
             }
         }
         add("]");
+        inMemory = false;
     }
 
     @Override
@@ -389,11 +424,11 @@ public class CodeGenerator implements IRVistor {
 
     @Override
     public void visit(PhysicalRegister node) {
-//        if (inDivInst) {
-//            add(sixteenBitPhysicalRegister(node.getName()));
-//        } else {
+        if (inDivInst && !inMemory) {
+            add(sixteenBitPhysicalRegister(node.getName()));
+        } else {
             add(node.getName());
-//        }
+        }
     }
 
     @Override
