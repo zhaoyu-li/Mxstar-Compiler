@@ -1,7 +1,6 @@
 package FrontEnd;
 
 import AST.*;
-import Scope.VariableEntity;
 
 import java.util.*;
 
@@ -23,10 +22,11 @@ public class CommonExpressionElimination implements ASTVistor {
             System.err.println(((Identifier) expression).getName() + " identifier.hashcode() = " + expression.hashCode());
             return ((Identifier) expression).getName().hashCode();
         } else if(expression instanceof BinaryExpression) {
+            Integer opValue = ((BinaryExpression) expression).getOp().hashCode();
             Integer lvalue = getExpressionHashCode(((BinaryExpression) expression).getLhs());
             Integer rvalue = getExpressionHashCode(((BinaryExpression) expression).getRhs());
             System.err.println("binaryExpression.hashcode() = " + (lvalue ^ rvalue));
-            return lvalue ^ rvalue;
+            return lvalue ^ opValue ^ rvalue;
         } else if(expression instanceof IntLiteral) {
             return ((IntLiteral) expression).getValue();
         }
@@ -58,14 +58,16 @@ public class CommonExpressionElimination implements ASTVistor {
         if(node.getInit() != null) {
             Integer init = getExpressionHashCode(node.getInit());
             System.err.println(node.getName() + " var.hashcode() = " + init);
-            if(!variableMap.containsKey(init)) {
-                Identifier var = new Identifier(node.getName());
-                var.setVariableEntity(node.getVariableEntity());
-                var.setType(node.getVariableEntity().getType());
-                variableMap.put(init, var);
-            } else {
-                System.err.println("eliminate to " + variableMap.get(init).getName());
-                node.setInit(variableMap.get(init));
+            if(init > 0) {
+                if(!variableMap.containsKey(init)) {
+                    Identifier var = new Identifier(node.getName());
+                    var.setVariableEntity(node.getVariableEntity());
+                    var.setType(node.getVariableEntity().getType());
+                    variableMap.put(init, var);
+                } else {
+                    System.err.println("eliminate to " + variableMap.get(init).getName());
+                    node.setInit(variableMap.get(init));
+                }
             }
         }
     }
@@ -159,7 +161,6 @@ public class CommonExpressionElimination implements ASTVistor {
 
     @Override
     public void visit(Identifier node) {
-        VariableEntity var = node.getVariableEntity();
 
     }
 
