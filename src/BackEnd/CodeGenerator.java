@@ -389,11 +389,11 @@ public class CodeGenerator implements IRVistor {
 
     @Override
     public void visit(PhysicalRegister node) {
-        if (inDivInst) {
-            add(sixteenBitPhysicalRegister(node.getName()));
-        } else {
+//        if (inDivInst) {
+//            add(sixteenBitPhysicalRegister(node.getName()));
+//        } else {
             add(node.getName());
-        }
+//        }
     }
 
     @Override
