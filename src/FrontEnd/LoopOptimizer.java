@@ -8,6 +8,9 @@ import java.util.*;
 public class LoopOptimizer implements ASTVistor {
     private Program program;
     private HashMap<Statement, HashSet<VariableEntity>> loopToVariables;
+//    private HashMap<VariableEntity, HashSet<VariableEntity>> VaribalesToVariables;
+//    private HashSet<VariableEntity> curLhs;
+//    private HashSet<VariableEntity> curRhs;
     private HashSet<Statement> neededLoops;
     private Stack<Statement> curLoops;
 
@@ -48,6 +51,7 @@ public class LoopOptimizer implements ASTVistor {
         List<Statement> deleted = new LinkedList<>();
         for(Statement statement : body) {
             if(isLoop(statement) && !neededLoops.contains(statement)) {
+                System.err.println("delete loop " + statement.getLocation());
                 deleted.add(statement);
             }
         }
@@ -165,12 +169,12 @@ public class LoopOptimizer implements ASTVistor {
 
     @Override
     public void visit(ExprStatement node) {
-
+        node.getExpr().accept(this);
     }
 
     @Override
     public void visit(VarDeclStatement node) {
-        visit(node.getDeclaration());
+        node.getDeclaration().accept(this);
     }
 
     @Override
@@ -213,12 +217,18 @@ public class LoopOptimizer implements ASTVistor {
     @Override
     public void visit(Identifier node) {
         VariableEntity var = node.getVariableEntity();
-        if(var == null) {
+        if(var == null) { // function
             neededLoops.addAll(curLoops);
         } else {
             if(isLocal(var)) {
-                for(Statement loop : curLoops) {
-                    loopToVariables.get(loop).add(var);
+                for(Statement loop : loopToVariables.keySet()) {
+                    if(curLoops.contains(loop)) {
+                        loopToVariables.get(loop).add(var);
+                    } else {
+                        if(loopToVariables.get(loop).contains(var)) {
+                            neededLoops.add(loop);
+                        }
+                    }
                 }
             } else {
                 neededLoops.addAll(curLoops);
@@ -253,6 +263,7 @@ public class LoopOptimizer implements ASTVistor {
 
     @Override
     public void visit(NewExpression node) {
+        neededLoops.addAll(curLoops);
         for(Expression expression : node.getDimensions()) {
             expression.accept(this);
         }
