@@ -29,7 +29,7 @@ public class Main {
     }
 
     private static void compile(InputStream sourceCode) throws Exception {
-
+        RegisterSet.init();
         ANTLRInputStream input = new ANTLRInputStream(sourceCode);
         MxstarLexer lexer = new MxstarLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -43,12 +43,15 @@ public class Main {
 
         ScopeBuilder scopeBuilder = new ScopeBuilder();
         scopeBuilder.visit(program);
+
         SemanticChecker semanticChecker = new SemanticChecker(scopeBuilder.getGlobalScope());
         semanticChecker.visit(program);
-        RegisterSet.init();
 
         LoopOptimizer loopOptimizer = new LoopOptimizer(program);
         loopOptimizer.run();
+
+        CommonExpressionElimination commonExpressionElimination = new CommonExpressionElimination(program);
+        commonExpressionElimination.run();
 
         IRBuilder irBuilder = new IRBuilder(scopeBuilder.getGlobalScope());
         irBuilder.visit(program);
@@ -67,9 +70,9 @@ public class Main {
         NASMTransformer nasmTransformer = new NASMTransformer();
         nasmTransformer.visit(irProgram);
 
-        IRPrinter irPrinter = new IRPrinter();
-        irPrinter.visit(irProgram);
-        irPrinter.print();
+//        IRPrinter irPrinter = new IRPrinter();
+//        irPrinter.visit(irProgram);
+//        irPrinter.print();
 
 //        SimpleAllocator simpleAllocator = new SimpleAllocator(irProgram);
 //        simpleAllocator.allocateRegisters();
