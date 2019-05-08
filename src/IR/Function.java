@@ -21,6 +21,7 @@ public class Function {
     private boolean hasReturnValue;
     private boolean isGlobal;
     private boolean hasOutput;
+    private boolean canBeMemorized;
 
     private BasicBlock headBB;
     private BasicBlock tailBB;
@@ -47,6 +48,7 @@ public class Function {
         this.isGlobal = isGlobal;
 
         hasOutput = false;
+        canBeMemorized = false;
         parameters = new LinkedList<>();
         temporaries = new LinkedList<>();
         callees = new HashSet<>();
@@ -246,6 +248,14 @@ public class Function {
 
     public boolean hasOutput() {
         return hasOutput;
+    }
+
+    public void setCanBeMemorized(boolean canBeMemorized) {
+        this.canBeMemorized = canBeMemorized;
+    }
+
+    public boolean canBeMemorized() {
+        return canBeMemorized;
     }
 
     public void accept(IRVistor vistor) {

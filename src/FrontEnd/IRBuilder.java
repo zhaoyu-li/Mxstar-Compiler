@@ -84,6 +84,17 @@ public class IRBuilder implements ASTVistor {
         curFunction.setTailBB(curBB);
     }
 
+    private void judgeCanBeMemorized(FunctionDeclaration node) {
+        if(node.getFunctionEntity().isGlobal()
+                && node.getFunctionEntity().getReturnType().isIntType()
+                && node.getParameters().size() == 1
+                && node.getParameters().get(0).getVariableEntity().getType().isIntType()
+                && !curFunction.hasOutput()
+                && curFunction.getUsedRecursiveVariables().isEmpty()) {
+            curFunction.setCanBeMemorized(true);
+        }
+    }
+
     @Override
     public void visit(Program node) {
         for(VariableDeclaration variableDeclaration : node.getVariables()) {
@@ -116,7 +127,9 @@ public class IRBuilder implements ASTVistor {
                 function.calcReversePrevOrder();
             }
         }
-
+        for(FunctionDeclaration functionDeclaration : node.getFunctions()) {
+            judgeCanBeMemorized(functionDeclaration);
+        }
     }
 
     private void visitParameter(VariableDeclaration parameter, int index) {
@@ -164,6 +177,7 @@ public class IRBuilder implements ASTVistor {
                 curBB.addNextInst(ret);
                 curFunction.addReturn(ret);
             } else {
+                curBB.addNextInst(new Move(curBB, vrax, new IntImmediate(0)));
                 Return ret = new Return(curBB);
                 curBB.addNextInst(ret);
                 curFunction.addReturn(ret);

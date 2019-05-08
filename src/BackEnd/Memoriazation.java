@@ -22,16 +22,10 @@ public class Memoriazation {
         }
     }
 
-    private boolean deserveMemorization(Function function) {
-        return function.isGlobal()
-                && function.getUsedGlobalVariables().isEmpty()
-                && function.getParameters().size() == 1
-                && !function.hasOutput();
-
-    }
-
     private void process(Function function) {
+        if(function.canBeMemorized()) {
 
+        }
     }
 
 }

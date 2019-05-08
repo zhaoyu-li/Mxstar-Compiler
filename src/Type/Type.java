@@ -101,6 +101,10 @@ public class Type {
         return type == types.VOID;
     }
 
+    public boolean isIntType() {
+        return type == types.INT;
+    }
+
     public int getBytes() {
         return Config.getRegSize();
     }
