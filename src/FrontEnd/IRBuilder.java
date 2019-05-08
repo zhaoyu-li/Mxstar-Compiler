@@ -1015,7 +1015,7 @@ public class IRBuilder implements ASTVistor {
         return null;
     }*/
 
-    private void RelationOperation(String op, Expression lhs, Expression rhs, BasicBlock trueBB, BasicBlock falseBB) {
+    private Operand RelationOperation(String op, Expression lhs, Expression rhs, BasicBlock trueBB, BasicBlock falseBB) {
         lhs.accept(this);
         Operand src1 = lhs.getResult();
         rhs.accept(this);
@@ -1048,7 +1048,10 @@ public class IRBuilder implements ASTVistor {
             VirtualRegister src = new VirtualRegister("");
             curBB.addNextInst(new Call(curBB, vrax, program.getFunction("string_compare"), src1, src2));
             curBB.addNextInst(new Move(curBB, src, vrax));
-            curBB.addNextJumpInst(new CJump(curBB, src, cop, new IntImmediate(0), trueBB, falseBB));
+            if(trueBB != null) {
+                curBB.addNextJumpInst(new CJump(curBB, src, cop, new IntImmediate(0), trueBB, falseBB));
+            }
+            return src;
         } else {
             if(src1 instanceof Memory && src2 instanceof Memory) {
                 VirtualRegister vr = new VirtualRegister("");
@@ -1057,7 +1060,7 @@ public class IRBuilder implements ASTVistor {
             } else {
                 curBB.addNextJumpInst(new CJump(curBB, src1, cop, src2, trueBB, falseBB));
             }
-
+            return null;
         }
     }
 
@@ -1086,15 +1089,11 @@ public class IRBuilder implements ASTVistor {
             case "<=":
             case "==":
             case "!=":
-                if(node.getTrueBB() != null) {
-                    RelationOperation(node.getOp(), node.getLhs(), node.getRhs(), node.getTrueBB(), node.getFalseBB());
-                }
+                node.setResult(RelationOperation(node.getOp(), node.getLhs(), node.getRhs(), node.getTrueBB(), node.getFalseBB()));
                 break;
             case "&&":
             case "||":
-                if(node.getTrueBB() != null) {
-                    LogicalOperation(node.getOp(), node.getLhs(), node.getRhs(), node.getTrueBB(), node.getFalseBB());
-                }
+                LogicalOperation(node.getOp(), node.getLhs(), node.getRhs(), node.getTrueBB(), node.getFalseBB());
                 break;
         }
     }
