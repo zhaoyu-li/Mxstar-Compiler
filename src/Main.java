@@ -71,10 +71,10 @@ public class Main {
         irPrinter.visit(irProgram);
         irPrinter.print();
 
-//        SimpleAllocator simpleAllocator = new SimpleAllocator(irProgram);
-//        simpleAllocator.allocateRegisters();
-        ChordalGraphAllocator chordalGraphAllocator = new ChordalGraphAllocator(irProgram);
-        chordalGraphAllocator.run();
+        SimpleAllocator simpleAllocator = new SimpleAllocator(irProgram);
+        simpleAllocator.allocateRegisters();
+//        ChordalGraphAllocator chordalGraphAllocator = new ChordalGraphAllocator(irProgram);
+//        chordalGraphAllocator.run();
 //        SimpleGraphAllocator simpleGraphAllocator = new SimpleGraphAllocator(irProgram);
 //        simpleGraphAllocator.run();
 //        GraphAllocator graphAllocator = new GraphAllocator(irProgram);

@@ -53,7 +53,5 @@ public class BasicBlockOptimizer {
                 }
             }
         }
-        function.calcReversePostOrder();
-        function.calcReversePrevOrder();
     }
 }
