@@ -23,9 +23,12 @@ public class StackBuilder {
     private class Frame {
         private LinkedList<StackSlot> parameters = new LinkedList<>();
         private LinkedList<StackSlot> temporaries = new LinkedList<>();
-        private int getFrameSize() {
+        private int getFrameSize(int needToSave) {
             int bytes = Config.getRegSize() * (parameters.size() + temporaries.size());
             bytes = (bytes + 16 - 1) / 16 * 16; //  round up to a multiply of 16
+            if(needToSave % 2 == 1) {
+                bytes += 8;
+            }
             return bytes;
         }
     }
@@ -72,18 +75,20 @@ public class StackBuilder {
             ss.setBase(rbp);
             ss.setOffset(new IntImmediate(-8 - 8 * i));
         }
+
+        HashSet<PhysicalRegister> needToSave = new HashSet<>(function.getUsedPhysicalRegisters());
+        needToSave.retainAll(calleeSave);
+
         BasicBlock headBB = function.getHeadBB();
-        headBB.addPrevInst(new BinaryOperation(headBB, rsp, BinaryOperation.BinaryOp.SUB, new IntImmediate(frame.getFrameSize())));
+        headBB.addPrevInst(new BinaryOperation(headBB, rsp, BinaryOperation.BinaryOp.SUB, new IntImmediate(frame.getFrameSize(needToSave.size()))));
         Instruction headInst = headBB.getHead();
         headInst.prepend(new Push(headBB, rbp));
         headInst.prepend(new Move(headBB, rbp, rsp));
-        if(frame.getFrameSize() == 0) {
+        if(frame.getFrameSize(needToSave.size()) == 0) {
             headInst = headInst.getPrev();
             headInst.getNext().remove();
         }
 
-        HashSet<PhysicalRegister> needToSave = new HashSet<>(function.getUsedPhysicalRegisters());
-        needToSave.retainAll(calleeSave);
         for(PhysicalRegister pr : needToSave) {
             headInst.append(new Push(headBB, pr));
         }

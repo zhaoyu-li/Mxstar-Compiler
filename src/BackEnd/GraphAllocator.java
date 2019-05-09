@@ -188,8 +188,8 @@ public class GraphAllocator {
     private void coalesce() {
         System.err.println("================================ coalesce ====================================");
         Move m = workListMoves.getFirst();
-        VirtualRegister x = getAlias((VirtualRegister) m.getDst());
-        VirtualRegister y = getAlias((VirtualRegister) m.getSrc());
+        VirtualRegister y = getAlias((VirtualRegister) m.getDst());
+        VirtualRegister x = getAlias((VirtualRegister) m.getSrc());
         VirtualRegister u;
         VirtualRegister v;
         if(precolored.contains(y)) {
@@ -276,8 +276,8 @@ public class GraphAllocator {
     private void freezeMoves(VirtualRegister u) {
         for(Move m : nodeMoves(u)) {
             VirtualRegister v;
-            VirtualRegister x = (VirtualRegister) m.getDst();
-            VirtualRegister y = (VirtualRegister) m.getSrc();
+            VirtualRegister y = (VirtualRegister) m.getDst();
+            VirtualRegister x = (VirtualRegister) m.getSrc();
             if(getAlias(y) == getAlias(u)) {
                 v = getAlias(x);
             } else {

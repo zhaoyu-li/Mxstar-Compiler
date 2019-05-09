@@ -27,7 +27,7 @@ public class IRBuilder implements ASTVistor {
 
     private HashMap<String, FunctionDeclaration> functionDeclarationMap;
 
-    private Stack<BasicBlock> loopConditionBB;
+    private Stack<BasicBlock> loopUpdateBB;
     private Stack<BasicBlock> loopAfterBB;
 
     private boolean isInInline;
@@ -42,7 +42,7 @@ public class IRBuilder implements ASTVistor {
         curClassName = null;
         curThis = null;
         program = new IRProgram();
-        loopConditionBB = new Stack<>();
+        loopUpdateBB = new Stack<>();
         loopAfterBB = new Stack<>();
         functionDeclarationMap = new HashMap<>();
         inlineVariableRegisterStack = new LinkedList<>();
@@ -287,17 +287,20 @@ public class IRBuilder implements ASTVistor {
         BasicBlock bodyBB = new BasicBlock("whileBodyBB", curFunction);
         BasicBlock afterBB = new BasicBlock("whileAfterBB", curFunction);
         curBB.addNextJumpInst(new Jump(curBB, condBB));
-        loopConditionBB.push(condBB);
+        loopUpdateBB.push(condBB);
         loopAfterBB.push(afterBB);
+
         curBB = condBB;
         node.getCondition().setTrueBB(bodyBB);
         node.getCondition().setFalseBB(afterBB);
         node.getCondition().accept(this);
+
         curBB = bodyBB;
         node.getBody().accept(this);
         curBB.addNextJumpInst(new Jump(curBB, condBB));
+
         curBB = afterBB;
-        loopConditionBB.pop();
+        loopUpdateBB.pop();
         loopAfterBB.pop();
     }
 
@@ -311,24 +314,30 @@ public class IRBuilder implements ASTVistor {
         BasicBlock condBB = node.getCondition() == null ? bodyBB : new BasicBlock("forConditionBB", curFunction);
         BasicBlock updateBB = node.getUpdate() == null ? condBB : new BasicBlock("forUpdateBB", curFunction);
         curBB.addNextJumpInst(new Jump(curBB, condBB));
-        loopConditionBB.push(condBB);
+
+        loopUpdateBB.push(updateBB);
         loopAfterBB.push(afterBB);
+
         if(node.getCondition() != null) {
             node.getCondition().setTrueBB(bodyBB);
             node.getCondition().setFalseBB(afterBB);
             curBB = condBB;
             node.getCondition().accept(this);
         }
+
         curBB = bodyBB;
         node.getBody().accept(this);
         curBB.addNextJumpInst(new Jump(curBB, updateBB));
+
         if(node.getUpdate() != null) {
             curBB = updateBB;
             node.getUpdate().accept(this);
             curBB.addNextJumpInst(new Jump(curBB, condBB));
         }
+
         curBB = afterBB;
-        loopConditionBB.pop();
+
+        loopUpdateBB.pop();
         loopAfterBB.pop();
     }
 
@@ -339,7 +348,7 @@ public class IRBuilder implements ASTVistor {
 
     @Override
     public void visit(ContinueStatement node) {
-        curBB.addNextJumpInst(new Jump(curBB, loopConditionBB.peek()));
+        curBB.addNextJumpInst(new Jump(curBB, loopUpdateBB.peek()));
     }
 
     @Override
