@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5b70593b-d050-4773-9af7-d0e2532db099" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FrontEnd/CommonExpressionElimination.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FrontEnd/CommonExpressionElimination.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,7 +19,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/program.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
+            <state relative-caret-position="235">
               <caret line="24" column="48" selection-start-line="24" selection-start-column="48" selection-end-line="24" selection-end-column="48" />
             </state>
           </provider>
@@ -89,14 +88,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/FrontEnd/CommonExpressionElimination.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="29" column="38" selection-start-line="29" selection-start-column="38" selection-end-line="29" selection-end-column="38" />
+            <state relative-caret-position="270">
+              <caret line="56" column="49" lean-forward="true" selection-start-line="56" selection-start-column="49" selection-end-line="56" selection-end-column="49" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2667#2668#0" expanded="true" />
-                <element signature="e#2710#2711#0" expanded="true" />
-                <element signature="e#3043#3044#0" expanded="true" />
-                <element signature="e#3093#3094#0" expanded="true" />
+                <element signature="e#2953#2954#0" expanded="true" />
+                <element signature="e#3336#3337#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -321,7 +318,7 @@
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-listener" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-visitor" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/output-dir" value="C:\Users\apoll\Desktop\Mxstar-Compiler\src" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557336655427" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557336669209" />
     <property name="last_opened_file_path" value="D:/课程学习/编译原理/complier_from_idy002/mstar-compiler-master" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -369,13 +366,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1551923439238</updated>
-    </task>
-    <task id="LOCAL-00105" summary="ADD BasicBlockOptimizer + FIX BuildinFunction">
-      <created>1556642928448</created>
-      <option name="number" value="00105" />
-      <option name="presentableId" value="LOCAL-00105" />
-      <option name="project" value="LOCAL" />
-      <updated>1556642928448</updated>
     </task>
     <task id="LOCAL-00106" summary="add simple inline">
       <created>1556678453651</created>
@@ -713,7 +703,14 @@
       <option name="project" value="LOCAL" />
       <updated>1557336396287</updated>
     </task>
-    <option name="localTasksCounter" value="154" />
+    <task id="LOCAL-00154" summary="laonahongchen 又坑我">
+      <created>1557336666584</created>
+      <option name="number" value="00154" />
+      <option name="presentableId" value="LOCAL-00154" />
+      <option name="project" value="LOCAL" />
+      <updated>1557336666584</updated>
+    </task>
+    <option name="localTasksCounter" value="155" />
     <servers />
   </component>
   <component name="TodoView">
@@ -739,7 +736,7 @@
       <window_info anchor="bottom" id="Messages" order="0" weight="0.28169015" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3253521" />
-      <window_info anchor="bottom" id="Run" order="3" weight="0.37605634" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.37605634" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.4169014" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -1300,13 +1297,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/program.asm">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="388">
-          <caret line="247" column="22" selection-start-line="247" selection-start-column="22" selection-end-line="247" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -1314,9 +1304,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/program.asm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="388">
+          <caret line="247" column="22" selection-start-line="247" selection-start-column="22" selection-end-line="247" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/program.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
+        <state relative-caret-position="235">
           <caret line="24" column="48" selection-start-line="24" selection-start-column="48" selection-end-line="24" selection-end-column="48" />
         </state>
       </provider>
@@ -1338,14 +1335,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/FrontEnd/CommonExpressionElimination.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="29" column="38" selection-start-line="29" selection-start-column="38" selection-end-line="29" selection-end-column="38" />
+        <state relative-caret-position="270">
+          <caret line="56" column="49" lean-forward="true" selection-start-line="56" selection-start-column="49" selection-end-line="56" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2667#2668#0" expanded="true" />
-            <element signature="e#2710#2711#0" expanded="true" />
-            <element signature="e#3043#3044#0" expanded="true" />
-            <element signature="e#3093#3094#0" expanded="true" />
+            <element signature="e#2953#2954#0" expanded="true" />
+            <element signature="e#3336#3337#0" expanded="true" />
           </folding>
         </state>
       </provider>
