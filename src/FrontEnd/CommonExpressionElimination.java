@@ -22,7 +22,7 @@ public class CommonExpressionElimination implements ASTVistor {
             System.err.println(((Identifier) expression).getName() + " identifier.hashcode() = " + expression.hashCode());
             return ((Identifier) expression).getName().hashCode();
         } else if(expression instanceof BinaryExpression) {
-            Integer opValue = ((BinaryExpression) expression).getOp().hashCode();
+            int opValue = ((BinaryExpression) expression).getOp().hashCode();
             Integer lvalue = getExpressionHashCode(((BinaryExpression) expression).getLhs());
             Integer rvalue = getExpressionHashCode(((BinaryExpression) expression).getRhs());
             System.err.println("binaryExpression.hashcode() = " + (lvalue ^ rvalue));
@@ -42,6 +42,7 @@ public class CommonExpressionElimination implements ASTVistor {
 
     @Override
     public void visit(FunctionDeclaration node) {
+        variableMap.clear();
         if(node.getBody() != null) {
             for(Statement statement : node.getBody()) {
                 statement.accept(this);
@@ -64,8 +65,8 @@ public class CommonExpressionElimination implements ASTVistor {
                     var.setVariableEntity(node.getVariableEntity());
                     var.setType(node.getVariableEntity().getType());
                     variableMap.put(init, var);
-                } else {
-                    System.err.println("eliminate to " + variableMap.get(init).getName());
+                } else if (!node.getName().equals(variableMap.get(init).getName())){
+                    System.err.println(node.getName() + " eliminate to " + variableMap.get(init).getName());
                     node.setInit(variableMap.get(init));
                 }
             }
