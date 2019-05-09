@@ -88,18 +88,6 @@ public class NASMTransformer implements IRVistor {
             VirtualRegister vr = new VirtualRegister("");
             node.prepend(new Move(node.getBB(), vr, node.getSrc()));
             node.setSrc(vr);
-        } else {
-            PhysicalRegister pdest = getPhysical(node.getDst());
-            PhysicalRegister psrc = getPhysical(node.getSrc());
-            if(pdest != null && node.getSrc() instanceof Memory) {
-                VirtualRegister vr = new VirtualRegister("");
-                node.prepend(new Move(node.getBB(), vr, node.getSrc()));
-                node.setSrc(vr);
-            } else if(psrc != null && node.getDst() instanceof Memory) {
-                VirtualRegister vr = new VirtualRegister("");
-                node.prepend(new Move(node.getBB(), vr, node.getDst()));
-                node.setDst(vr);
-            }
         }
     }
 
@@ -124,7 +112,6 @@ public class NASMTransformer implements IRVistor {
         for(VariableEntity var : callerUsed) {
             if(calleeUsed.contains(var)) {
                 node.prepend(new Move(node.getBB(), var.getVirtualRegister().getSpillSpace(), var.getVirtualRegister()));
-                node.getPrev().accept(this);
             }
         }
         while(node.getArgs().size() > 6) {
@@ -133,7 +120,6 @@ public class NASMTransformer implements IRVistor {
 
         for(int i = node.getArgs().size() - 1; i >= 0; i--) {
             node.prepend(new Move(node.getBB(), RegisterSet.vargs.get(i), node.getArgs().get(i)));
-            node.getPrev().accept(this);
         }
         for(VariableEntity var : callerUsed) {
             if(calleeUsed.contains(var)) {

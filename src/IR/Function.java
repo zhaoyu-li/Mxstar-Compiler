@@ -138,6 +138,11 @@ public class Function {
         return usedGlobalVariables;
     }
 
+    public void calcUsedRecursiveVariables() {
+        visitedFunction.clear();
+        addUsedRecursiveVariables(this);
+    }
+
     public void addUsedRecursiveVariables(Function function) {
         if(visitedFunction.contains(function)) return;
         visitedFunction.add(function);
@@ -213,6 +218,7 @@ public class Function {
 
     public void calcReversePostOrder() {
         visitedBB.clear();
+        reversePostOrder.clear();
         dfsReversePostOrder(headBB);
     }
 
@@ -231,6 +237,7 @@ public class Function {
 
     public void calcReversePrevOrder() {
         visitedBB.clear();
+        reversePrevOrder.clear();
         dfsReversePrevOrder(tailBB);
     }
 

@@ -14,7 +14,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -57,6 +56,9 @@ public class Main {
         irBuilder.visit(program);
 
         IRProgram irProgram = irBuilder.getProgram();
+
+        Memorization memorization = new Memorization(irProgram);
+        memorization.run();
 
         BasicBlockOptimizer basicBlockOptimizer = new BasicBlockOptimizer(irProgram);
         basicBlockOptimizer.run();

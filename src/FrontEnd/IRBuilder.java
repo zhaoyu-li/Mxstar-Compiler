@@ -79,19 +79,25 @@ public class IRBuilder implements ASTVistor {
                 assign(variableDeclaration.getInit(), variableDeclaration.getVariableEntity().getVirtualRegister());
             }
         }
+        /*BasicBlock tailBB = new BasicBlock("tailBB", curFunction);
+        curBB.addNextJumpInst(new Jump(curBB, tailBB));
+
+        curBB = tailBB;*/
         curBB.addNextInst(new Call(curBB, vrax, program.getFunction("main")));
         curBB.addNextInst(new Return(curBB));
         curFunction.setTailBB(curBB);
     }
 
     private void judgeCanBeMemorized(FunctionDeclaration node) {
+        Function function = program.getFunction(node.getFunctionEntity().getName());
         if(node.getFunctionEntity().isGlobal()
                 && node.getFunctionEntity().getReturnType().isIntType()
                 && node.getParameters().size() == 1
                 && node.getParameters().get(0).getVariableEntity().getType().isIntType()
-                && !curFunction.hasOutput()
-                && curFunction.getUsedRecursiveVariables().isEmpty()) {
-            curFunction.setCanBeMemorized(true);
+                && !function.hasOutput()
+                && function.getUsedRecursiveVariables().isEmpty()
+                && function.getCallees().contains(function)) {
+            function.setCanBeMemorized(true);
         }
     }
 
@@ -522,7 +528,8 @@ public class IRBuilder implements ASTVistor {
     }
 
     private boolean deserveInline(String name) {
-        if(!(functionDeclarationMap.containsKey(name)))   //  library function
+        return false;
+        /*if(!(functionDeclarationMap.containsKey(name)))   //  library function
             return false;
         FunctionDeclaration functionDeclaration = functionDeclarationMap.get(name);
         if(!functionDeclaration.getFunctionEntity().getGlobalVariables().isEmpty())   //  used global variable
@@ -535,7 +542,7 @@ public class IRBuilder implements ASTVistor {
         if(operationsCountMap.get(functionDeclaration.getFunctionEntity()) >= 20) return false;
         if(inlineVariableRegisterStack.size() >= 4)
             return false;
-        return true;
+        return true;*/
     }
     private void doInline(String name, LinkedList<Operand> arguments) {
         FunctionDeclaration funcDeclaration = functionDeclarationMap.get(name);

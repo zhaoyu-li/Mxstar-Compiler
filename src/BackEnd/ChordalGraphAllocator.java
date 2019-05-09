@@ -70,7 +70,7 @@ public class ChordalGraphAllocator {
     }
 
     private void getInterferenceGraph(Function function) {
-        System.err.println("================================get interference graph====================================");
+//        System.err.println("================================get interference graph====================================");
         interferenceGraph.clear();
         HashMap<BasicBlock, HashSet<VirtualRegister>> OUTs = livenessAnalyzer.getOUTs(function, true);
         for(BasicBlock bb : function.getBasicBlocks()) {
@@ -108,7 +108,7 @@ public class ChordalGraphAllocator {
     }
 
     private ArrayList<VirtualRegister> maximumCardinalitySearch() {
-        System.err.println("================================start search====================================");
+//        System.err.println("================================start search====================================");
         HashMap<VirtualRegister, Integer> weight = new HashMap<>();
         ArrayList<VirtualRegister> V = new ArrayList<>(getAllVertex());
         ArrayList<VirtualRegister> orderedVirtualRegisters = new ArrayList<>();
@@ -139,7 +139,7 @@ public class ChordalGraphAllocator {
     }
 
     private void greedyColor(ArrayList<VirtualRegister> vertices) {
-        System.err.println("================================start color====================================");
+//        System.err.println("================================start color====================================");
         spillList.clear();
         colors.clear();
         for(VirtualRegister vr : vertices) {
@@ -168,7 +168,7 @@ public class ChordalGraphAllocator {
                     if(pr == null) {
                         pr = canBeUsedColors.getFirst();
                     }
-                    System.err.println("assign color : vr = " + vr.getName() + " pr = " + pr.getName());
+//                    System.err.println("assign color : vr = " + vr.getName() + " pr = " + pr.getName());
                     colors.put(vr, pr);
                 }
             }
@@ -176,7 +176,7 @@ public class ChordalGraphAllocator {
     }
 
     private void spillRegisters(Function function) {
-        System.err.println("================================start spill====================================");
+//        System.err.println("================================start spill====================================");
         for(VirtualRegister vr : spillList) {
             if(vr.getSpillSpace() == null) {
                 vr.setSpillSpace(new StackSlot());
