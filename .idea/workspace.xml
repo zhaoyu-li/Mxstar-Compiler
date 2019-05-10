@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="5b70593b-d050-4773-9af7-d0e2532db099" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BackEnd/GraphAllocator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BackEnd/GraphAllocator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/FrontEnd/LoopConditionOptimizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FrontEnd/LoopConditionOptimizer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,8 +22,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/program.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
+            <state relative-caret-position="504">
+              <caret line="28" column="1" selection-start-line="28" selection-start-column="1" selection-end-line="28" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/BackEnd/GraphAllocator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="299">
+              <caret line="518" column="21" selection-start-line="518" selection-start-column="21" selection-end-line="518" selection-end-column="21" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -31,8 +43,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="555">
-              <caret line="80" lean-forward="true" selection-start-line="80" selection-end-line="80" />
+            <state relative-caret-position="116">
+              <caret line="51" column="23" lean-forward="true" selection-start-line="51" selection-start-column="23" selection-end-line="51" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/FrontEnd/LoopConditionOptimizer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="294">
+              <caret line="453" selection-start-line="453" selection-end-line="453" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1201#1202#0" expanded="true" />
+                <element signature="e#1231#1232#0" expanded="true" />
+                <element signature="e#12162#12163#0" expanded="true" />
+                <element signature="e#12205#12206#0" expanded="true" />
+                <element signature="e#12267#12268#0" expanded="true" />
+                <element signature="e#12310#12311#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -40,8 +70,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2381">
-              <caret line="207" column="16" selection-start-line="207" selection-start-column="16" selection-end-line="207" selection-end-column="16" />
+            <state relative-caret-position="154">
+              <caret line="83" column="18" selection-start-line="83" selection-start-column="18" selection-end-line="83" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -49,22 +79,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="141">
-              <caret line="231" column="92" selection-start-line="231" selection-start-column="92" selection-end-line="231" selection-end-column="92" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/FrontEnd/UselessLoopEliminator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="519">
-              <caret line="265" column="9" lean-forward="true" selection-start-line="263" selection-start-column="8" selection-end-line="265" selection-end-column="9" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1067#1068#0" expanded="true" />
-                <element signature="e#1109#1110#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="105">
+              <caret line="229" column="120" selection-start-line="229" selection-start-column="120" selection-end-line="229" selection-end-column="120" />
             </state>
           </provider>
         </entry>
@@ -93,8 +109,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/program.asm">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="145">
-              <caret line="304" column="17" selection-start-line="304" selection-start-column="17" selection-end-line="304" selection-end-column="17" />
+            <state relative-caret-position="360">
+              <caret line="411" lean-forward="true" selection-start-line="404" selection-start-column="13" selection-end-line="411" />
             </state>
           </provider>
         </entry>
@@ -102,8 +118,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/FrontEnd/IRBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="536" column="95" lean-forward="true" selection-start-line="536" selection-start-column="95" selection-end-line="536" selection-end-column="95" />
+            <state relative-caret-position="123">
+              <caret line="536" column="21" selection-start-line="536" selection-start-column="21" selection-end-line="536" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1546#1547#0" expanded="true" />
@@ -160,10 +176,10 @@
       <find>malloc</find>
       <find>spillsp</find>
       <find>des</find>
-      <find>sys</find>
       <find>loopStable</find>
-      <find>rotto</find>
       <find>Invalid parameter type</find>
+      <find>sys</find>
+      <find>rotto</find>
     </findStrings>
     <replaceStrings>
       <replace>Store</replace>
@@ -194,8 +210,8 @@
       <replace>adjacent</replace>
       <replace>HashSet</replace>
       <replace>precolored</replace>
-      <replace>immobileLoop</replace>
       <replace>loopUpdateBB</replace>
+      <replace>immobileLoop</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -241,7 +257,6 @@
         <option value="$PROJECT_DIR$/src/FrontEnd/CommonExpressionElimination.java" />
         <option value="$PROJECT_DIR$/src/BackEnd/StackBuilder.java" />
         <option value="$PROJECT_DIR$/src/BackEnd/BasicBlockOptimizer.java" />
-        <option value="$PROJECT_DIR$/src/BackEnd/GraphAllocator.java" />
         <option value="$PROJECT_DIR$/src/BackEnd/ChordalGraphAllocator.java" />
         <option value="$PROJECT_DIR$/program.asm" />
         <option value="$PROJECT_DIR$/src/BackEnd/Memoriazation.java" />
@@ -249,17 +264,19 @@
         <option value="$PROJECT_DIR$/src/BackEnd/NASMTransformer.java" />
         <option value="$PROJECT_DIR$/src/BackEnd/Memorization.java" />
         <option value="$PROJECT_DIR$/src/FrontEnd/ASTPrinter.java" />
-        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/FrontEnd/IRBuilder.java" />
-        <option value="$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java" />
-        <option value="$PROJECT_DIR$/src/FrontEnd/LoopConditionOptimizer.java" />
         <option value="$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java" />
+        <option value="$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java" />
+        <option value="$PROJECT_DIR$/src/BackEnd/GraphAllocator.java" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/program.cpp" />
+        <option value="$PROJECT_DIR$/src/FrontEnd/LoopConditionOptimizer.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="952" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
     <option name="width" value="977" />
     <option name="height" value="1038" />
   </component>
@@ -317,7 +334,7 @@
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-listener" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/gen-visitor" value="true" />
     <property name="$PROJECT_DIR$/src/Parser/Mxstar.g4::/output-dir" value="C:\Users\apoll\Desktop\Mxstar-Compiler\src" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557477147111" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557492760640" />
     <property name="last_opened_file_path" value="D:/课程学习/编译原理/complier_from_idy002/mstar-compiler-master" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -365,13 +382,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1551923439238</updated>
-    </task>
-    <task id="LOCAL-00112" summary="fix simple inline">
-      <created>1556722867588</created>
-      <option name="number" value="00112" />
-      <option name="presentableId" value="LOCAL-00112" />
-      <option name="project" value="LOCAL" />
-      <updated>1556722867588</updated>
     </task>
     <task id="LOCAL-00113" summary="fix simple inline">
       <created>1556809009868</created>
@@ -709,7 +719,14 @@
       <option name="project" value="LOCAL" />
       <updated>1557474745587</updated>
     </task>
-    <option name="localTasksCounter" value="161" />
+    <task id="LOCAL-00161" summary="add loop condition exchange">
+      <created>1557477161913</created>
+      <option name="number" value="00161" />
+      <option name="presentableId" value="LOCAL-00161" />
+      <option name="project" value="LOCAL" />
+      <updated>1557477161913</updated>
+    </task>
+    <option name="localTasksCounter" value="162" />
     <servers />
   </component>
   <component name="TodoView">
@@ -723,7 +740,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Structure" order="0" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="1" />
@@ -731,7 +747,7 @@
       <window_info id="UI Designer" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="Favorites" order="5" sideWeight="0.5014245" side_tool="true" weight="0.2937931" />
-      <window_info content_ui="combo" id="Project" order="6" sideWeight="0.4985755" visible="true" weight="0.24966533" />
+      <window_info content_ui="combo" id="Project" order="6" sideWeight="0.4985755" weight="0.24966533" />
       <window_info anchor="bottom" id="Messages" order="0" weight="0.27887323" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3253521" />
@@ -761,16 +777,16 @@
       <window_info id="UI Designer" order="3" />
       <window_info id="Capture Tool" order="4" />
       <window_info id="Favorites" order="5" sideWeight="0.5014245" side_tool="true" weight="0.2937931" />
-      <window_info content_ui="combo" id="Project" order="6" sideWeight="0.4985755" weight="0.35123968" />
-      <window_info anchor="bottom" id="Messages" order="0" weight="0.32253522" />
+      <window_info content_ui="combo" id="Project" order="6" sideWeight="0.4985755" visible="true" weight="0.24966533" />
+      <window_info anchor="bottom" id="Messages" order="0" weight="0.27887323" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.3253521" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.35897437" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.36760563" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.4169014" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.32957748" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32957748" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32816902" />
       <window_info anchor="bottom" id="Tool Output" order="9" weight="0.33239436" />
       <window_info anchor="bottom" id="Terminal" order="10" weight="0.32394367" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
@@ -1139,16 +1155,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/BackEnd/GraphAllocator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="45" column="49" lean-forward="true" selection-start-line="45" selection-start-column="49" selection-end-line="45" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/BackEnd/ChordalGraphAllocator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -1259,44 +1265,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/FrontEnd/IRBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="536" column="95" lean-forward="true" selection-start-line="536" selection-start-column="95" selection-end-line="536" selection-end-column="95" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1546#1547#0" expanded="true" />
-            <element signature="e#1576#1577#0" expanded="true" />
-            <element signature="e#13195#13196#0" expanded="true" />
-            <element signature="e#13269#13270#0" expanded="true" />
-            <element signature="e#13332#13333#0" expanded="true" />
-            <element signature="e#13407#13408#0" expanded="true" />
-            <element signature="e#14105#14106#0" expanded="true" />
-            <element signature="e#14148#14149#0" expanded="true" />
-            <element signature="e#14210#14211#0" expanded="true" />
-            <element signature="e#14260#14261#0" expanded="true" />
-            <element signature="e#14557#14558#0" expanded="true" />
-            <element signature="e#14596#14597#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/FrontEnd/UselessLoopEliminator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="519">
-          <caret line="265" column="9" lean-forward="true" selection-start-line="263" selection-start-column="8" selection-end-line="265" selection-end-column="9" />
+          <caret line="265" column="9" selection-start-line="263" selection-start-column="8" selection-end-line="265" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1067#1068#0" expanded="true" />
             <element signature="e#1109#1110#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/program.asm">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="304" column="17" selection-start-line="304" selection-start-column="17" selection-end-line="304" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -1317,55 +1294,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/FrontEnd/LoopConditionOptimizer.java">
+    <entry file="file://$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2267">
-          <caret line="327" column="9" lean-forward="true" selection-start-line="327" selection-start-column="9" selection-end-line="327" selection-end-column="9" />
+        <state relative-caret-position="105">
+          <caret line="229" column="120" selection-start-line="229" selection-start-column="120" selection-end-line="229" selection-end-column="120" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/FrontEnd/IRBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="123">
+          <caret line="536" column="21" selection-start-line="536" selection-start-column="21" selection-end-line="536" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1201#1202#0" expanded="true" />
-            <element signature="e#1231#1232#0" expanded="true" />
-            <element signature="e#1726#1727#0" expanded="true" />
-            <element signature="e#1764#1765#0" expanded="true" />
-            <element signature="e#10660#10661#0" expanded="true" />
-            <element signature="e#10703#10704#0" expanded="true" />
-            <element signature="e#11848#11849#0" expanded="true" />
-            <element signature="e#11893#11894#0" expanded="true" />
-            <element signature="e#12096#12097#0" expanded="true" />
-            <element signature="e#12141#12142#0" expanded="true" />
-            <element signature="e#12200#12201#0" expanded="true" />
-            <element signature="e#12245#12246#0" expanded="true" />
-            <element signature="e#12205#12206#0" expanded="true" />
-            <element signature="e#12310#12311#0" expanded="true" />
+            <element signature="e#1546#1547#0" expanded="true" />
+            <element signature="e#1576#1577#0" expanded="true" />
+            <element signature="e#13195#13196#0" expanded="true" />
+            <element signature="e#13269#13270#0" expanded="true" />
+            <element signature="e#13332#13333#0" expanded="true" />
+            <element signature="e#13407#13408#0" expanded="true" />
+            <element signature="e#14105#14106#0" expanded="true" />
+            <element signature="e#14148#14149#0" expanded="true" />
+            <element signature="e#14210#14211#0" expanded="true" />
+            <element signature="e#14260#14261#0" expanded="true" />
+            <element signature="e#14557#14558#0" expanded="true" />
+            <element signature="e#14596#14597#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="83" column="18" selection-start-line="83" selection-start-column="18" selection-end-line="83" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/program.asm">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="411" lean-forward="true" selection-start-line="404" selection-start-column="13" selection-end-line="411" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BackEnd/GraphAllocator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="518" column="21" selection-start-line="518" selection-start-column="21" selection-end-line="518" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="80" lean-forward="true" selection-start-line="80" selection-end-line="80" />
+        <state relative-caret-position="116">
+          <caret line="51" column="23" lean-forward="true" selection-start-line="51" selection-start-column="23" selection-end-line="51" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/FrontEnd/ScopeBuilder.java">
+    <entry file="file://$PROJECT_DIR$/src/FrontEnd/LoopConditionOptimizer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2381">
-          <caret line="207" column="16" selection-start-line="207" selection-start-column="16" selection-end-line="207" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/FrontEnd/SemanticChecker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="231" column="92" selection-start-line="231" selection-start-column="92" selection-end-line="231" selection-end-column="92" />
+        <state relative-caret-position="294">
+          <caret line="453" selection-start-line="453" selection-end-line="453" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1201#1202#0" expanded="true" />
+            <element signature="e#1231#1232#0" expanded="true" />
+            <element signature="e#12162#12163#0" expanded="true" />
+            <element signature="e#12205#12206#0" expanded="true" />
+            <element signature="e#12267#12268#0" expanded="true" />
+            <element signature="e#12310#12311#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/program.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
+        <state relative-caret-position="504">
+          <caret line="28" column="1" selection-start-line="28" selection-start-column="1" selection-end-line="28" selection-end-column="1" />
         </state>
       </provider>
     </entry>

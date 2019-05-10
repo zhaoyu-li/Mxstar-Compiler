@@ -77,7 +77,7 @@ public class Main {
 
         IRPrinter irPrinter = new IRPrinter();
         irPrinter.visit(irProgram);
-//        irPrinter.print();
+        irPrinter.print();
 
 //        SimpleAllocator simpleAllocator = new SimpleAllocator(irProgram);
 //        simpleAllocator.allocateRegisters();

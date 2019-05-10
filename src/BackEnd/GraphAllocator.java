@@ -188,8 +188,8 @@ public class GraphAllocator {
     private void coalesce() {
         System.err.println("================================ coalesce ====================================");
         Move m = workListMoves.getFirst();
-        VirtualRegister y = getAlias((VirtualRegister) m.getDst());
-        VirtualRegister x = getAlias((VirtualRegister) m.getSrc());
+        VirtualRegister x = getAlias((VirtualRegister) m.getDst());
+        VirtualRegister y = getAlias((VirtualRegister) m.getSrc());
         VirtualRegister u;
         VirtualRegister v;
         if(precolored.contains(y)) {
@@ -276,8 +276,8 @@ public class GraphAllocator {
     private void freezeMoves(VirtualRegister u) {
         for(Move m : nodeMoves(u)) {
             VirtualRegister v;
-            VirtualRegister y = (VirtualRegister) m.getDst();
-            VirtualRegister x = (VirtualRegister) m.getSrc();
+            VirtualRegister x = (VirtualRegister) m.getDst();
+            VirtualRegister y = (VirtualRegister) m.getSrc();
             if(getAlias(y) == getAlias(u)) {
                 v = getAlias(x);
             } else {
@@ -485,6 +485,18 @@ public class GraphAllocator {
         }
     }
 
+    /*private void removeSelfMove(Function function) {
+        for(BasicBlock bb : function.getBasicBlocks()) {
+            for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
+                if(isMoveInstruction(inst)) {
+                    if(colors.get(((Move) inst).getDst()).equals(colors.get(((Move) inst).getSrc()))) {
+                        inst.remove();
+                    }
+                }
+            }
+        }
+    }*/
+
     private void process(Function function) {
         while(true){
             init();
@@ -503,6 +515,7 @@ public class GraphAllocator {
                 System.err.println("SpillNodes.size() = " + spillNodes.size());
                 rewriteFunction(function);
             } else {
+//                removeSelfMove(function);
                 allocateRegisters(function);
                 break;
             }

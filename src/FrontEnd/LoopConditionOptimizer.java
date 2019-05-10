@@ -451,7 +451,7 @@ public class LoopConditionOptimizer implements ASTVistor {
 
     @Override
     public void visit(FuncCallExpression node) {
-        immobileLoop.addAll(curLoops);
+
     }
 
     @Override
