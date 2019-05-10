@@ -227,7 +227,7 @@ public class SemanticChecker implements ASTVistor {
     @Override
     public void visit(FuncCallExpression node) {
         for(int i = 0; i < node.getArguments().size(); i++) {
-            if(!node.getArguments().get(i).getType().match(node.getFunctionEntity().getParameters().get(i).getType())) {
+            if(!node.getFunctionEntity().getParameters().get(i).getType().match(node.getArguments().get(i).getType())) {
                 throw new SemanticError(node.getLocation(), "Invalid parameter type");
             }
         }

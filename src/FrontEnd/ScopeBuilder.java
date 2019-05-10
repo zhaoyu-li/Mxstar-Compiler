@@ -62,7 +62,7 @@ public class ScopeBuilder implements ASTVistor {
         }
     }
 
-    private VariableEntity getVariableEntity (VariableDeclaration variableDeclaration) {
+    private VariableEntity getVariableEntity(VariableDeclaration variableDeclaration) {
         VariableEntity variableEntity = new VariableEntity();
         variableEntity.setType(resolveType(variableDeclaration.getType()));
         variableEntity.setLocation(variableDeclaration.getLocation());
