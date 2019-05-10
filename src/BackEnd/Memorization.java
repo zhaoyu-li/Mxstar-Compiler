@@ -40,7 +40,7 @@ public class Memorization {
 
     private void addGlobalAddress(Function function) {
         Function global_init = program.getFunction("global_init");
-        StaticVariable var = new StaticVariable(function.getName(), Config.getRegSize());
+        StaticVariable var = new StaticVariable(function.getName(), Config.REG_SIZE);
         VirtualRegister vr = functionTableMap.get(function);
         vr.setSpillSpace(new Memory(var));
         program.addStaticVariable(var);
@@ -59,7 +59,7 @@ public class Memorization {
         VirtualRegister size = new VirtualRegister("");
         VirtualRegister bytes = new VirtualRegister("");
         curBB.addNextInst(new Move(curBB, size, new IntImmediate(60)));
-        curBB.addNextInst(new Lea(curBB, bytes, new Memory(size, Config.getRegSize(), new IntImmediate(Config.getRegSize()))));
+        curBB.addNextInst(new Lea(curBB, bytes, new Memory(size, Config.REG_SIZE, new IntImmediate(Config.REG_SIZE))));
         curBB.addNextInst(new Call(curBB, vrax, program.getFunction("malloc"), bytes));
         curBB.addNextInst(new Move(curBB, addr, vrax));
         curBB.addNextInst(new Move(curBB, new Memory(addr), size));
@@ -72,7 +72,7 @@ public class Memorization {
         condBB.addNextJumpInst(new CJump(condBB, size, CJump.CompareOp.GT, new IntImmediate(0), bodyBB, afterBB));
 
         curBB = bodyBB;
-        curBB.addNextInst(new Move(curBB, new Memory(addr, size, Config.getRegSize()), new IntImmediate(0)));
+        curBB.addNextInst(new Move(curBB, new Memory(addr, size, Config.REG_SIZE), new IntImmediate(0)));
         curBB.addNextInst(new UnaryOperation(curBB, UnaryOperation.UnaryOp.DEC, size));
         curBB.addNextJumpInst(new Jump(curBB, condBB));
 
@@ -96,7 +96,7 @@ public class Memorization {
         curBB = checkBB;
         curBB.addNextInst(new Move(curBB, addr, addr.getSpillSpace()));
         curBB.addNextInst(new Move(curBB, idx, vargs.get(0)));
-        Memory memory = new Memory(addr, idx, Config.getRegSize(), new IntImmediate(Config.getRegSize()));
+        Memory memory = new Memory(addr, idx, Config.REG_SIZE, new IntImmediate(Config.REG_SIZE));
         curBB.addNextJumpInst(new CJump(curBB, memory, CJump.CompareOp.NE, new IntImmediate(0), returnBB, preHeadBB));
 
         curBB = returnBB;

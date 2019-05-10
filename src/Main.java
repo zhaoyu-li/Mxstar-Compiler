@@ -6,6 +6,7 @@ import IR.IRProgram;
 import IR.RegisterSet;
 import Parser.MxstarLexer;
 import Parser.MxstarParser;
+import Utility.Config;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -29,6 +30,7 @@ public class Main {
 
     private static void compile(InputStream sourceCode) throws Exception {
         RegisterSet.init();
+
         ANTLRInputStream input = new ANTLRInputStream(sourceCode);
         MxstarLexer lexer = new MxstarLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -36,9 +38,16 @@ public class Main {
         parser.removeErrorListeners();
         parser.addErrorListener(new PaserErrorListener());
         ParseTree tree = parser.program();
+
         ASTBuilder astBuilder = new ASTBuilder();
         astBuilder.visit(tree);
         Program program = astBuilder.getProgram();
+
+        if(Config.printAST) {
+            ASTPrinter astPrinter = new ASTPrinter();
+            astPrinter.visit(program);
+            astPrinter.print();
+        }
 
         ScopeBuilder scopeBuilder = new ScopeBuilder();
         scopeBuilder.visit(program);
@@ -46,47 +55,72 @@ public class Main {
         SemanticChecker semanticChecker = new SemanticChecker(scopeBuilder.getGlobalScope());
         semanticChecker.visit(program);
 
-        UselessLoopEliminator uselessLoopEliminator = new UselessLoopEliminator(program);
-        uselessLoopEliminator.run();
+        if(Config.useUselessLoopElimination) {
+            UselessLoopEliminator uselessLoopEliminator = new UselessLoopEliminator(program);
+            uselessLoopEliminator.run();
+        }
 
-        LoopConditionOptimizer loopConditionOptimizer = new LoopConditionOptimizer(program);
-        loopConditionOptimizer.run();
+        if(Config.useLoopConditionOptimization) {
+            LoopConditionOptimizer loopConditionOptimizer = new LoopConditionOptimizer(program);
+            loopConditionOptimizer.run();
+        }
 
-        CommonExpressionElimination commonExpressionElimination = new CommonExpressionElimination(program);
-        commonExpressionElimination.run();
+        if(Config.useCommonExpressionElimination) {
+            CommonExpressionElimination commonExpressionElimination = new CommonExpressionElimination(program);
+            commonExpressionElimination.run();
+        }
 
         IRBuilder irBuilder = new IRBuilder(scopeBuilder.getGlobalScope());
         irBuilder.visit(program);
-
         IRProgram irProgram = irBuilder.getProgram();
 
-        Memorization memorization = new Memorization(irProgram);
-        memorization.run();
+        if(Config.useMemorization) {
+            Memorization memorization = new Memorization(irProgram);
+            memorization.run();
+        }
 
-        BasicBlockOptimizer basicBlockOptimizer = new BasicBlockOptimizer(irProgram);
-        basicBlockOptimizer.run();
+        if(Config.useBasicBlockOptimization) {
+            BasicBlockOptimizer basicBlockOptimizer = new BasicBlockOptimizer(irProgram);
+            basicBlockOptimizer.run();
+        }
 
-        LocalValueNumberOptimizer localValueNumberOptimizer = new LocalValueNumberOptimizer(irProgram);
-        localValueNumberOptimizer.run();
+        if(Config.useLocalValueOptimization) {
+            LocalValueNumberOptimizer localValueNumberOptimizer = new LocalValueNumberOptimizer(irProgram);
+            localValueNumberOptimizer.run();
+        }
 
-        DeadCodeEliminator deadCodeEliminator = new DeadCodeEliminator(irProgram);
-        deadCodeEliminator.run();
+        if(Config.useDeadCodeElimination) {
+            DeadCodeEliminator deadCodeEliminator = new DeadCodeEliminator(irProgram);
+            deadCodeEliminator.run();
+        }
 
-        NASMTransformer nasmTransformer = new NASMTransformer();
-        nasmTransformer.visit(irProgram);
+        IRCorrector irCorrector = new IRCorrector();
+        irCorrector.visit(irProgram);
 
-        IRPrinter irPrinter = new IRPrinter();
-        irPrinter.visit(irProgram);
-        irPrinter.print();
+        if(Config.printIR) {
+            IRPrinter irPrinter = new IRPrinter();
+            irPrinter.visit(irProgram);
+            irPrinter.print();
+        }
 
-//        SimpleAllocator simpleAllocator = new SimpleAllocator(irProgram);
-//        simpleAllocator.allocateRegisters();
-        ChordalGraphAllocator chordalGraphAllocator = new ChordalGraphAllocator(irProgram);
-        chordalGraphAllocator.run();
-//        SimpleGraphAllocator simpleGraphAllocator = new SimpleGraphAllocator(irProgram);
-//        simpleGraphAllocator.run();
-//        GraphAllocator graphAllocator = new GraphAllocator(irProgram);
-//        graphAllocator.run();
+        switch(Config.useAllocator) {
+            case 1:
+                SimpleAllocator simpleAllocator = new SimpleAllocator(irProgram);
+                simpleAllocator.allocateRegisters();
+                break;
+            case 2:
+                ChordalGraphAllocator chordalGraphAllocator = new ChordalGraphAllocator(irProgram);
+                chordalGraphAllocator.run();
+                break;
+            case 3:
+                SimpleGraphAllocator simpleGraphAllocator = new SimpleGraphAllocator(irProgram);
+                simpleGraphAllocator.run();
+                break;
+            case 4:
+                GraphAllocator graphAllocator = new GraphAllocator(irProgram);
+                graphAllocator.run();
+                break;
+        }
 
         StackBuilder stackBuilder = new StackBuilder(irProgram);
         stackBuilder.build();

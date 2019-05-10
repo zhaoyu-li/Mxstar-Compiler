@@ -7,14 +7,15 @@ import java.util.*;
 
 public class UselessLoopEliminator implements ASTVistor {
     private Program program;
-    private HashMap<Statement, HashSet<VariableEntity>> loopToVariables;
-    private HashSet<Statement> neededLoops;
+    private HashMap<Statement, HashSet<VariableEntity>> loopVariables;
     private Stack<Statement> curLoops;
+    private HashSet<Statement> irreplaceableLoops;
+    
 
     public UselessLoopEliminator(Program program) {
         this.program = program;
-        this.loopToVariables = new HashMap<>();
-        this.neededLoops = new HashSet<>();
+        this.loopVariables = new HashMap<>();
+        this.irreplaceableLoops = new HashSet<>();
         this.curLoops = new Stack<>();
     }
 
@@ -47,7 +48,7 @@ public class UselessLoopEliminator implements ASTVistor {
     private void deleteLoop(List<Statement> body) {
         List<Statement> deleted = new LinkedList<>();
         for(Statement statement : body) {
-            if(isLoop(statement) && !neededLoops.contains(statement)) {
+            if(isLoop(statement) && !irreplaceableLoops.contains(statement)) {
                 System.err.println("delete loop " + statement.getLocation());
                 deleted.add(statement);
             }
@@ -57,8 +58,8 @@ public class UselessLoopEliminator implements ASTVistor {
 
     @Override
     public void visit(FunctionDeclaration node) {
-        loopToVariables.clear();
-        neededLoops.clear();
+        loopVariables.clear();
+        irreplaceableLoops.clear();
         curLoops.clear();
         if(node.getParameters() != null) {
             for(VariableDeclaration variableDeclaration : node.getParameters()) {
@@ -90,10 +91,10 @@ public class UselessLoopEliminator implements ASTVistor {
         VariableEntity var = node.getVariableEntity();
         if(isLocal(var)) {
             for(Statement loop : curLoops) {
-                loopToVariables.get(loop).add(var);
+                loopVariables.get(loop).add(var);
             }
         } else {
-            neededLoops.addAll(curLoops);
+            irreplaceableLoops.addAll(curLoops);
         }
         if(node.getInit() != null) {
             node.getInit().accept(this);
@@ -122,7 +123,7 @@ public class UselessLoopEliminator implements ASTVistor {
 
     @Override
     public void visit(WhileStatement node) {
-        loopToVariables.put(node, new HashSet<>());
+        loopVariables.put(node, new HashSet<>());
         curLoops.push(node);
         node.getCondition().accept(this);
         node.getBody().accept(this);
@@ -131,7 +132,7 @@ public class UselessLoopEliminator implements ASTVistor {
 
     @Override
     public void visit(ForStatement node) {
-        loopToVariables.put(node, new HashSet<>());
+        loopVariables.put(node, new HashSet<>());
         curLoops.push(node);
         if(node.getInit() != null) {
             node.getInit().accept(this);
@@ -158,7 +159,7 @@ public class UselessLoopEliminator implements ASTVistor {
 
     @Override
     public void visit(ReturnStatement node) {
-        neededLoops.addAll(curLoops);
+        irreplaceableLoops.addAll(curLoops);
         if(node.getRet() != null){
             node.getRet().accept(this);
         }
@@ -188,7 +189,7 @@ public class UselessLoopEliminator implements ASTVistor {
 
     @Override
     public void visit(ThisExpression node) {
-        neededLoops.addAll(curLoops);
+        irreplaceableLoops.addAll(curLoops);
     }
 
     @Override
@@ -215,20 +216,20 @@ public class UselessLoopEliminator implements ASTVistor {
     public void visit(Identifier node) {
         VariableEntity var = node.getVariableEntity();
         if(var == null) { // function
-            neededLoops.addAll(curLoops);
+            irreplaceableLoops.addAll(curLoops);
         } else {
             if(isLocal(var)) {
-                for(Statement loop : loopToVariables.keySet()) {
+                for(Statement loop : loopVariables.keySet()) {
                     if(curLoops.contains(loop)) {
-                        loopToVariables.get(loop).add(var);
+                        loopVariables.get(loop).add(var);
                     } else {
-                        if(loopToVariables.get(loop).contains(var)) {
-                            neededLoops.add(loop);
+                        if(loopVariables.get(loop).contains(var)) {
+                            irreplaceableLoops.add(loop);
                         }
                     }
                 }
             } else {
-                neededLoops.addAll(curLoops);
+                irreplaceableLoops.addAll(curLoops);
             }
         }
 
@@ -260,7 +261,7 @@ public class UselessLoopEliminator implements ASTVistor {
 
     @Override
     public void visit(NewExpression node) {
-        neededLoops.addAll(curLoops);
+        irreplaceableLoops.addAll(curLoops);
         for(Expression expression : node.getDimensions()) {
             expression.accept(this);
         }

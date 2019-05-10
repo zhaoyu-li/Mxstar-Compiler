@@ -24,7 +24,7 @@ public class StackBuilder {
         private LinkedList<StackSlot> parameters = new LinkedList<>();
         private LinkedList<StackSlot> temporaries = new LinkedList<>();
         private int getFrameSize(int needToSave) {
-            int bytes = Config.getRegSize() * (parameters.size() + temporaries.size());
+            int bytes = Config.REG_SIZE * (parameters.size() + temporaries.size());
             bytes = (bytes + 16 - 1) / 16 * 16; //  round up to a multiply of 16
             if(needToSave % 2 == 1) {
                 bytes += 8;

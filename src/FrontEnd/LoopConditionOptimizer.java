@@ -1,7 +1,6 @@
 package FrontEnd;
 
 import AST.*;
-import Scope.Scope;
 import Scope.VariableEntity;
 
 import java.util.*;
@@ -12,7 +11,7 @@ public class LoopConditionOptimizer implements ASTVistor {
     private HashMap<Statement, IfStatement> loopToIf;
     private HashMap<Statement, HashSet<VariableEntity>> loopConditionVariables;
     private HashMap<Statement, HashSet<VariableEntity>> ifConditionVariables;
-    private HashSet<Statement> immobileLoop;
+    private HashSet<Statement> immobileLoops;
     private Statement curLoop;
     private Statement curIf;
     private boolean nowInLoopCondition;
@@ -30,7 +29,7 @@ public class LoopConditionOptimizer implements ASTVistor {
         this.curLoop = null;
         this.curIf = null;
         this.changed = new HashMap<>();
-        this.immobileLoop = new HashSet<>();
+        this.immobileLoops = new HashSet<>();
     }
 
     public void run() {
@@ -46,7 +45,7 @@ public class LoopConditionOptimizer implements ASTVistor {
         curIf = null;
         nowInLoopCondition = false;
         nowInIfCondition = false;
-        immobileLoop.clear();
+        immobileLoops.clear();
     }
 
     private class LoopConditionSwitcher implements ASTVistor { // find block statement and do exchange
@@ -241,13 +240,13 @@ public class LoopConditionOptimizer implements ASTVistor {
 
     private boolean checkLoop(Statement loop) {
         if(loop instanceof ForStatement) {
-            return !immobileLoop.contains(loop)
+            return !immobileLoops.contains(loop)
                     && (((ForStatement) loop).getBody()) instanceof BlockStatement
                     && ((BlockStatement) ((ForStatement) loop).getBody()).getStatements().size() == 1
                     && ((BlockStatement) ((ForStatement) loop).getBody()).getStatements().get(0) instanceof IfStatement
                     && ((IfStatement) ((BlockStatement) ((ForStatement) loop).getBody()).getStatements().get(0)).getElseStatement() == null;
         } else {
-            return !immobileLoop.contains(loop)
+            return !immobileLoops.contains(loop)
                     && (((WhileStatement) loop).getBody()) instanceof BlockStatement
                     && ((BlockStatement) ((WhileStatement) loop).getBody()).getStatements().size() == 1
                     && ((BlockStatement) ((WhileStatement) loop).getBody()).getStatements().get(0) instanceof IfStatement
@@ -434,13 +433,13 @@ public class LoopConditionOptimizer implements ASTVistor {
             ifConditionVariables.get(curIf).add(var);
         }
         if(node.getVariableEntity().isGlobal() || node.getVariableEntity().isInClass()) {
-            immobileLoop.addAll(curLoops);
+            immobileLoops.addAll(curLoops);
         }
     }
 
     @Override
     public void visit(MemberExpression node) {
-        immobileLoop.addAll(curLoops);
+        immobileLoops.addAll(curLoops);
     }
 
     @Override
@@ -456,7 +455,7 @@ public class LoopConditionOptimizer implements ASTVistor {
 
     @Override
     public void visit(NewExpression node) {
-        immobileLoop.addAll(curLoops);
+        immobileLoops.addAll(curLoops);
     }
 
     @Override

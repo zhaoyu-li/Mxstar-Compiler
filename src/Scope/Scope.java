@@ -35,7 +35,7 @@ public class Scope {
         variables.put(name, variable);
         if(!name.equals("this")) {
             offsets.put(name, curOffset);
-            curOffset += Config.getRegSize();
+            curOffset += Config.REG_SIZE;
         }
     }
 

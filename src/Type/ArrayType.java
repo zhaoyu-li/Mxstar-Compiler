@@ -27,6 +27,6 @@ public class ArrayType extends Type {
 
     @Override
     public int getBytes() {
-        return Config.getRegSize();
+        return Config.REG_SIZE;
     }
 }

@@ -106,6 +106,6 @@ public class Type {
     }
 
     public int getBytes() {
-        return Config.getRegSize();
+        return Config.REG_SIZE;
     }
 }

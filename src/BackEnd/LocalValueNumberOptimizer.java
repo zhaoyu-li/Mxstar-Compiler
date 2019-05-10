@@ -56,7 +56,7 @@ public class LocalValueNumberOptimizer implements IRVistor {
 
     private Integer getOperandValue(Operand operand) {
         if(operand instanceof VirtualRegister) {
-            return getRegsiterValue((VirtualRegister) operand);
+            return getRegisterValue((VirtualRegister) operand);
         } else if(operand instanceof IntImmediate) {
             return getImmediateValue(((IntImmediate) operand).getValue());
         } else return curValueNumber++;
@@ -70,7 +70,7 @@ public class LocalValueNumberOptimizer implements IRVistor {
         return immediateValueMap.get(imm);
     }
 
-    private Integer getRegsiterValue(VirtualRegister vr) {
+    private Integer getRegisterValue(VirtualRegister vr) {
         if(!registerValueMap.containsKey(vr)) {
             addRegisterValue(vr, curValueNumber++);
         }
@@ -95,7 +95,7 @@ public class LocalValueNumberOptimizer implements IRVistor {
         registerValueMap.put(vr, value);
     }
 
-    private void delRegiserValue(VirtualRegister vr) {
+    private void delRegisterValue(VirtualRegister vr) {
         if(registerValueMap.containsKey(vr)) {
             Integer value = registerValueMap.get(vr);
             valueRegisterMap.get(value).remove(vr);
@@ -104,7 +104,7 @@ public class LocalValueNumberOptimizer implements IRVistor {
     }
 
     private void changeRegisterValue(VirtualRegister vr, Integer value) {
-        delRegiserValue(vr);
+        delRegisterValue(vr);
         addRegisterValue(vr, value);
     }
 

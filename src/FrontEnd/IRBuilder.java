@@ -33,7 +33,7 @@ public class IRBuilder implements ASTVistor {
     private boolean isInInline;
     private LinkedList<HashMap<VariableEntity, VirtualRegister>> inlineVariableRegisterStack;
     private LinkedList<BasicBlock> inlineFuncAfterBBStack;
-    private HashMap<FunctionEntity,Integer> operationsCountMap;
+    private HashMap<FunctionEntity, Integer> operationsCountMap;
 
     public IRBuilder(GlobalScope globalScope) {
         this.globalScope = globalScope;
@@ -55,7 +55,7 @@ public class IRBuilder implements ASTVistor {
     }
 
     private void registerStaticVariable(VariableDeclaration variableDeclaration) {
-        StaticVariable var = new StaticVariable(variableDeclaration.getName(), Config.getRegSize());
+        StaticVariable var = new StaticVariable(variableDeclaration.getName(), Config.REG_SIZE);
         VirtualRegister vr = new VirtualRegister(variableDeclaration.getName());
         vr.setSpillSpace(new Memory(var));
         program.addStaticVariable(var);
@@ -664,13 +664,13 @@ public class IRBuilder implements ASTVistor {
         }
         Memory memory = new Memory();
         if(index instanceof IntImmediate) {
-            memory = new Memory(base, new IntImmediate(((IntImmediate) index).getValue() * Config.getRegSize() + Config.getRegSize()));
+            memory = new Memory(base, new IntImmediate(((IntImmediate) index).getValue() * Config.REG_SIZE + Config.REG_SIZE));
         } else if(index instanceof Register) {
-            memory = new Memory(base, (Register) index, Config.getRegSize(), new IntImmediate(Config.getRegSize()));
+            memory = new Memory(base, (Register) index, Config.REG_SIZE, new IntImmediate(Config.REG_SIZE));
         } else if(index instanceof Memory) {
             VirtualRegister vr = new VirtualRegister("");
             curBB.addNextInst(new Move(curBB, vr, index));
-            memory = new Memory(base, vr, Config.getRegSize(), new IntImmediate(Config.getRegSize()));
+            memory = new Memory(base, vr, Config.REG_SIZE, new IntImmediate(Config.REG_SIZE));
         }
         if(node.getTrueBB() != null) {
             curBB.addNextJumpInst(new CJump(curBB, memory, CJump.CompareOp.NE, new IntImmediate(0), node.getTrueBB(), node.getFalseBB()));
@@ -714,12 +714,12 @@ public class IRBuilder implements ASTVistor {
                 if(constructor != null) {
                     curBB.addNextInst(new Call(curBB, vrax, constructor, retAddr));
                 } else {
-                    if(baseBytes == Config.getRegSize()) {
+                    if(baseBytes == Config.REG_SIZE) {
                         curBB.addNextInst(new Move(curBB, new Memory(retAddr), new IntImmediate(0)));
-                    } else if(baseBytes == Config.getRegSize() * 2) {
-                        curBB.addNextInst(new BinaryOperation(curBB, retAddr, BinaryOperation.BinaryOp.ADD, new IntImmediate(Config.getRegSize())));
+                    } else if(baseBytes == Config.REG_SIZE * 2) {
+                        curBB.addNextInst(new BinaryOperation(curBB, retAddr, BinaryOperation.BinaryOp.ADD, new IntImmediate(Config.REG_SIZE)));
                         curBB.addNextInst(new Move(curBB, new Memory(retAddr), new IntImmediate(0)));
-                        curBB.addNextInst(new BinaryOperation(curBB, retAddr, BinaryOperation.BinaryOp.SUB, new IntImmediate(Config.getRegSize())));
+                        curBB.addNextInst(new BinaryOperation(curBB, retAddr, BinaryOperation.BinaryOp.SUB, new IntImmediate(Config.REG_SIZE)));
                     }
                 }
                 return retAddr;
@@ -729,7 +729,7 @@ public class IRBuilder implements ASTVistor {
             VirtualRegister size = new VirtualRegister("");
             VirtualRegister bytes = new VirtualRegister("");
             curBB.addNextInst(new Move(curBB, size, dims.get(0)));
-            curBB.addNextInst(new Lea(curBB, bytes, new Memory(size, Config.getRegSize(), new IntImmediate(Config.getRegSize()))));
+            curBB.addNextInst(new Lea(curBB, bytes, new Memory(size, Config.REG_SIZE, new IntImmediate(Config.REG_SIZE))));
             curBB.addNextInst(new Call(curBB, vrax, program.getFunction("malloc"), bytes));
             curBB.addNextInst(new Move(curBB, addr, vrax));
             curBB.addNextInst(new Move(curBB, new Memory(addr), size));
@@ -741,14 +741,14 @@ public class IRBuilder implements ASTVistor {
             curBB = bodyBB;
             if(dims.size() == 1) {
                 Operand pointer = allocateArray(new LinkedList<>(), baseBytes, constructor);
-                curBB.addNextInst(new Move(curBB, new Memory(addr, size, Config.getRegSize()), pointer));
+                curBB.addNextInst(new Move(curBB, new Memory(addr, size, Config.REG_SIZE), pointer));
             } else {
                 LinkedList<Operand> remainDims = new LinkedList<>();
                 for(int i = 1; i < dims.size(); i++) {
                     remainDims.add(dims.get(i));
                 }
                 Operand pointer = allocateArray(remainDims, baseBytes, constructor);
-                curBB.addNextInst(new Move(curBB, new Memory(addr, size, Config.getRegSize()), pointer));
+                curBB.addNextInst(new Move(curBB, new Memory(addr, size, Config.REG_SIZE), pointer));
             }
             curBB.addNextInst(new UnaryOperation(curBB, UnaryOperation.UnaryOp.DEC, size));
             curBB.addNextJumpInst(new Jump(curBB, condBB));
@@ -781,7 +781,7 @@ public class IRBuilder implements ASTVistor {
         } else {
             int bytes;
             if(node.getType().isStringType()) {
-                bytes = Config.getRegSize() * 2;
+                bytes = Config.REG_SIZE * 2;
             } else {
                 bytes = node.getType().getBytes();
             }

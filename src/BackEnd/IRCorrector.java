@@ -10,8 +10,8 @@ import java.util.HashSet;
 import static IR.RegisterSet.vrax;
 
 
-public class NASMTransformer implements IRVistor {
-    public NASMTransformer() {
+public class IRCorrector implements IRVistor {
+    public IRCorrector() {
     }
 
     @Override
