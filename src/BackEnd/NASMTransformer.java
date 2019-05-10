@@ -96,13 +96,6 @@ public class NASMTransformer implements IRVistor {
 
     }
 
-    private PhysicalRegister getPhysical(Operand v) {
-        if(v instanceof VirtualRegister)
-            return ((VirtualRegister) v).getAllocatedPhysicalRegister();
-        else
-            return null;
-    }
-
     @Override
     public void visit(Call node) {
         Function caller = node.getBB().getFunction();

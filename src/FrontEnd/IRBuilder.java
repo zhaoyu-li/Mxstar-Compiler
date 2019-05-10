@@ -79,10 +79,6 @@ public class IRBuilder implements ASTVistor {
                 assign(variableDeclaration.getInit(), variableDeclaration.getVariableEntity().getVirtualRegister());
             }
         }
-        /*BasicBlock tailBB = new BasicBlock("tailBB", curFunction);
-        curBB.addNextJumpInst(new Jump(curBB, tailBB));
-
-        curBB = tailBB;*/
         curBB.addNextInst(new Call(curBB, vrax, program.getFunction("main")));
         curBB.addNextInst(new Return(curBB));
         curFunction.setTailBB(curBB);

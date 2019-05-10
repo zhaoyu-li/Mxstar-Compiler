@@ -113,7 +113,7 @@ public class Memorization {
 
     private void process(Function function) {
         if(function.canBeMemorized()) {
-            System.err.println("======================= memorization ===================");
+            System.err.println("======================= memorization ========================");
             addFunctionTable(function);
             addGlobalAddress(function);
             modify(function);

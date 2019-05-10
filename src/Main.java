@@ -1,7 +1,7 @@
 import AST.Program;
 import BackEnd.*;
 import FrontEnd.*;
-import FrontEnd.LoopOptimizer;
+import FrontEnd.UselessLoopEliminator;
 import IR.IRProgram;
 import IR.RegisterSet;
 import Parser.MxstarLexer;
@@ -46,8 +46,11 @@ public class Main {
         SemanticChecker semanticChecker = new SemanticChecker(scopeBuilder.getGlobalScope());
         semanticChecker.visit(program);
 
-        LoopOptimizer loopOptimizer = new LoopOptimizer(program);
-        loopOptimizer.run();
+        UselessLoopEliminator uselessLoopEliminator = new UselessLoopEliminator(program);
+        uselessLoopEliminator.run();
+
+        LoopConditionOptimizer loopConditionOptimizer = new LoopConditionOptimizer(program);
+        loopConditionOptimizer.run();
 
         CommonExpressionElimination commonExpressionElimination = new CommonExpressionElimination(program);
         commonExpressionElimination.run();
@@ -74,7 +77,7 @@ public class Main {
 
         IRPrinter irPrinter = new IRPrinter();
         irPrinter.visit(irProgram);
-        irPrinter.print();
+//        irPrinter.print();
 
 //        SimpleAllocator simpleAllocator = new SimpleAllocator(irProgram);
 //        simpleAllocator.allocateRegisters();

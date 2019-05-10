@@ -5,13 +5,13 @@ import Scope.VariableEntity;
 
 import java.util.*;
 
-public class LoopOptimizer implements ASTVistor {
+public class UselessLoopEliminator implements ASTVistor {
     private Program program;
     private HashMap<Statement, HashSet<VariableEntity>> loopToVariables;
     private HashSet<Statement> neededLoops;
     private Stack<Statement> curLoops;
 
-    public LoopOptimizer(Program program) {
+    public UselessLoopEliminator(Program program) {
         this.program = program;
         this.loopToVariables = new HashMap<>();
         this.neededLoops = new HashSet<>();

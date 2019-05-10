@@ -14,7 +14,7 @@ public class ASTPrinter implements ASTVistor {
     }
 
     public void print() {
-        System.out.print(stringBuilder.toString());
+        System.err.print(stringBuilder.toString());
     }
 
     private void indent() {
