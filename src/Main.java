@@ -123,7 +123,7 @@ public class Main {
         }
 
         StackBuilder stackBuilder = new StackBuilder(irProgram);
-        stackBuilder.build();
+        stackBuilder.run();
 
         CodeGenerator codeGenerator = new CodeGenerator();
         codeGenerator.visit(irProgram);

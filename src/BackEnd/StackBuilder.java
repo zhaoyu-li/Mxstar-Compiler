@@ -34,7 +34,7 @@ public class StackBuilder {
         this.program = program;
     }
 
-    public void build() {
+    public void run() {
         for(Function function : program.getFunctions().values()) {
             if(function.getType() == Function.FuncType.UserDefined)
                 buildStack(function);
