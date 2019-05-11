@@ -141,6 +141,8 @@ public class SuperlocalValueNumbering implements IRVistor {
     public void visit(Function node) {
         workList.clear();
         workList.add(node.getHeadBB());
+        visitedBBs.clear();
+        curValueTable = null;
         ValueTable empty = new ValueTable();
         while(!workList.isEmpty()) {
             BasicBlock bb = workList.iterator().next();
