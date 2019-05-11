@@ -9,6 +9,7 @@
       <w>declarators</w>
       <w>defs</w>
       <w>inliner</w>
+      <w>limm</w>
       <w>liveness</w>
       <w>mxstar</w>
       <w>nasm</w>
@@ -18,10 +19,13 @@
       <w>preprocess</w>
       <w>prescan</w>
       <w>qword</w>
+      <w>rimm</w>
       <w>rodata</w>
       <w>strcmp</w>
       <w>succ</w>
+      <w>superlocal</w>
       <w>vistor</w>
+      <w>vthis</w>
     </words>
   </dictionary>
 </component>

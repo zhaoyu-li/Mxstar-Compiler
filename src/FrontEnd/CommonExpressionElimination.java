@@ -25,7 +25,7 @@ public class CommonExpressionElimination implements ASTVistor {
             int opValue = ((BinaryExpression) expression).getOp().hashCode();
             Integer lvalue = getExpressionHashCode(((BinaryExpression) expression).getLhs());
             Integer rvalue = getExpressionHashCode(((BinaryExpression) expression).getRhs());
-            System.err.println("binaryExpression.hashcode() = " + (lvalue ^ rvalue));
+            System.err.println("binaryExpression.hashcode() = " + (lvalue ^ opValue ^ rvalue));
             return lvalue ^ opValue ^ rvalue;
         } else if(expression instanceof IntLiteral) {
             return ((IntLiteral) expression).getValue();

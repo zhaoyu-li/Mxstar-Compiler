@@ -84,9 +84,9 @@ public class Main {
             basicBlockOptimizer.run();
         }
 
-        if(Config.useLocalValueOptimization) {
-            LocalValueNumberOptimizer localValueNumberOptimizer = new LocalValueNumberOptimizer(irProgram);
-            localValueNumberOptimizer.run();
+        if(Config.useSuperlocalValueNumbering) {
+            SuperlocalValueNumbering superlocalValueNumbering = new SuperlocalValueNumbering(irProgram);
+            superlocalValueNumbering.run();
         }
 
         if(Config.useDeadCodeElimination) {

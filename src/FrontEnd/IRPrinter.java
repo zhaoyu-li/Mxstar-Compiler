@@ -4,7 +4,6 @@ import IR.*;
 import IR.Instruction.*;
 import IR.Operand.*;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -48,36 +47,23 @@ public class IRPrinter implements IRVistor {
         program.append(str);
     }
 
-    private String getNASMFunctionName(Function function) {
-        switch(function.getType()) {
-            case Library:
-                return "__" + function.getName();
-            case External:
-                return function.getName();
-            case UserDefined:
-                return "_" + function.getName();
-            default:
-                return null;
-        }
-    }
-
     private String getBasicBlockName(BasicBlock bb) {
         if(!bbNames.containsKey(bb)) {
-            bbNames.put(bb, "_block_" + String.valueOf(bbIndex++));
+            bbNames.put(bb, "_block_" + (bbIndex++));
         }
         return bbNames.get(bb);
     }
 
     private String getStaticDataName(StaticData sd) {
         if(!sdNames.containsKey(sd)) {
-            sdNames.put(sd, "_global_" + String.valueOf(sdIndex++));
+            sdNames.put(sd, "_global_" + (sdIndex++));
         }
         return sdNames.get(sd);
     }
 
     private String getVirtualRegisterName(VirtualRegister virtualRegister) {
         if(!varNames.containsKey(virtualRegister)) {
-            virtualRegister.setName("v" + String.valueOf(varIndex++));
+            virtualRegister.setName("v" + (varIndex++));
             varNames.put(virtualRegister, virtualRegister.getName());
         }
 
@@ -85,7 +71,7 @@ public class IRPrinter implements IRVistor {
     }
     private String getStackSlotName(StackSlot ss) {
         if(!ssNames.containsKey(ss))
-            ssNames.put(ss, "stack[" + String.valueOf(ssIndex++) + "]");
+            ssNames.put(ss, "stack[" + (ssIndex++) + "]");
         return ssNames.get(ss);
     }
 
@@ -137,8 +123,8 @@ public class IRPrinter implements IRVistor {
 
     @Override
     public void visit(Jump node) {
-        //if(nextBB != node.getTargetBB())
-        addLine("\tjmp " + getBasicBlockName(node.getTargetBB()));
+        if(nextBB != node.getTargetBB())
+            addLine("\tjmp " + getBasicBlockName(node.getTargetBB()));
     }
 
     @Override
@@ -357,7 +343,7 @@ public class IRPrinter implements IRVistor {
                 add(" + ");
             node.getIndex().accept(this);
             if(node.getScale() != 1)
-                add(" * " + String.valueOf(node.getScale()));
+                add(" * " + (node.getScale()));
 
             occur = true;
         }
@@ -371,9 +357,9 @@ public class IRPrinter implements IRVistor {
                 int value = ((IntImmediate) constant).getValue();
                 if(occur) {
                     if(value > 0)
-                        add(" + " + String.valueOf(value));
+                        add(" + " + (value));
                     else if(value < 0)
-                        add(" - " + String.valueOf(-value));
+                        add(" - " + (-value));
                 } else {
                     add(String.valueOf(value));
                 }

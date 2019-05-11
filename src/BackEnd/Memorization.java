@@ -21,6 +21,7 @@ public class Memorization {
     public Memorization(IRProgram program) {
         this.program = program;
         this.functionTableMap = new HashMap<>();
+        this.curBB = null;
     }
 
     public void run() {
@@ -58,7 +59,7 @@ public class Memorization {
         VirtualRegister addr = new VirtualRegister("");
         VirtualRegister size = new VirtualRegister("");
         VirtualRegister bytes = new VirtualRegister("");
-        curBB.addNextInst(new Move(curBB, size, new IntImmediate(60)));
+        curBB.addNextInst(new Move(curBB, size, new IntImmediate(Config.MAX_MEMORIZATION_NUMBER)));
         curBB.addNextInst(new Lea(curBB, bytes, new Memory(size, Config.REG_SIZE, new IntImmediate(Config.REG_SIZE))));
         curBB.addNextInst(new Call(curBB, vrax, program.getFunction("malloc"), bytes));
         curBB.addNextInst(new Move(curBB, addr, vrax));
@@ -79,8 +80,6 @@ public class Memorization {
         curBB = afterBB;
         curBB.addNextJumpInst(new Jump(curBB, preHeadBB));
 
-        global_init.calcReversePostOrder();
-        global_init.calcReversePrevOrder();
         functionTableMap.put(function, addr);
     }
 

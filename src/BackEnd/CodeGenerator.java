@@ -72,26 +72,26 @@ public class CodeGenerator implements IRVistor {
 
     private String getBasicBlockName(BasicBlock bb) {
         if(!bbNames.containsKey(bb)) {
-            bbNames.put(bb, "_block_" + String.valueOf(bbIndex++));
+            bbNames.put(bb, "_block_" + bbIndex++);
         }
         return bbNames.get(bb);
     }
 
     private String getStaticDataName(StaticData sd) {
         if(!sdNames.containsKey(sd)) {
-            sdNames.put(sd, "_global_" + String.valueOf(sdIndex++));
+            sdNames.put(sd, "_global_" + sdIndex++);
         }
         return sdNames.get(sd);
     }
 
-    private String getVirtualRegsiterName(VirtualRegister virtualRegister) {
+    private String getVirtualRegisterName(VirtualRegister virtualRegister) {
         if(!varNames.containsKey(virtualRegister))
-            varNames.put(virtualRegister, "v" + String.valueOf(varIndex++));
+            varNames.put(virtualRegister, "v" + varIndex++);
         return varNames.get(virtualRegister);
     }
     private String getStackSlotName(StackSlot ss) {
         if(!ssNames.containsKey(ss))
-            ssNames.put(ss, "stack[" + String.valueOf(ssIndex++) + "]");
+            ssNames.put(ss, "stack[" + ssIndex++ + "]");
         return ssNames.get(ss);
     }
 
@@ -121,7 +121,7 @@ public class CodeGenerator implements IRVistor {
         }
         for(StaticString str : node.getStaticStrings()) {
             addLine(getStaticDataName(str) + ":");
-            addLine("\tdq " + String.valueOf(str.getValue().length()));
+            addLine("\tdq " + str.getValue().length());
             add("\tdb ");
             for(int i = 0; i < str.getValue().length(); i++) {
                 Formatter formatter = new Formatter();
@@ -369,7 +369,7 @@ public class CodeGenerator implements IRVistor {
                 add(" + ");
             node.getIndex().accept(this);
             if(node.getScale() != 1)
-                add(" * " + String.valueOf(node.getScale()));
+                add(" * " + node.getScale());
             occur = true;
         }
         if(node.getOffset() != null) {
@@ -382,9 +382,9 @@ public class CodeGenerator implements IRVistor {
                 int value = ((IntImmediate) constant).getValue();
                 if(occur) {
                     if(value > 0)
-                        add(" + " + String.valueOf(value));
+                        add(" + " + value);
                     else if(value < 0)
-                        add(" - " + String.valueOf(-value));
+                        add(" - " + (-value));
                 } else {
                     add(String.valueOf(value));
                 }
@@ -410,7 +410,7 @@ public class CodeGenerator implements IRVistor {
             varNames.put(node, node.getAllocatedPhysicalRegister().getName());
         } else {
 
-            add(getVirtualRegsiterName(node));
+            add(getVirtualRegisterName(node));
         }
     }
 

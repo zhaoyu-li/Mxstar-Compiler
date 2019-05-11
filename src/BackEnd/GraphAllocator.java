@@ -485,18 +485,6 @@ public class GraphAllocator {
         }
     }
 
-    /*private void removeSelfMove(Function function) {
-        for(BasicBlock bb : function.getBasicBlocks()) {
-            for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
-                if(isMoveInstruction(inst)) {
-                    if(colors.get(((Move) inst).getDst()).equals(colors.get(((Move) inst).getSrc()))) {
-                        inst.remove();
-                    }
-                }
-            }
-        }
-    }*/
-
     private void process(Function function) {
         while(true){
             init();
@@ -515,7 +503,6 @@ public class GraphAllocator {
                 System.err.println("SpillNodes.size() = " + spillNodes.size());
                 rewriteFunction(function);
             } else {
-//                removeSelfMove(function);
                 allocateRegisters(function);
                 break;
             }

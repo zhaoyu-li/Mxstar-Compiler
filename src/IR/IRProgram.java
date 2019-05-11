@@ -23,7 +23,6 @@ public class IRProgram {
         Function string_substring = new Function(FuncType.Library, "string_substring", true, true);
         Function string_parseInt = new Function(FuncType.Library, "string_parseInt", true, true);
         Function string_ord = new Function(FuncType.Library, "string_ord", true, true);
-        Function array_size = new Function(FuncType.Library, "array_size", true, true);
         Function string_concat = new Function(FuncType.Library, "string_concat", true, true);
         Function string_compare = new Function(FuncType.Library, "string_compare", true, true);
         Function malloc = new Function(FuncType.External, "malloc", false, true);
@@ -38,7 +37,6 @@ public class IRProgram {
         addFunction(string_substring);
         addFunction(string_parseInt);
         addFunction(string_ord);
-        addFunction(array_size);
         addFunction(global_init);
         addFunction(string_concat);
         addFunction(string_compare);

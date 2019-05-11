@@ -450,7 +450,12 @@ public class LoopConditionOptimizer implements ASTVistor {
 
     @Override
     public void visit(FuncCallExpression node) {
-
+        if(nowInIfCondition) {
+            immobileLoops.addAll(curLoops);
+        }
+        for(Expression expression : node.getArguments()) {
+            expression.accept(this);
+        }
     }
 
     @Override

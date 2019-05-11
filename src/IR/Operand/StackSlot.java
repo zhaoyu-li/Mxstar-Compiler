@@ -4,8 +4,8 @@ import IR.Function;
 import IR.IRVistor;
 
 public class StackSlot extends Memory {
-    private Function function;
     private String name;
+    private Function function;
 
     public StackSlot() {
 
