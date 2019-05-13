@@ -36,9 +36,9 @@ public class BasicBlockOptimizer {
                     for(Instruction extra = inst.getNext(); extra != null; extra = extra.getNext()) {
                         extra.remove();
                     }
-                    if(((Jump) inst).getTargetBB() == nextBB) {
+                    /*if(((Jump) inst).getTargetBB() == nextBB) {
                         inst.remove();
-                    }
+                    }*/
                     break;
                 } else if(inst instanceof CJump) {
                     for(Instruction extra = inst.getNext(); extra != null; extra = extra.getNext()) {

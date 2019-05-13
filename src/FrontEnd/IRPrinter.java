@@ -17,6 +17,7 @@ public class IRPrinter implements IRVistor {
     private BasicBlock nextBB;
 
     private boolean inLeaInst;
+
     private int bbIndex;
     private int sdIndex;
     private int varIndex;
