@@ -65,11 +65,6 @@ public class Main {
             loopConditionOptimizer.run();
         }
 
-        if(Config.useCommonExpressionElimination) {
-            CommonExpressionElimination commonExpressionElimination = new CommonExpressionElimination(program);
-            commonExpressionElimination.run();
-        }
-
         IRBuilder irBuilder = new IRBuilder(scopeBuilder.getGlobalScope());
         irBuilder.visit(program);
         IRProgram irProgram = irBuilder.getProgram();

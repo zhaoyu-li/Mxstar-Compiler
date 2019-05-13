@@ -7,7 +7,6 @@ public class Config {
 
     public static boolean useUselessLoopElimination = true;
     public static boolean useLoopConditionOptimization = true;
-    public static boolean useCommonExpressionElimination = true;
     public static boolean useMemorization = true;
     public static boolean useBasicBlockOptimization = true;
     public static boolean useSuperlocalValueNumbering = true;
