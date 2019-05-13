@@ -41,6 +41,7 @@ public class SuperlocalValueNumbering implements IRVistor {
             this.valueImmediateMap = new HashMap<>(other.valueImmediateMap);
         }
     }
+
     private class Pair {
         BinaryOperation.BinaryOp op;
         Integer lvalue;

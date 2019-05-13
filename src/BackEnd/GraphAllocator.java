@@ -3,6 +3,7 @@ package BackEnd;
 import IR.BasicBlock;
 import IR.Function;
 import IR.IRProgram;
+import IR.Instruction.Call;
 import IR.Instruction.Instruction;
 import IR.Instruction.Move;
 import IR.Operand.PhysicalRegister;
@@ -24,9 +25,9 @@ public class GraphAllocator {
     private HashMap<VirtualRegister, Integer> degrees;
     private HashMap<VirtualRegister, HashSet<VirtualRegister>> adjList;
     private HashMap<VirtualRegister,HashSet<Move>> moveList;
-    private LinkedList<VirtualRegister> simplifyWorkList;
-    private LinkedList<Move> workListMoves;
-    private LinkedList<VirtualRegister> freezeWorkList;
+    private HashSet<VirtualRegister> simplifyWorkList;
+    private HashSet<Move> workListMoves;
+    private HashSet<VirtualRegister> freezeWorkList;
     private HashSet<VirtualRegister> spillWorkList;
     private HashSet<VirtualRegister> selectStack;
     private HashSet<VirtualRegister> coalescedNodes;
@@ -60,9 +61,9 @@ public class GraphAllocator {
         this.adjList = new HashMap<>();
         this.degrees = new HashMap<>();
         this.moveList = new HashMap<>();
-        this.simplifyWorkList = new LinkedList<>();
-        this.workListMoves = new LinkedList<>();
-        this.freezeWorkList = new LinkedList<>();
+        this.simplifyWorkList = new HashSet<>();
+        this.workListMoves = new HashSet<>();
+        this.freezeWorkList = new HashSet<>();
         this.spillWorkList = new HashSet<>();
 
         this.selectStack = new HashSet<>();
@@ -187,7 +188,7 @@ public class GraphAllocator {
 
     private void coalesce() {
         System.err.println("================================ coalesce ====================================");
-        Move m = workListMoves.getFirst();
+        Move m = workListMoves.iterator().next();
         VirtualRegister x = getAlias((VirtualRegister) m.getDst());
         VirtualRegister y = getAlias((VirtualRegister) m.getSrc());
         VirtualRegister u;
@@ -257,7 +258,7 @@ public class GraphAllocator {
 
     private void simplify() {
         System.err.println("================================ simplify ====================================");
-        VirtualRegister n = simplifyWorkList.getFirst();
+        VirtualRegister n = simplifyWorkList.iterator().next();
         simplifyWorkList.remove(n);
         selectStack.add(n);
         for(VirtualRegister m : adjacent(n)) {
@@ -267,7 +268,7 @@ public class GraphAllocator {
 
     private void freeze() {
         System.err.println("================================ freeze ====================================");
-        VirtualRegister u = freezeWorkList.getFirst();
+        VirtualRegister u = freezeWorkList.iterator().next();
         freezeWorkList.remove(u);
         simplifyWorkList.add(u);
         freezeMoves(u);
@@ -302,6 +303,8 @@ public class GraphAllocator {
                 m = vr;
             }
         }
+        m = spillWorkList.iterator().next();
+        spillWorkList.remove(m);
         spillWorkList.remove(m);
         simplifyWorkList.add(m);
         freezeMoves(m);
@@ -356,9 +359,13 @@ public class GraphAllocator {
 
     private void build(Function function) {
         System.err.println("================================ build ====================================");
-
         HashMap<BasicBlock, HashSet<VirtualRegister>> OUTs = livenessAnalyzer.getOUTs(function, true);
         for(BasicBlock bb : function.getBasicBlocks()) {
+            /*if(bb == function.getHeadBB()) {
+                for(VirtualRegister vr : RegisterSet.vcalleeSave) {
+                    addRegister(vr);
+                }
+            }*/
             for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
                 for(VirtualRegister vr : trans(inst.getUsedRegisters())) {
                     addRegister(vr);
@@ -371,6 +378,9 @@ public class GraphAllocator {
 
         for(BasicBlock bb : function.getBasicBlocks()) {
             HashSet<VirtualRegister> live = new HashSet<>(OUTs.get(bb));
+            /*if(bb == function.getTailBB()) {
+                live.addAll(RegisterSet.vcalleeSave);
+            }*/
             for(Instruction inst = bb.getTail(); inst != null; inst = inst.getPrev()) {
                 if(isMoveInstruction(inst)) {
                     live.removeAll(trans(inst.getUsedRegisters()));
@@ -388,6 +398,16 @@ public class GraphAllocator {
                 live.removeAll(trans(inst.getDefinedRegisters()));
                 live.addAll(trans(inst.getUsedRegisters()));
             }
+            /*if(bb == function.getHeadBB()) {
+                HashSet<VirtualRegister> def = new HashSet<>(RegisterSet.vcalleeSave);
+                live.addAll(def);
+                for(VirtualRegister d : def) {
+                    for(VirtualRegister l : live) {
+                        addEdge(l, d);
+                    }
+                }
+                live.removeAll(def);
+            }*/
         }
     }
 

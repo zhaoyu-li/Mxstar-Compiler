@@ -70,7 +70,8 @@ public class Memorization {
         BasicBlock afterBB = new BasicBlock("allocateAfterBB", global_init);
         curBB.addNextJumpInst(new Jump(curBB, condBB));
 
-        condBB.addNextJumpInst(new CJump(condBB, size, CJump.CompareOp.GT, new IntImmediate(0), bodyBB, afterBB));
+        curBB = condBB;
+        curBB.addNextJumpInst(new CJump(condBB, size, CJump.CompareOp.GT, new IntImmediate(0), bodyBB, afterBB));
 
         curBB = bodyBB;
         curBB.addNextInst(new Move(curBB, new Memory(addr, size, Config.REG_SIZE), new IntImmediate(0)));

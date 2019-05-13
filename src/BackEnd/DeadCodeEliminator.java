@@ -44,7 +44,7 @@ public class DeadCodeEliminator {
     private void process(Function function) {
         HashMap<BasicBlock, HashSet<VirtualRegister>> liveOut = livenessAnalyzer.getOUTs(function,false);
         for(BasicBlock bb : function.getBasicBlocks()) {
-            HashSet<VirtualRegister> liveSet = new HashSet<>(liveOut.get(bb));
+            HashSet<VirtualRegister> live = new HashSet<>(liveOut.get(bb));
             for(Instruction inst = bb.getTail(); inst != null; inst = inst.getPrev()) {
                 LinkedList<Register> use = inst instanceof Call ? ((Call) inst).getAllUsedRegister() : inst.getUsedRegisters();
                 LinkedList<Register> def = inst.getDefinedRegisters();
@@ -52,8 +52,8 @@ public class DeadCodeEliminator {
                 if(def.isEmpty())
                     dead = false;
                 for(Register register : def) {
-                    VirtualRegister vr = (VirtualRegister)register;
-                    if(liveSet.contains(vr) || vr.getSpillSpace() != null) {
+                    VirtualRegister vr = (VirtualRegister) register;
+                    if(live.contains(vr) || vr.getSpillSpace() != null) {
                         dead = false;
                         break;
                     }
@@ -61,8 +61,8 @@ public class DeadCodeEliminator {
                 if(dead && isRemovable(inst)) {
                     inst.remove();
                 } else {
-                    liveSet.removeAll(trans(def));
-                    liveSet.addAll(trans(use));
+                    live.removeAll(trans(def));
+                    live.addAll(trans(use));
                 }
             }
         }
