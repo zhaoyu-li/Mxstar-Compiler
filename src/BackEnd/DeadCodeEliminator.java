@@ -27,18 +27,13 @@ public class DeadCodeEliminator {
         }
     }
 
-    private LinkedList<VirtualRegister> trans(LinkedList<Register> set) {
-        LinkedList<VirtualRegister> retSet = new LinkedList<>();
-        for(Register register : set) {
-            assert register instanceof VirtualRegister;
-            retSet.add((VirtualRegister) register);
+    private HashSet<VirtualRegister> trans(LinkedList<Register> registers) {
+        HashSet<VirtualRegister> virtualRegisters = new HashSet<>();
+        for(Register reg : registers) {
+            VirtualRegister vr = (VirtualRegister) reg;
+            virtualRegisters.add(vr);
         }
-        return retSet;
-    }
-
-    private boolean isRemovable(Instruction inst) {
-        return !(inst instanceof Return || inst instanceof Leave || inst instanceof Call || inst instanceof Cdq
-                || inst instanceof Push || inst instanceof Pop || inst instanceof Jump || inst instanceof CJump);
+        return virtualRegisters;
     }
 
     private void process(Function function) {
@@ -58,6 +53,7 @@ public class DeadCodeEliminator {
                         break;
                     }
                 }
+
                 if(dead && isRemovable(inst)) {
                     inst.remove();
                 } else {
@@ -66,6 +62,11 @@ public class DeadCodeEliminator {
                 }
             }
         }
+    }
+
+    private boolean isRemovable(Instruction inst) {
+        return !(inst instanceof Return || inst instanceof Leave || inst instanceof Call || inst instanceof Cdq
+                || inst instanceof Push || inst instanceof Pop || inst instanceof Jump || inst instanceof CJump);
     }
 
 }
