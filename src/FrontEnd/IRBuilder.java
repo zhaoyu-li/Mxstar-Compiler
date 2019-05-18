@@ -9,9 +9,7 @@ import IR.*;
 import Type.*;
 import Utility.Config;
 
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Stack;
 
 import static IR.RegisterSet.*;
@@ -25,15 +23,8 @@ public class IRBuilder implements ASTVistor {
     private String curClassName;
     private VirtualRegister curThis;
 
-    private HashMap<String, FunctionDeclaration> functionDeclarationMap;
-
     private Stack<BasicBlock> loopUpdateBB;
     private Stack<BasicBlock> loopAfterBB;
-
-    private boolean isInInline;
-    private LinkedList<HashMap<VariableEntity, VirtualRegister>> inlineVariableRegisterStack;
-    private LinkedList<BasicBlock> inlineFuncAfterBBStack;
-    private HashMap<FunctionEntity, Integer> operationsCountMap;
 
     public IRBuilder(GlobalScope globalScope) {
         this.globalScope = globalScope;
@@ -44,10 +35,6 @@ public class IRBuilder implements ASTVistor {
         program = new IRProgram();
         loopUpdateBB = new Stack<>();
         loopAfterBB = new Stack<>();
-        functionDeclarationMap = new HashMap<>();
-        inlineVariableRegisterStack = new LinkedList<>();
-        inlineFuncAfterBBStack = new LinkedList<>();
-        operationsCountMap = new HashMap<FunctionEntity, Integer>();
     }
 
     public IRProgram getProgram() {
@@ -79,6 +66,7 @@ public class IRBuilder implements ASTVistor {
                 assign(variableDeclaration.getInit(), variableDeclaration.getVariableEntity().getVirtualRegister());
             }
         }
+
         curBB.addNextInst(new Call(curBB, vrax, program.getFunction("main")));
         curBB.addNextInst(new Return(curBB));
         curFunction.setTailBB(curBB);
@@ -103,7 +91,6 @@ public class IRBuilder implements ASTVistor {
             registerStaticVariable(variableDeclaration);
         }
         for(FunctionDeclaration functionDeclaration : node.getFunctions()) {
-            functionDeclarationMap.put(functionDeclaration.getName(), functionDeclaration);
             registerFunction(functionDeclaration);
         }
         for(ClassDeclaration classDeclaration : node.getClasses()) {
@@ -153,9 +140,9 @@ public class IRBuilder implements ASTVistor {
         curFunction.setHeadBB(new BasicBlock("headBB", curFunction));
         curBB = curFunction.getHeadBB();
         if(curClassName != null) {
-            VirtualRegister vthis = new VirtualRegister("");
-            curFunction.addParameter(vthis);
-            curThis = vthis;
+            VirtualRegister thisPointer = new VirtualRegister("");
+            curFunction.addParameter(thisPointer);
+            curThis = thisPointer;
         }
         for(int i = 0; i < node.getParameters().size(); i++) {
             visitParameter(node.getParameters().get(i), i);
@@ -185,11 +172,13 @@ public class IRBuilder implements ASTVistor {
                 curFunction.addReturn(ret);
             }
         }
+
         BasicBlock tailBB = new BasicBlock("tailBB", curFunction);
         for(Return ret : curFunction.getReturnList()) {
             ret.prepend(new Jump(ret.getBB(), tailBB));
             ret.remove();
         }
+
         tailBB.addNextInst(new Return(tailBB));
         curFunction.setTailBB(tailBB);
 
@@ -241,16 +230,9 @@ public class IRBuilder implements ASTVistor {
     @Override
     public void visit(VariableDeclaration node) {
         VirtualRegister vr = new VirtualRegister(node.getName());
-        if(isInInline) {
-            inlineVariableRegisterStack.getLast().put(node.getVariableEntity(), vr);
-            if(node.getInit() != null) {
-                assign(node.getInit(), vr);
-            }
-        } else {
-            node.getVariableEntity().setVirtualRegister(vr);
-            if(node.getInit() != null) {
-                assign(node.getInit(), vr);
-            }
+        node.getVariableEntity().setVirtualRegister(vr);
+        if(node.getInit() != null) {
+            assign(node.getInit(), vr);
         }
     }
 
@@ -363,13 +345,9 @@ public class IRBuilder implements ASTVistor {
                 curBB.addNextInst(new Move(curBB, vrax, node.getRet().getResult()));
             }
         }
-        if(isInInline) {
-            curBB.addNextJumpInst(new Jump(curBB, inlineFuncAfterBBStack.getLast()));
-        } else {
-            Return ret = new Return(curBB);
-            curBB.addNextInst(ret);
-            curFunction.addReturn(ret);
-        }
+        Return ret = new Return(curBB);
+        curBB.addNextInst(ret);
+        curFunction.addReturn(ret);
     }
 
     @Override
@@ -437,12 +415,9 @@ public class IRBuilder implements ASTVistor {
             int offset = globalScope.getClassEntity(curClassName).getScope().getVariableOffset(node.getName());
             result = new Memory(curThis, new IntImmediate(offset));
         } else {
-            if(isInInline) {
-                result = inlineVariableRegisterStack.getLast().get(node.getVariableEntity());
-            } else {
-                result = node.getVariableEntity().getVirtualRegister();
-            }
+            result = node.getVariableEntity().getVirtualRegister();
         }
+
         if(node.getTrueBB() != null) {
             curBB.addNextJumpInst(new CJump(curBB, result, CJump.CompareOp.NE, new IntImmediate(0), node.getTrueBB(), node.getFalseBB()));
         } else {
@@ -450,139 +425,18 @@ public class IRBuilder implements ASTVistor {
         }
     }
 
-    private int countOperationsLE(List<Expression> expressions) {
-        int count = 0;
-        for(Expression expression : expressions)
-            count += countOperations(expression);
-        return count;
-    }
-    private int countOperations(Expression expression) {
-        if(expression == null) return 0;
-        int count = 0;
-        if (expression instanceof ArrayExpression) {
-            count += countOperations(((ArrayExpression) expression).getArr());
-            count += countOperations(((ArrayExpression) expression).getIdx());
-        } else if (expression instanceof FuncCallExpression) {
-            count += countOperationsLE(((FuncCallExpression) expression).getArguments());
-        } else if (expression instanceof NewExpression) {
-            count += countOperationsLE(((NewExpression) expression).getDimensions());
-        } else if (expression instanceof PrefixExpression) {
-            count += countOperations(((PrefixExpression) expression).getExpr());
-            count += 1;
-        } else if (expression instanceof SuffixExpression) {
-            count += countOperations(((SuffixExpression) expression).getExpr());
-            count += 1;
-        } else if (expression instanceof MemberExpression) {
-            if(((MemberExpression) expression).getMember() != null)
-                count += 1;
-            else
-                count += countOperations(((MemberExpression) expression).getFuncCall());
-        } else if (expression instanceof BinaryExpression) {
-            count += countOperations(((BinaryExpression) expression).getLhs());
-            count += countOperations(((BinaryExpression) expression).getRhs());
-        } else if (expression instanceof AssignExpression) {
-            count += countOperations(((AssignExpression) expression).getLhs());
-            count += countOperations(((AssignExpression) expression).getRhs());
-        } else {
-            count += 1;
-        }
-        return count;
-    }
-
-    private int countOperations(Statement statement) {
-        if(statement == null) return 0;
-        int count = 0;
-        if(statement instanceof IfStatement) {
-            count += countOperations(((IfStatement) statement).getThenStatement());
-            count += countOperations(((IfStatement) statement).getElseStatement());
-        } else if(statement instanceof WhileStatement) {
-            count += countOperations(((WhileStatement) statement).getCondition());
-            count += countOperations(((WhileStatement) statement).getBody());
-        } else if(statement instanceof ForStatement) {
-            count += countOperations(((ForStatement) statement).getInit());
-            count += countOperations(((ForStatement) statement).getCondition());
-            count += countOperations(((ForStatement) statement).getUpdate());
-            count += countOperations(((ForStatement) statement).getBody());
-        } else if(statement instanceof BlockStatement) {
-            count += countOperations(((BlockStatement) statement).getStatements());
-        } else if(statement instanceof ReturnStatement) {
-            count += countOperations(((ReturnStatement) statement).getRet());
-        } else if(statement instanceof ExprStatement) {
-            count += countOperations(((ExprStatement) statement).getExpr());
-        } else if(statement instanceof VarDeclStatement) {
-            count += countOperations(((VarDeclStatement) statement).getDeclaration().getInit());
-        } else {
-            count += 1;
-        }
-        return count;
-    }
-    private int countOperations(List<Statement> statements) {
-        int count = 0;
-        for(Statement s : statements)
-            count += countOperations(s);
-        return count;
-    }
-
-    private boolean deserveInline(String name) {
-        if(!(functionDeclarationMap.containsKey(name)))   //  library function
-            return false;
-        FunctionDeclaration functionDeclaration = functionDeclarationMap.get(name);
-        if(!functionDeclaration.getFunctionEntity().getGlobalVariables().isEmpty())   //  used global variable
-            return false;
-        if(!functionDeclaration.getFunctionEntity().isGlobal())    //  is a method
-            return false;
-        List<Statement> body = functionDeclaration.getBody();
-        if(!operationsCountMap.containsKey(functionDeclaration.getFunctionEntity()))
-            operationsCountMap.put(functionDeclaration.getFunctionEntity(), countOperations(body));
-        if(operationsCountMap.get(functionDeclaration.getFunctionEntity()) >= 20) return false;
-        if(inlineVariableRegisterStack.size() >= 4)
-            return false;
-        return true;
-    }
-    private void doInline(String name, LinkedList<Operand> arguments) {
-        FunctionDeclaration funcDeclaration = functionDeclarationMap.get(name);
-        inlineVariableRegisterStack.addLast(new HashMap<>());
-        LinkedList<VirtualRegister> vrArguments = new LinkedList<>();
-        for(Operand op : arguments) {
-            VirtualRegister vr = new VirtualRegister("");
-            curBB.addNextInst(new Move(curBB, vr, op));
-            vrArguments.add(vr);
-        }
-        for(int i = 0; i < funcDeclaration.getParameters().size(); i++)
-            inlineVariableRegisterStack.getLast().put(funcDeclaration.getParameters().get(i).getVariableEntity(), vrArguments.get(i));
-        BasicBlock inlineFuncBodyBB = new BasicBlock("inlineFuncBodyBB", curFunction);
-        BasicBlock inlineFuncAfterBB = new BasicBlock("inlineFuncAfterBB", curFunction);
-        inlineFuncAfterBBStack.addLast(inlineFuncAfterBB);
-
-        curBB.addNextJumpInst(new Jump(curBB, inlineFuncBodyBB));
-        curBB = inlineFuncBodyBB;
-
-        boolean oldIsInline = isInInline;
-        isInInline = true;
-
-        for(Statement st : funcDeclaration.getBody())
-            st.accept(this);
-
-        if(!(curBB.getTail() instanceof Jump))
-            curBB.addNextJumpInst(new Jump(curBB, inlineFuncAfterBB));
-
-        curBB = inlineFuncAfterBB;
-
-        inlineFuncAfterBBStack.removeLast();
-        inlineVariableRegisterStack.removeLast();
-        isInInline = oldIsInline;
-    }
-
     @Override
     public void visit(MemberExpression node) {
         VirtualRegister base = new VirtualRegister("");
         node.getExpr().accept(this);
         curBB.addNextInst(new Move(curBB, base, node.getExpr().getResult()));
-        if(node.getExpr().getType() instanceof ArrayType) {
+
+        if(node.getExpr().getType() instanceof ArrayType) { // array.size()
             node.setResult(new Memory(base));
+
         } else if(node.getExpr().getType() instanceof ClassType) {
             ClassType classType = (ClassType) node.getExpr().getType();
-            Operand result;
+            Operand result = null;
             if(node.getMember() != null) {
                 String name = node.getMember().getName();
                 int offset = classType.getClassEntity().getScope().getVariableOffset(name);
@@ -596,26 +450,23 @@ public class IRBuilder implements ASTVistor {
                     Operand argument = expression.getResult();
                     arguments.add(argument);
                 }
-                if(deserveInline(node.getFuncCall().getFunctionEntity().getName()) && !curFunction.getName().equals(node.getFuncCall().getName().getName())) {
-                    doInline(node.getFuncCall().getFunctionEntity().getName(), arguments);
-                } else {
-                    curBB.addNextInst(new Call(curBB, vrax, function, arguments));
-                }
+                curBB.addNextInst(new Call(curBB, vrax, function, arguments));
+
                 if (!node.getFuncCall().getFunctionEntity().getReturnType().isVoidType()) {
                     VirtualRegister ret = new VirtualRegister("");
                     curBB.addNextInst(new Move(curBB, ret, vrax));
                     result = ret;
-                } else {
-                    result = null;
                 }
             }
+
             if(node.getTrueBB() != null) {
                 curBB.addNextJumpInst(new CJump(curBB, result, CJump.CompareOp.NE, new IntImmediate(0), node.getTrueBB(), node.getFalseBB()));
             } else {
                 node.setResult(result);
             }
+
         } else if(node.getExpr().getType().isStringType()) {
-            Operand result;
+            Operand result = null;
             Function function = program.getFunction(node.getFuncCall().getFunctionEntity().getName());
             LinkedList<Operand> arguments = new LinkedList<>();
             arguments.add(base);
@@ -629,40 +480,32 @@ public class IRBuilder implements ASTVistor {
                 VirtualRegister ret = new VirtualRegister("");
                 curBB.addNextInst(new Move(curBB, ret, vrax));
                 result = ret;
-            } else {
-                result = null;
             }
+
             if(node.getTrueBB() != null) {
                 curBB.addNextJumpInst(new CJump(curBB, result, CJump.CompareOp.NE, new IntImmediate(0), node.getTrueBB(), node.getFalseBB()));
             } else {
                 node.setResult(result);
             }
-        } else if(node.getExpr().getType() instanceof ArrayType) {
-            Function function = program.getFunction(node.getFuncCall().getFunctionEntity().getName());
-            LinkedList<Operand> arguments = new LinkedList<>();
-            arguments.add(base);
-            curBB.addNextInst(new Call(curBB, vrax, function, arguments));
-            VirtualRegister ret = new VirtualRegister("");
-            curBB.addNextInst(new Move(curBB, ret, vrax));
-            node.setResult(ret);
-
         }
     }
 
     @Override
     public void visit(ArrayExpression node) {
         node.getArr().accept(this);
-        Operand baseAddr = node.getArr().getResult();
+        Operand addr = node.getArr().getResult();
         node.getIdx().accept(this);
         Operand index = node.getIdx().getResult();
+
         VirtualRegister base;
-        if(baseAddr instanceof Register) {
-            base = (VirtualRegister) baseAddr;
+        if(addr instanceof Register) {
+            base = (VirtualRegister) addr;
         } else {
             base = new VirtualRegister("");
-            curBB.addNextInst(new Move(curBB, base, baseAddr));
+            curBB.addNextInst(new Move(curBB, base, addr));
         }
         Memory memory = new Memory();
+
         if(index instanceof IntImmediate) {
             memory = new Memory(base, new IntImmediate(((IntImmediate) index).getValue() * Config.REG_SIZE + Config.REG_SIZE));
         } else if(index instanceof Register) {
@@ -672,6 +515,7 @@ public class IRBuilder implements ASTVistor {
             curBB.addNextInst(new Move(curBB, vr, index));
             memory = new Memory(base, vr, Config.REG_SIZE, new IntImmediate(Config.REG_SIZE));
         }
+
         if(node.getTrueBB() != null) {
             curBB.addNextJumpInst(new CJump(curBB, memory, CJump.CompareOp.NE, new IntImmediate(0), node.getTrueBB(), node.getFalseBB()));
         } else {
@@ -689,11 +533,8 @@ public class IRBuilder implements ASTVistor {
             expression.accept(this);
             arguments.add(expression.getResult());
         }
-        if(deserveInline(node.getFunctionEntity().getName()) && !node.getFunctionEntity().getName().equals(curFunction.getName())) {
-            doInline(node.getFunctionEntity().getName(), arguments);
-        } else {
-            curBB.addNextInst(new Call(curBB, vrax, program.getFunction(node.getFunctionEntity().getName()), arguments));
-        }
+        curBB.addNextInst(new Call(curBB, vrax, program.getFunction(node.getFunctionEntity().getName()), arguments));
+
         if(node.getTrueBB() != null) {
             curBB.addNextJumpInst(new CJump(curBB, vrax, CJump.CompareOp.NE, new IntImmediate(0), node.getTrueBB(), node.getFalseBB()));
         } else if(!node.getFunctionEntity().getReturnType().isVoidType()) {
@@ -706,7 +547,7 @@ public class IRBuilder implements ASTVistor {
     private Operand allocateArray(LinkedList<Operand> dims, int baseBytes, Function constructor) {
         if(dims.size() == 0) {
             if(baseBytes == 0) {
-                return new IntImmediate(0);
+                return new IntImmediate(0); // except class
             } else {
                 VirtualRegister retAddr = new VirtualRegister("");
                 curBB.addNextInst(new Call(curBB, vrax, program.getFunction("malloc"), new IntImmediate(baseBytes)));
@@ -714,13 +555,7 @@ public class IRBuilder implements ASTVistor {
                 if(constructor != null) {
                     curBB.addNextInst(new Call(curBB, vrax, constructor, retAddr));
                 } else {
-                    if(baseBytes == Config.REG_SIZE) {
-                        curBB.addNextInst(new Move(curBB, new Memory(retAddr), new IntImmediate(0)));
-                    } else if(baseBytes == Config.REG_SIZE * 2) {
-                        curBB.addNextInst(new BinaryOperation(curBB, retAddr, BinaryOperation.BinaryOp.ADD, new IntImmediate(Config.REG_SIZE)));
-                        curBB.addNextInst(new Move(curBB, new Memory(retAddr), new IntImmediate(0)));
-                        curBB.addNextInst(new BinaryOperation(curBB, retAddr, BinaryOperation.BinaryOp.SUB, new IntImmediate(Config.REG_SIZE)));
-                    }
+                    curBB.addNextInst(new Move(curBB, new Memory(retAddr), new IntImmediate(0)));
                 }
                 return retAddr;
             }
@@ -733,12 +568,17 @@ public class IRBuilder implements ASTVistor {
             curBB.addNextInst(new Call(curBB, vrax, program.getFunction("malloc"), bytes));
             curBB.addNextInst(new Move(curBB, addr, vrax));
             curBB.addNextInst(new Move(curBB, new Memory(addr), size));
+
             BasicBlock condBB = new BasicBlock("allocateConditionBB", curFunction);
             BasicBlock bodyBB = new BasicBlock("allocateBodyBB", curFunction);
             BasicBlock afterBB = new BasicBlock("allocateAfterBB", curFunction);
             curBB.addNextJumpInst(new Jump(curBB, condBB));
-            condBB.addNextJumpInst(new CJump(condBB, size, CJump.CompareOp.GT, new IntImmediate(0), bodyBB, afterBB));
+
+            curBB = condBB;
+            curBB.addNextJumpInst(new CJump(condBB, size, CJump.CompareOp.GT, new IntImmediate(0), bodyBB, afterBB));
+
             curBB = bodyBB;
+
             if(dims.size() == 1) {
                 Operand pointer = allocateArray(new LinkedList<>(), baseBytes, constructor);
                 curBB.addNextInst(new Move(curBB, new Memory(addr, size, Config.REG_SIZE), pointer));
@@ -750,9 +590,11 @@ public class IRBuilder implements ASTVistor {
                 Operand pointer = allocateArray(remainDims, baseBytes, constructor);
                 curBB.addNextInst(new Move(curBB, new Memory(addr, size, Config.REG_SIZE), pointer));
             }
+
             curBB.addNextInst(new UnaryOperation(curBB, UnaryOperation.UnaryOp.DEC, size));
             curBB.addNextJumpInst(new Jump(curBB, condBB));
             curBB = afterBB;
+
             return addr;
         }
     }
@@ -760,13 +602,12 @@ public class IRBuilder implements ASTVistor {
     @Override
     public void visit(NewExpression node) {
         Function constructor = null;
-        if(node.getNumDimension() == 0) {
-            if(node.getType() instanceof ClassType) {
-                Scope curClassScope = ((ClassType) node.getType()).getClassEntity().getScope();
-                String constructorName = ((ClassType) node.getType()).getClassEntity().getName();
-                if(curClassScope.getFunction(constructorName) != null) {
-                    constructor = program.getFunction(curClassScope.getFunction(constructorName).getName());
-                }
+
+        if(node.getType() instanceof ClassType) {
+            Scope curClassScope = ((ClassType) node.getType()).getClassEntity().getScope();
+            String constructorName = ((ClassType) node.getType()).getClassEntity().getName();
+            if(curClassScope.getFunction(constructorName) != null) {
+                constructor = program.getFunction(curClassScope.getFunction(constructorName).getName());
             }
         }
 
@@ -775,16 +616,12 @@ public class IRBuilder implements ASTVistor {
             expression.accept(this);
             dims.add(expression.getResult());
         }
+
         if(node.getNumDimension() > 0 || (!(node.getType() instanceof ClassType))) {
             Operand pointer = allocateArray(dims, 0, null);
             node.setResult(pointer);
         } else {
-            int bytes;
-            if(node.getType().isStringType()) {
-                bytes = Config.REG_SIZE * 2;
-            } else {
-                bytes = node.getType().getBytes();
-            }
+            int bytes = node.getType().getBytes();
             Operand pointer = allocateArray(dims, bytes, constructor);
             node.setResult(pointer);
         }
@@ -861,15 +698,6 @@ public class IRBuilder implements ASTVistor {
         Operand str1 = lhs.getResult();
         rhs.accept(this);
         Operand str2 = rhs.getResult();
-        /*VirtualRegister vr;
-        if(src1 instanceof Memory && !(src1 instanceof StackSlot)) {
-            vr = new VirtualRegister("");
-            curBB.addNextInst(new Move(curBB, vr, src1));
-        }
-        if(src2 instanceof Memory && !(src2 instanceof StackSlot)) {
-            vr = new VirtualRegister("");
-            curBB.addNextInst(new Move(curBB, vr, src2));
-        }*/
         curBB.addNextInst(new Call(curBB, vrax, program.getFunction("string_concat"), str1, str2));
         curBB.addNextInst(new Move(curBB, result, vrax));
         return result;
@@ -1007,6 +835,7 @@ public class IRBuilder implements ASTVistor {
                 lhs.setFalseBB(checkSecondBB);
                 break;
         }
+
         lhs.accept(this);
         curBB = checkSecondBB;
         rhs.setTrueBB(trueBB);
