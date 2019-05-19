@@ -1,7 +1,5 @@
 package Scope;
 
-import AST.Location;
-
 public abstract class Entity {
     protected String name;
 

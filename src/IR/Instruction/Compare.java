@@ -3,7 +3,6 @@ package IR.Instruction;
 import IR.BasicBlock;
 import IR.IRVistor;
 import IR.Operand.*;
-import IR.RegisterSet;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -51,7 +50,6 @@ public class Compare extends Instruction {
     }
 
 
-
     @Override
     public LinkedList<Register> getUsedRegisters(){
         LinkedList<Register> registers = new LinkedList<>();
@@ -64,9 +62,6 @@ public class Compare extends Instruction {
             registers.addAll(((Memory) rhs).getUsedRegisters());
         } else if (rhs instanceof Register) {
             registers.add((Register) rhs);
-        }
-        if(!registers.contains(RegisterSet.vrax)) {
-            registers.add(RegisterSet.vrax);
         }
         return registers;
     }

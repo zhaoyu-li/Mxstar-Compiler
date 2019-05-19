@@ -26,7 +26,6 @@ public class Function {
     private BasicBlock headBB;
     private BasicBlock tailBB;
     private LinkedList<VirtualRegister> parameters;
-    private LinkedList<StackSlot> temporaries;
 
     private HashSet<Function> callees;
     private HashSet<Function> visitedFunction;
@@ -50,7 +49,6 @@ public class Function {
         hasOutput = false;
         canBeMemorized = false;
         parameters = new LinkedList<>();
-        temporaries = new LinkedList<>();
         callees = new HashSet<>();
         visitedFunction = new HashSet<>();
         usedGlobalVariables = new HashSet<>();
@@ -108,14 +106,6 @@ public class Function {
 
     public LinkedList<VirtualRegister> getParameters() {
         return parameters;
-    }
-
-    public void addTemporary(StackSlot temporary) {
-        temporaries.add(temporary);
-    }
-
-    public LinkedList<StackSlot> getTemporaries() {
-        return temporaries;
     }
 
     public void addCallee(Function function) {

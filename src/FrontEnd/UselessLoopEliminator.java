@@ -23,10 +23,6 @@ public class UselessLoopEliminator implements ASTVistor {
         visit(program);
     }
 
-    private boolean isLocal(VariableEntity var) {
-        return !var.isGlobal() && !var.isInClass();
-    }
-
     @Override
     public void visit(Program node) {
         for(FunctionDeclaration functionDeclaration : node.getFunctions()) {
@@ -84,6 +80,10 @@ public class UselessLoopEliminator implements ASTVistor {
                 visit(functionDeclaration);
             }
         }
+    }
+
+    private boolean isLocal(VariableEntity var) {
+        return !var.isGlobal() && !var.isInClass();
     }
 
     @Override

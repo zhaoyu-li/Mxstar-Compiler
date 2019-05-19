@@ -1,6 +1,5 @@
 package Scope;
 
-import IR.Function;
 import Type.Type;
 
 import java.util.*;

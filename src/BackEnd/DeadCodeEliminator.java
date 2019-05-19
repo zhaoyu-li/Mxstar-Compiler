@@ -53,7 +53,6 @@ public class DeadCodeEliminator {
                         break;
                     }
                 }
-
                 if(dead && isRemovable(inst)) {
                     inst.remove();
                 } else {

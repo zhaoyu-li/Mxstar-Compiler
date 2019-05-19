@@ -20,7 +20,6 @@ public class IRCorrector implements IRVistor {
             if(function.getType() == Function.FuncType.UserDefined){
                 function.accept(this);
             }
-
         }
     }
 

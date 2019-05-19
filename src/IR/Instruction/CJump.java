@@ -33,38 +33,66 @@ public class CJump extends Instruction {
         int v2 = ((IntImmediate) rhs).getValue();
         boolean r;
         switch(op) {
-            case NE: r = v1 != v2; break;
-            case LE: r = v1 <= v2; break;
-            case GE: r = v1 >= v2; break;
-            case LT: r = v1 < v2; break;
-            case GT: r = v1 > v2; break;
-            case EQ: r = v1 == v2; break;
-            default: r = false; assert false;
+            case NE:
+                r = v1 != v2;
+                break;
+            case LE:
+                r = v1 <= v2;
+                break;
+            case GE:
+                r = v1 >= v2;
+                break;
+            case LT:
+                r = v1 < v2;
+                break;
+            case GT:
+                r = v1 > v2;
+                break;
+            case EQ:
+                r = v1 == v2;
+                break;
+            default:
+                r = false;
+                break;
         }
         return r ? thenBB : elseBB;
     }
 
     public CompareOp getReverseCompareOp() {
         switch(op) {
-            case EQ: return CompareOp.EQ;
-            case GT: return CompareOp.LE;
-            case LT: return CompareOp.GE;
-            case GE: return CompareOp.LT;
-            case LE: return CompareOp.GT;
-            case NE: return CompareOp.NE;
-            default: return null;
+            case EQ:
+                return CompareOp.EQ;
+            case GT:
+                return CompareOp.LE;
+            case LT:
+                return CompareOp.GE;
+            case GE:
+                return CompareOp.LT;
+            case LE:
+                return CompareOp.GT;
+            case NE:
+                return CompareOp.NE;
+            default:
+                return null;
         }
     }
 
     public CompareOp getNegativeCompareOp() {
         switch (op) {
-            case EQ: return CompareOp.NE;
-            case GT: return CompareOp.LE;
-            case LT: return CompareOp.GE;
-            case GE: return CompareOp.LT;
-            case LE: return CompareOp.GT;
-            case NE: return CompareOp.EQ;
-            default: return null;
+            case EQ:
+                return CompareOp.NE;
+            case GT:
+                return CompareOp.LE;
+            case LT:
+                return CompareOp.GE;
+            case GE:
+                return CompareOp.LT;
+            case LE:
+                return CompareOp.GT;
+            case NE:
+                return CompareOp.EQ;
+            default:
+                return null;
         }
 
     }

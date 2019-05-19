@@ -16,22 +16,13 @@ import static IR.RegisterSet.*;
 
 public class StackBuilder {
     private IRProgram program;
-
-    private class Frame {
-        private LinkedList<StackSlot> parameters = new LinkedList<>();
-        private LinkedList<StackSlot> temporaries = new LinkedList<>();
-        private int getFrameSize(int needToSave) {
-            int bytes = Config.REG_SIZE * (parameters.size() + temporaries.size());
-            bytes = (bytes + 16 - 1) / 16 * 16;
-            if(needToSave % 2 == 1) {
-                bytes += 8;
-            }
-            return bytes;
-        }
-    }
+    private LinkedList<StackSlot> parameters;
+    private LinkedList<StackSlot> temporaries;
 
     public StackBuilder(IRProgram program) {
         this.program = program;
+        this.parameters = new LinkedList<>();
+        this.temporaries = new LinkedList<>();
     }
 
     public void run() {
@@ -42,10 +33,11 @@ public class StackBuilder {
     }
 
     private void buildStack(Function function) {
-        Frame frame = new Frame();
+        parameters.clear();
+        temporaries.clear();
         if(function.getParameters().size() > 6) {
             for(int i = 6; i < function.getParameters().size(); i++) {
-                frame.parameters.add((StackSlot) function.getParameters().get(i).getSpillSpace());
+                parameters.add((StackSlot) function.getParameters().get(i).getSpillSpace());
             }
         }
 
@@ -54,21 +46,21 @@ public class StackBuilder {
             for(Instruction inst = bb.getHead(); inst != null; inst = inst.getNext()) {
                 LinkedList<StackSlot> slots = inst.getStackSlots();
                 for(StackSlot ss : slots) {
-                    if(!frame.parameters.contains(ss)) {
+                    if(!parameters.contains(ss)) {
                         slotsSet.add(ss);
                     }
                 }
             }
         }
-        frame.temporaries.addAll(slotsSet);
+        temporaries.addAll(slotsSet);
 
-        for(int i = 0; i < frame.parameters.size(); i++) {
-            StackSlot ss = frame.parameters.get(i);
+        for(int i = 0; i < parameters.size(); i++) {
+            StackSlot ss = parameters.get(i);
             ss.setBase(rbp);
             ss.setOffset(new IntImmediate(16 + 8 * i));
         }
-        for(int i = 0; i < frame.temporaries.size(); i++) {
-            StackSlot ss = frame.temporaries.get(i);
+        for(int i = 0; i < temporaries.size(); i++) {
+            StackSlot ss = temporaries.get(i);
             ss.setBase(rbp);
             ss.setOffset(new IntImmediate(-8 - 8 * i));
         }
@@ -76,13 +68,19 @@ public class StackBuilder {
         HashSet<PhysicalRegister> needToSave = new HashSet<>(function.getUsedPhysicalRegisters());
         needToSave.retainAll(calleeSave);
 
+        int bytes = Config.REG_SIZE * (parameters.size() + temporaries.size());
+        bytes = (bytes + 8) / 16 * 16;
+        if(needToSave.size() % 2 == 1) {
+            bytes += 8;
+        }
+
         BasicBlock headBB = function.getHeadBB();
-        headBB.addPrevInst(new BinaryOperation(headBB, rsp, BinaryOperation.BinaryOp.SUB, new IntImmediate(frame.getFrameSize(needToSave.size()))));
+        headBB.addPrevInst(new BinaryOperation(headBB, rsp, BinaryOperation.BinaryOp.SUB, new IntImmediate(bytes)));
         Instruction headInst = headBB.getHead();
         headInst.prepend(new Push(headBB, rbp));
         headInst.prepend(new Move(headBB, rbp, rsp));
 
-        if(frame.getFrameSize(needToSave.size()) == 0) {
+        if(bytes == 0) {
             headInst = headInst.getPrev();
             headInst.getNext().remove();
         }
@@ -98,5 +96,4 @@ public class StackBuilder {
         }
         tailInst.prepend(new Leave(tailBB));
     }
-
 }
