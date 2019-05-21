@@ -69,10 +69,10 @@ public class Main {
         irBuilder.visit(program);
         IRProgram irProgram = irBuilder.getProgram();
 
-        if(Config.useMemorization) {
+        /*if(Config.useMemorization) {
             Memorization memorization = new Memorization(irProgram);
             memorization.run();
-        }
+        }*/
 
         if(Config.useBasicBlockOptimization) {
             BasicBlockOptimizer basicBlockOptimizer = new BasicBlockOptimizer(irProgram);
